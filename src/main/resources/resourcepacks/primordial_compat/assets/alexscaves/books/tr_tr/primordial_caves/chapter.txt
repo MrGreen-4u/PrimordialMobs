@@ -1,0 +1,29 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    İlkel Mağaralar'a Hoş Geldin...
+
+    • {Giriş|primordial_caves/general.json}
+    • {Kaynaklar|primordial_caves/resources.json}
+    • Yerliler
+        • {YGliderprimordial_caves/sGliderjson}
+        • {HStealerprimordial_caves/vStealerjson}
+        • {MRammerprimordial_caves/gRammerjson}
+        • {Trilokaris|primordial_caves/trilocaris.json}
+        • {TRoarerprimordial_caves/tRoarerjson}
+        • {YLoggerprimordial_caves/rLoggerjson}
+        • {Lukstruzor|primordial_caves/luxtructosaurus.json}
+        • {Atlatitan|primordial_caves/atlatitan.json}
+    • {Araçlar|primordial_caves/utilities.json}

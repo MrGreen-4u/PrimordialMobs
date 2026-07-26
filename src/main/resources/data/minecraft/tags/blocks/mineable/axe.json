@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "alexscaves:dinosaur_chop",
+    "alexscaves:cooked_dinosaur_chop",
+    "alexscaves:pewen_log",
+    "alexscaves:pewen_wood",
+    "alexscaves:stripped_pewen_log",
+    "alexscaves:stripped_pewen_wood",
+    "alexscaves:pewen_branch"
+  ]
+}

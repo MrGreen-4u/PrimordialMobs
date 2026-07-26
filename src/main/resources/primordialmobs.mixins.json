@@ -1,0 +1,32 @@
+{
+  "required": true,
+  "package": "com.primordialmobs.mixin",
+  "plugin": "com.primordialmobs.mixin.PrimordialMixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "target": "@env(DEFAULT)",
+  "refmap": "primordialmobs.refmap.json",
+  "mixins": [
+    "SnifferAccessor",
+    "SnifferMixin",
+    "compat.DinosaurEntityMixin",
+    "compat.GrottoceratopsEntityMixin",
+    "compat.RelicheirusEntityMixin",
+    "compat.RelicheirusMeleeGoalMixin"
+  ],
+  "client": [
+    "client.ClientPacketListenerMixin",
+    "client.SnifferModelMixin",
+    "compat.client.GrottoceratopsRendererMixin",
+    "compat.client.RelicheirusRendererMixin",
+    "compat.client.SubterranodonRendererMixin",
+    "compat.client.TremorsaurusRendererMixin",
+    "compat.client.VallumraptorRendererMixin",
+    "compat.client.GrottoceratopsModelMixin",
+    "compat.client.RelicheirusModelMixin",
+    "compat.client.RelicheirusHeldFishLayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

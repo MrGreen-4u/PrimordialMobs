@@ -1,0 +1,10 @@
+{
+  "__comment": "everything the relicheirus fishes out of the water and swallows whole. Datapacks can add to this; tags merge, so entries added by other mods (or by Alex's Caves) are kept. The pufferfish is deliberately absent: it is the one fish that poisons what eats it.",
+  "values": [
+    "alexscaves:trilocaris",
+    "minecraft:cod",
+    "minecraft:salmon",
+    "minecraft:tropical_fish",
+    "minecraft:tadpole"
+  ]
+}

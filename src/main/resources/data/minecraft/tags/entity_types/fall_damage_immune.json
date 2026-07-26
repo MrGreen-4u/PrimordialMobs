@@ -1,0 +1,6 @@
+{
+  "__comment": "all mobs that dont take fall damage.",
+  "values": [
+    "alexscaves:subterranodon"
+  ]
+}
