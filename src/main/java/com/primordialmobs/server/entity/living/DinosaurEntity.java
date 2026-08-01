@@ -362,9 +362,11 @@ public abstract class DinosaurEntity extends TamableAnimal implements IDancesToJ
                     }
                     return InteractionResult.SUCCESS;
                 } else if (canOwnerMount(player)) {
-                    if (this.getType() == PMEntityRegistry.SUBTERRANODON.get() && this.canAddPassenger(player)) {
-                        this.moveTo(this.getX(), this.getY() + player.getBbHeight() + 0.5F, this.getZ());
-                    }
+                    // (The old Alex's Caves behaviour teleported the Subterranodon up by the player's
+                    // height here so the rider could hang below it. That read as the mob "jumping" a
+                    // block into the air; instead the rider now starts seated on its back and slides
+                    // into the hanging position as the flight pose blends in — see
+                    // SubterranodonEntity#positionRider.)
                     if (!level().isClientSide && player.startRiding(this)) {
                         return InteractionResult.CONSUME;
                     }

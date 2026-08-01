@@ -48,7 +48,13 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
     private static final Object[][] RELICS = {
             {"heavy_bone", 10, 1, 2},
             {"tectonic_shard", 8, 1, 1},
-            {"amber_curiosity", 8, 1, 1}
+            {"amber_curiosity", 8, 1, 1},
+            // The four pottery sherds (from the original mod): brushed out of suspicious sand AND
+            // suspicious gravel, since the conditions below cover all six vanilla archaeology tables.
+            {"dinosaur_pottery_sherd", 5, 1, 1},
+            {"footprint_pottery_sherd", 5, 1, 1},
+            {"guardian_pottery_sherd", 5, 1, 1},
+            {"hero_pottery_sherd", 5, 1, 1}
     };
 
     private final LootItemCondition[] conditions;

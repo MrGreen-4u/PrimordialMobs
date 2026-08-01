@@ -80,6 +80,25 @@ public abstract class RelicheirusEntityMixin extends DinosaurEntity {
     }
 
     /**
+     * Parity with standalone: the Seething Stew frenzy and carrying a rider are mutually exclusive, and a
+     * ridden Logger keeps its arms down (no idle scratching/shaking, no tree-work swings).
+     */
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void primordialmobs$riddenDiscipline(CallbackInfo ci) {
+        RelicheirusEntity self = (RelicheirusEntity) (Object) this;
+        if (!self.level().isClientSide && self.getPushingTreesFor() > 0 && self.isVehicle()) {
+            self.ejectPassengers();
+        }
+        if (self.isVehicle() && (self.getAnimation() == RelicheirusEntity.ANIMATION_SCRATCH_1
+                || self.getAnimation() == RelicheirusEntity.ANIMATION_SCRATCH_2
+                || self.getAnimation() == RelicheirusEntity.ANIMATION_SHAKE
+                || self.getAnimation() == RelicheirusEntity.ANIMATION_PUSH_TREE
+                || self.getAnimation() == RelicheirusEntity.ANIMATION_EAT_TREE)) {
+            self.setAnimation(com.github.alexthe666.citadel.animation.IAnimatedEntity.NO_ANIMATION);
+        }
+    }
+
+    /**
      * Copy of Alex's Caves' private {@code getTrilocarisPos()}: the point in front of and above the beak
      * where a swallowed animal rides during the eating animation. Replicated rather than shadowed because
      * the method is private and a {@code @Shadow} of a private member of a production jar is brittle.
@@ -105,7 +124,8 @@ public abstract class RelicheirusEntityMixin extends DinosaurEntity {
     }
 
     public boolean canOwnerMount(Player player) {
-        return !this.isBaby();
+        // Never mountable while the Seething Stew has it in tree-felling frenzy (parity with standalone).
+        return !this.isBaby() && ((RelicheirusEntity) (Object) this).getPushingTreesFor() <= 0;
     }
 
     public boolean canOwnerCommand(Player ownerPlayer) {

@@ -6,17 +6,21 @@ import com.primordialmobs.server.entity.living.SubterranodonEntity;
 import com.primordialmobs.server.entity.living.TremorsaurusEntity;
 import com.primordialmobs.server.entity.util.RidingMeterMount;
 import com.primordialmobs.server.entity.util.ShakesScreen;
+import com.primordialmobs.server.potion.PMEffectRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ClientEvents {
@@ -53,6 +57,28 @@ public class ClientEvents {
         }
         if (player != null && player.isPassenger() && player.getVehicle() instanceof TremorsaurusEntity && event.getCamera().isDetached()) {
             event.getCamera().move(-event.getCamera().getMaxZoom(2F), 0, 0);
+        }
+        // A stunned player's view wobbles, exactly like in Alex's Caves (whose handler already does this
+        // when that mod is installed, so only apply it standalone).
+        if (!PrimordialMobs.ALEXS_CAVES_INSTALLED && player instanceof LivingEntity livingEntity && livingEntity.hasEffect(PMEffectRegistry.STUNNED.get())) {
+            event.setRoll((float) (Math.sin((player.tickCount + partialTick) * 0.2F) * 10F));
+        }
+    }
+
+    /**
+     * Suppresses the normal world render of any entity a layer has already drawn this frame (held fish,
+     * held prey, the Drifter's rider). The layer calls PROXY.blockRenderingEntity, this consumes the flag.
+     * Same contract as Alex's Caves' handler: forward the Post event so other listeners still run, and
+     * never suppress the first-person player.
+     */
+    @SubscribeEvent
+    public void preRenderLiving(RenderLivingEvent.Pre event) {
+        if (ClientProxy.blockedEntityRenders.contains(event.getEntity().getUUID())) {
+            if (!PrimordialMobs.PROXY.isFirstPersonPlayer(event.getEntity())) {
+                MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight()));
+                event.setCanceled(true);
+            }
+            ClientProxy.blockedEntityRenders.remove(event.getEntity().getUUID());
         }
     }
 

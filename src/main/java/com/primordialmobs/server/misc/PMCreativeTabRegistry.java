@@ -42,6 +42,13 @@ public class PMCreativeTabRegistry {
                 add(output, PMItemRegistry.PRIMITIVE_CLUB.get());
                 add(output, PMItemRegistry.AMBER_CURIOSITY.get());
                 add(output, PMItemRegistry.TECTONIC_SHARD.get());
+                add(output, PMItemRegistry.PEWEN_SAP.get());
+                add(output, PMBlockRegistry.AMBER.get());
+                add(output, PMBlockRegistry.AMBER_MONOLITH.get());
+                add(output, PMItemRegistry.DINOSAUR_POTTERY_SHERD.get());
+                add(output, PMItemRegistry.FOOTPRINT_POTTERY_SHERD.get());
+                add(output, PMItemRegistry.GUARDIAN_POTTERY_SHERD.get());
+                add(output, PMItemRegistry.HERO_POTTERY_SHERD.get());
                 add(output, PMBlockRegistry.TREE_STAR.get());
                 add(output, PMBlockRegistry.FERN_THATCH.get());
                 add(output, PMBlockRegistry.CURLY_FERN.get());

@@ -553,11 +553,34 @@ public class SubterranodonEntity extends DinosaurEntity implements PackAnimal, F
         return false;
     }
 
+    /**
+     * FK-measured height of the standing body's back (ground pose: body at model (0,11,1), box top at
+     * y=-5 => world 1.501 - 6/16 = 1.126), minus a small sink so the rider's feet rest IN the plumage
+     * rather than floating on it.
+     */
+    private static final float RIDER_GROUND_BACK_HEIGHT = 1.05F;
+
     public void positionRider(Entity passenger, MoveFunction moveFunction) {
         if (this.isPassengerOfSameVehicle(passenger) && passenger instanceof LivingEntity living && !this.touchingUnloadedChunk()) {
             float flight = this.getFlyProgress(1.0F) - this.getHoverProgress(1.0F);
-            Vec3 seatOffset = new Vec3(0F, 0.0F, 0.2F - 1.5F * flight).xRot((float) Math.toRadians(this.getXRot())).yRot((float) Math.toRadians(-this.yBodyRot));
-            double targetY = this.getY() - passenger.getBbHeight() - 0.5F + 0.25F * flight;
+            // 0 = standing on the ground, 1 = airborne. While grounded the rider sits ON the back
+            // (SubterranodonRiderLayer then leaves the normal render alone); once airborne they slide
+            // into Alex's Caves' hanging carry position. Together with the ground clamp below this
+            // replaces the old teleport-the-mob-one-block-up-on-mount trick.
+            float fly = this.getFlyProgress(1.0F);
+            float hangY = -passenger.getBbHeight() - 0.5F + 0.25F * flight;
+            float seatY = RIDER_GROUND_BACK_HEIGHT + (hangY - RIDER_GROUND_BACK_HEIGHT) * fly;
+            float seatZ = 0.05F + (0.2F - 1.5F * flight - 0.05F) * fly;
+            // Never let the hanging rider's feet go below the terrain right under the mob: while the
+            // mob is still near the ground (taking off or skimming), the seat rests at ground level and
+            // descends smoothly into the full hang as the mob climbs. This is what makes the takeoff
+            // read as the mob rising, not the rider being buried.
+            double clampY = riderGroundClampY();
+            if (seatY < clampY) {
+                seatY = (float) clampY;
+            }
+            Vec3 seatOffset = new Vec3(0F, 0.0F, seatZ).xRot((float) Math.toRadians(this.getXRot())).yRot((float) Math.toRadians(-this.yBodyRot));
+            double targetY = this.getY() + seatY;
             passenger.setYBodyRot(this.yBodyRot);
             passenger.fallDistance = 0.0F;
             clampRotation(living, 105);
@@ -565,6 +588,25 @@ public class SubterranodonEntity extends DinosaurEntity implements PackAnimal, F
         } else {
             super.positionRider(passenger, moveFunction);
         }
+    }
+
+    /**
+     * Lowest offset (relative to this mob's Y) the rider may sit at: the top of the first solid block
+     * within 4 blocks below the mob's feet, or -4 if the air below is clear (deep enough that the full
+     * hanging position never touches anything).
+     */
+    private double riderGroundClampY() {
+        int feet = Mth.floor(this.getY() - 0.01D);
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(Mth.floor(this.getX()), feet, Mth.floor(this.getZ()));
+        for (int i = 0; i <= 4; i++) {
+            mutable.setY(feet - i);
+            BlockState state = this.level().getBlockState(mutable);
+            if (!state.getCollisionShape(this.level(), mutable).isEmpty()) {
+                double top = mutable.getY() + state.getCollisionShape(this.level(), mutable).max(net.minecraft.core.Direction.Axis.Y);
+                return top - this.getY();
+            }
+        }
+        return -4.0D;
     }
 
     @Override

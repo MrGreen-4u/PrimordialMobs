@@ -49,6 +49,11 @@ public class PMSoundRegistry {
     public static final RegistryObject<SoundEvent> PRIMITIVE_CLUB_HIT = createSoundEvent("primitive_club_hit");
     public static final RegistryObject<SoundEvent> PRIMITIVE_CLUB_MISS = createSoundEvent("primitive_club_miss");
     public static final RegistryObject<SoundEvent> AMBER_MONOLITH_SUMMON = createSoundEvent("amber_monolith_summon");
+    public static final RegistryObject<SoundEvent> AMBER_MONOLITH_PLACE = createSoundEvent("amber_monolith_place");
+    public static final RegistryObject<SoundEvent> AMBER_BREAK = createSoundEvent("amber_break");
+    public static final RegistryObject<SoundEvent> AMBER_BREAKING = createSoundEvent("amber_breaking");
+    public static final RegistryObject<SoundEvent> AMBER_PLACE = createSoundEvent("amber_place");
+    public static final RegistryObject<SoundEvent> AMBER_STEP = createSoundEvent("amber_step");
     public static final RegistryObject<SoundEvent> TECTONIC_SHARD_TRANSFORM = createSoundEvent("tectonic_shard_transform");
 
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {

@@ -1,4 +1,28 @@
 {
+  "amber_break": {
+    "sounds": [
+      "alexscaves:block/amber/amber_break_0",
+      "alexscaves:block/amber/amber_break_1",
+      "alexscaves:block/amber/amber_break_2",
+      "alexscaves:block/amber/amber_break_3"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.amber_break"
+  },
+  "amber_breaking": {
+    "sounds": [
+      "alexscaves:block/amber/amber_breaking_0",
+      "alexscaves:block/amber/amber_breaking_1",
+      "alexscaves:block/amber/amber_breaking_2",
+      "alexscaves:block/amber/amber_breaking_3"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.amber_breaking"
+  },
+  "amber_monolith_place": {
+    "sounds": [
+      "alexscaves:block/amber/amber_monolith_place"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.amber_monolith_place"
+  },
   "amber_monolith_summon": {
     "sounds": [
       "alexscaves:block/amber/amber_monolith_summon_0",
@@ -6,6 +30,81 @@
       "alexscaves:block/amber/amber_monolith_summon_2"
     ],
     "subtitle": "alexscaves.sound.subtitle.amber_monolith_summon"
+  },
+  "amber_place": {
+    "sounds": [
+      "alexscaves:block/amber/amber_place_0",
+      "alexscaves:block/amber/amber_place_1",
+      "alexscaves:block/amber/amber_place_2",
+      "alexscaves:block/amber/amber_place_3"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.amber_place"
+  },
+  "amber_step": {
+    "sounds": [
+      "alexscaves:block/amber/amber_step_0",
+      "alexscaves:block/amber/amber_step_1",
+      "alexscaves:block/amber/amber_step_2",
+      "alexscaves:block/amber/amber_step_3"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.amber_step"
+  },
+  "grottoceratops_attack": {
+    "sounds": [
+      "alexscaves:mob/grottoceratops/grottoceratops_attack_0",
+      "alexscaves:mob/grottoceratops/grottoceratops_attack_1",
+      "alexscaves:mob/grottoceratops/grottoceratops_attack_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.grottoceratops_attack"
+  },
+  "grottoceratops_call": {
+    "sounds": [
+      "alexscaves:mob/grottoceratops/grottoceratops_call_0",
+      "alexscaves:mob/grottoceratops/grottoceratops_call_1",
+      "alexscaves:mob/grottoceratops/grottoceratops_call_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.grottoceratops_call"
+  },
+  "grottoceratops_death": {
+    "sounds": [
+      "alexscaves:mob/grottoceratops/grottoceratops_death_0",
+      "alexscaves:mob/grottoceratops/grottoceratops_death_1",
+      "alexscaves:mob/grottoceratops/grottoceratops_death_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.grottoceratops_death"
+  },
+  "grottoceratops_graze": {
+    "sounds": [
+      "alexscaves:mob/grottoceratops/grottoceratops_graze_0",
+      "alexscaves:mob/grottoceratops/grottoceratops_graze_1",
+      "alexscaves:mob/grottoceratops/grottoceratops_graze_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.grottoceratops_graze"
+  },
+  "grottoceratops_hurt": {
+    "sounds": [
+      "alexscaves:mob/grottoceratops/grottoceratops_hurt_0",
+      "alexscaves:mob/grottoceratops/grottoceratops_hurt_1",
+      "alexscaves:mob/grottoceratops/grottoceratops_hurt_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.grottoceratops_hurt"
+  },
+  "grottoceratops_idle": {
+    "sounds": [
+      "alexscaves:mob/grottoceratops/grottoceratops_idle_0",
+      "alexscaves:mob/grottoceratops/grottoceratops_idle_1",
+      "alexscaves:mob/grottoceratops/grottoceratops_idle_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.grottoceratops_idle"
+  },
+  "grottoceratops_step": {
+    "sounds": [
+      "alexscaves:mob/grottoceratops/grottoceratops_step_0",
+      "alexscaves:mob/grottoceratops/grottoceratops_step_1",
+      "alexscaves:mob/grottoceratops/grottoceratops_step_2",
+      "alexscaves:mob/grottoceratops/grottoceratops_step_3"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.grottoceratops_step"
   },
   "pewen_branch_break": {
     "sounds": [
@@ -17,219 +116,29 @@
     ],
     "subtitle": "alexscaves.sound.subtitle.pewen_branch_break"
   },
-  "subterranodon_idle": {
+  "primitive_club_hit": {
     "sounds": [
-      "alexscaves:mob/subterranodon/subterranodon_idle_0",
-      "alexscaves:mob/subterranodon/subterranodon_idle_1",
-      "alexscaves:mob/subterranodon/subterranodon_idle_2",
-      "alexscaves:mob/subterranodon/subterranodon_idle_3"
+      "alexscaves:item/primitive_club/primitive_club_hit_0",
+      "alexscaves:item/primitive_club/primitive_club_hit_1",
+      "alexscaves:item/primitive_club/primitive_club_hit_2"
     ],
-    "subtitle": "alexscaves.sound.subtitle.subterranodon_idle"
+    "subtitle": "alexscaves.sound.subtitle.primitive_club_hit"
   },
-  "subterranodon_hurt": {
+  "primitive_club_miss": {
     "sounds": [
-      "alexscaves:mob/subterranodon/subterranodon_hurt_0",
-      "alexscaves:mob/subterranodon/subterranodon_hurt_1",
-      "alexscaves:mob/subterranodon/subterranodon_hurt_2"
+      "alexscaves:item/primitive_club/primitive_club_miss_0",
+      "alexscaves:item/primitive_club/primitive_club_miss_1",
+      "alexscaves:item/primitive_club/primitive_club_miss_2"
     ],
-    "subtitle": "alexscaves.sound.subtitle.subterranodon_hurt"
+    "subtitle": "alexscaves.sound.subtitle.primitive_club_miss"
   },
-  "subterranodon_death": {
+  "relicheirus_death": {
     "sounds": [
-      "alexscaves:mob/subterranodon/subterranodon_death_0",
-      "alexscaves:mob/subterranodon/subterranodon_death_1",
-      "alexscaves:mob/subterranodon/subterranodon_death_2"
+      "alexscaves:mob/relicheirus/relicheirus_death_0",
+      "alexscaves:mob/relicheirus/relicheirus_death_1",
+      "alexscaves:mob/relicheirus/relicheirus_death_2"
     ],
-    "subtitle": "alexscaves.sound.subtitle.subterranodon_death"
-  },
-  "subterranodon_flap": {
-    "sounds": [
-      "alexscaves:mob/subterranodon/subterranodon_flap_0",
-      "alexscaves:mob/subterranodon/subterranodon_flap_1",
-      "alexscaves:mob/subterranodon/subterranodon_flap_2",
-      "alexscaves:mob/subterranodon/subterranodon_flap_3",
-      "alexscaves:mob/subterranodon/subterranodon_flap_4",
-      "alexscaves:mob/subterranodon/subterranodon_flap_5"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.subterranodon_flap"
-  },
-  "subterranodon_attack": {
-    "sounds": [
-      "alexscaves:mob/subterranodon/subterranodon_attack_0",
-      "alexscaves:mob/subterranodon/subterranodon_attack_1",
-      "alexscaves:mob/subterranodon/subterranodon_attack_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.subterranodon_attack"
-  },
-  "vallumraptor_idle": {
-    "sounds": [
-      "alexscaves:mob/vallumraptor/vallumraptor_idle_0",
-      "alexscaves:mob/vallumraptor/vallumraptor_idle_1",
-      "alexscaves:mob/vallumraptor/vallumraptor_idle_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.vallumraptor_idle"
-  },
-  "vallumraptor_hurt": {
-    "sounds": [
-      "alexscaves:mob/vallumraptor/vallumraptor_hurt_0",
-      "alexscaves:mob/vallumraptor/vallumraptor_hurt_1",
-      "alexscaves:mob/vallumraptor/vallumraptor_hurt_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.vallumraptor_hurt"
-  },
-  "vallumraptor_death": {
-    "sounds": [
-      "alexscaves:mob/vallumraptor/vallumraptor_death_0",
-      "alexscaves:mob/vallumraptor/vallumraptor_death_1"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.vallumraptor_death"
-  },
-  "vallumraptor_call": {
-    "sounds": [
-      "alexscaves:mob/vallumraptor/vallumraptor_call_0",
-      "alexscaves:mob/vallumraptor/vallumraptor_call_1",
-      "alexscaves:mob/vallumraptor/vallumraptor_call_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.vallumraptor_call"
-  },
-  "vallumraptor_attack": {
-    "sounds": [
-      "alexscaves:mob/vallumraptor/vallumraptor_attack_0",
-      "alexscaves:mob/vallumraptor/vallumraptor_attack_1",
-      "alexscaves:mob/vallumraptor/vallumraptor_attack_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.vallumraptor_attack"
-  },
-  "vallumraptor_scratch": {
-    "sounds": [
-      "alexscaves:mob/vallumraptor/vallumraptor_scratch_0",
-      "alexscaves:mob/vallumraptor/vallumraptor_scratch_1",
-      "alexscaves:mob/vallumraptor/vallumraptor_scratch_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.vallumraptor_scratch"
-  },
-  "vallumraptor_sleep": {
-    "sounds": [
-      "alexscaves:mob/vallumraptor/vallumraptor_sleep_0",
-      "alexscaves:mob/vallumraptor/vallumraptor_sleep_1",
-      "alexscaves:mob/vallumraptor/vallumraptor_sleep_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.vallumraptor_sleep"
-  },
-  "grottoceratops_idle": {
-    "sounds": [
-      "alexscaves:mob/grottoceratops/grottoceratops_idle_0",
-      "alexscaves:mob/grottoceratops/grottoceratops_idle_1",
-      "alexscaves:mob/grottoceratops/grottoceratops_idle_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.grottoceratops_idle"
-  },
-  "grottoceratops_hurt": {
-    "sounds": [
-      "alexscaves:mob/grottoceratops/grottoceratops_hurt_0",
-      "alexscaves:mob/grottoceratops/grottoceratops_hurt_1",
-      "alexscaves:mob/grottoceratops/grottoceratops_hurt_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.grottoceratops_hurt"
-  },
-  "grottoceratops_death": {
-    "sounds": [
-      "alexscaves:mob/grottoceratops/grottoceratops_death_0",
-      "alexscaves:mob/grottoceratops/grottoceratops_death_1",
-      "alexscaves:mob/grottoceratops/grottoceratops_death_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.grottoceratops_death"
-  },
-  "grottoceratops_call": {
-    "sounds": [
-      "alexscaves:mob/grottoceratops/grottoceratops_call_0",
-      "alexscaves:mob/grottoceratops/grottoceratops_call_1",
-      "alexscaves:mob/grottoceratops/grottoceratops_call_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.grottoceratops_call"
-  },
-  "grottoceratops_attack": {
-    "sounds": [
-      "alexscaves:mob/grottoceratops/grottoceratops_attack_0",
-      "alexscaves:mob/grottoceratops/grottoceratops_attack_1",
-      "alexscaves:mob/grottoceratops/grottoceratops_attack_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.grottoceratops_attack"
-  },
-  "grottoceratops_graze": {
-    "sounds": [
-      "alexscaves:mob/grottoceratops/grottoceratops_graze_0",
-      "alexscaves:mob/grottoceratops/grottoceratops_graze_1",
-      "alexscaves:mob/grottoceratops/grottoceratops_graze_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.grottoceratops_graze"
-  },
-  "grottoceratops_step": {
-    "sounds": [
-      "alexscaves:mob/grottoceratops/grottoceratops_step_0",
-      "alexscaves:mob/grottoceratops/grottoceratops_step_1",
-      "alexscaves:mob/grottoceratops/grottoceratops_step_2",
-      "alexscaves:mob/grottoceratops/grottoceratops_step_3"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.grottoceratops_step"
-  },
-  "tremorsaurus_idle": {
-    "sounds": [
-      "alexscaves:mob/tremorsaurus/tremorsaurus_idle_0",
-      "alexscaves:mob/tremorsaurus/tremorsaurus_idle_1",
-      "alexscaves:mob/tremorsaurus/tremorsaurus_idle_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_idle"
-  },
-  "tremorsaurus_hurt": {
-    "sounds": [
-      "alexscaves:mob/tremorsaurus/tremorsaurus_hurt_0",
-      "alexscaves:mob/tremorsaurus/tremorsaurus_hurt_1"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_hurt"
-  },
-  "tremorsaurus_death": {
-    "sounds": [
-      "alexscaves:mob/tremorsaurus/tremorsaurus_death"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_death"
-  },
-  "tremorsaurus_roar": {
-    "sounds": [
-      "alexscaves:mob/tremorsaurus/tremorsaurus_roar_0",
-      "alexscaves:mob/tremorsaurus/tremorsaurus_roar_1",
-      "alexscaves:mob/tremorsaurus/tremorsaurus_roar_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_roar"
-  },
-  "tremorsaurus_bite": {
-    "sounds": [
-      "alexscaves:mob/tremorsaurus/tremorsaurus_bite"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_bite"
-  },
-  "tremorsaurus_throw": {
-    "sounds": [
-      "alexscaves:mob/tremorsaurus/tremorsaurus_throw"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_throw"
-  },
-  "tremorsaurus_stomp": {
-    "sounds": [
-      "alexscaves:mob/tremorsaurus/tremorsaurus_stomp_0",
-      "alexscaves:mob/tremorsaurus/tremorsaurus_stomp_1",
-      "alexscaves:mob/tremorsaurus/tremorsaurus_stomp_2",
-      "alexscaves:mob/tremorsaurus/tremorsaurus_stomp_3"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_stomp"
-  },
-  "relicheirus_idle": {
-    "sounds": [
-      "alexscaves:mob/relicheirus/relicheirus_idle_0",
-      "alexscaves:mob/relicheirus/relicheirus_idle_1",
-      "alexscaves:mob/relicheirus/relicheirus_idle_2"
-    ],
-    "subtitle": "alexscaves.sound.subtitle.relicheirus_idle"
+    "subtitle": "alexscaves.sound.subtitle.relicheirus_death"
   },
   "relicheirus_hurt": {
     "sounds": [
@@ -239,13 +148,13 @@
     ],
     "subtitle": "alexscaves.sound.subtitle.relicheirus_hurt"
   },
-  "relicheirus_death": {
+  "relicheirus_idle": {
     "sounds": [
-      "alexscaves:mob/relicheirus/relicheirus_death_0",
-      "alexscaves:mob/relicheirus/relicheirus_death_1",
-      "alexscaves:mob/relicheirus/relicheirus_death_2"
+      "alexscaves:mob/relicheirus/relicheirus_idle_0",
+      "alexscaves:mob/relicheirus/relicheirus_idle_1",
+      "alexscaves:mob/relicheirus/relicheirus_idle_2"
     ],
-    "subtitle": "alexscaves.sound.subtitle.relicheirus_death"
+    "subtitle": "alexscaves.sound.subtitle.relicheirus_idle"
   },
   "relicheirus_scratch": {
     "sounds": [
@@ -272,21 +181,49 @@
     ],
     "subtitle": "alexscaves.sound.subtitle.relicheirus_topple"
   },
-  "primitive_club_hit": {
+  "subterranodon_attack": {
     "sounds": [
-      "alexscaves:item/primitive_club/primitive_club_hit_0",
-      "alexscaves:item/primitive_club/primitive_club_hit_1",
-      "alexscaves:item/primitive_club/primitive_club_hit_2"
+      "alexscaves:mob/subterranodon/subterranodon_attack_0",
+      "alexscaves:mob/subterranodon/subterranodon_attack_1",
+      "alexscaves:mob/subterranodon/subterranodon_attack_2"
     ],
-    "subtitle": "alexscaves.sound.subtitle.primitive_club_hit"
+    "subtitle": "alexscaves.sound.subtitle.subterranodon_attack"
   },
-  "primitive_club_miss": {
+  "subterranodon_death": {
     "sounds": [
-      "alexscaves:item/primitive_club/primitive_club_miss_0",
-      "alexscaves:item/primitive_club/primitive_club_miss_1",
-      "alexscaves:item/primitive_club/primitive_club_miss_2"
+      "alexscaves:mob/subterranodon/subterranodon_death_0",
+      "alexscaves:mob/subterranodon/subterranodon_death_1",
+      "alexscaves:mob/subterranodon/subterranodon_death_2"
     ],
-    "subtitle": "alexscaves.sound.subtitle.primitive_club_miss"
+    "subtitle": "alexscaves.sound.subtitle.subterranodon_death"
+  },
+  "subterranodon_flap": {
+    "sounds": [
+      "alexscaves:mob/subterranodon/subterranodon_flap_0",
+      "alexscaves:mob/subterranodon/subterranodon_flap_1",
+      "alexscaves:mob/subterranodon/subterranodon_flap_2",
+      "alexscaves:mob/subterranodon/subterranodon_flap_3",
+      "alexscaves:mob/subterranodon/subterranodon_flap_4",
+      "alexscaves:mob/subterranodon/subterranodon_flap_5"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.subterranodon_flap"
+  },
+  "subterranodon_hurt": {
+    "sounds": [
+      "alexscaves:mob/subterranodon/subterranodon_hurt_0",
+      "alexscaves:mob/subterranodon/subterranodon_hurt_1",
+      "alexscaves:mob/subterranodon/subterranodon_hurt_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.subterranodon_hurt"
+  },
+  "subterranodon_idle": {
+    "sounds": [
+      "alexscaves:mob/subterranodon/subterranodon_idle_0",
+      "alexscaves:mob/subterranodon/subterranodon_idle_1",
+      "alexscaves:mob/subterranodon/subterranodon_idle_2",
+      "alexscaves:mob/subterranodon/subterranodon_idle_3"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.subterranodon_idle"
   },
   "tectonic_shard_transform": {
     "sounds": [
@@ -296,13 +233,55 @@
     ],
     "subtitle": "alexscaves.sound.subtitle.tectonic_shard_transform"
   },
-  "trilocaris_hurt": {
+  "tremorsaurus_bite": {
     "sounds": [
-      "alexscaves:mob/trilocaris/trilocaris_hurt_0",
-      "alexscaves:mob/trilocaris/trilocaris_hurt_1",
-      "alexscaves:mob/trilocaris/trilocaris_hurt_2"
+      "alexscaves:mob/tremorsaurus/tremorsaurus_bite"
     ],
-    "subtitle": "alexscaves.sound.subtitle.trilocaris_hurt"
+    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_bite"
+  },
+  "tremorsaurus_death": {
+    "sounds": [
+      "alexscaves:mob/tremorsaurus/tremorsaurus_death"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_death"
+  },
+  "tremorsaurus_hurt": {
+    "sounds": [
+      "alexscaves:mob/tremorsaurus/tremorsaurus_hurt_0",
+      "alexscaves:mob/tremorsaurus/tremorsaurus_hurt_1"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_hurt"
+  },
+  "tremorsaurus_idle": {
+    "sounds": [
+      "alexscaves:mob/tremorsaurus/tremorsaurus_idle_0",
+      "alexscaves:mob/tremorsaurus/tremorsaurus_idle_1",
+      "alexscaves:mob/tremorsaurus/tremorsaurus_idle_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_idle"
+  },
+  "tremorsaurus_roar": {
+    "sounds": [
+      "alexscaves:mob/tremorsaurus/tremorsaurus_roar_0",
+      "alexscaves:mob/tremorsaurus/tremorsaurus_roar_1",
+      "alexscaves:mob/tremorsaurus/tremorsaurus_roar_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_roar"
+  },
+  "tremorsaurus_stomp": {
+    "sounds": [
+      "alexscaves:mob/tremorsaurus/tremorsaurus_stomp_0",
+      "alexscaves:mob/tremorsaurus/tremorsaurus_stomp_1",
+      "alexscaves:mob/tremorsaurus/tremorsaurus_stomp_2",
+      "alexscaves:mob/tremorsaurus/tremorsaurus_stomp_3"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_stomp"
+  },
+  "tremorsaurus_throw": {
+    "sounds": [
+      "alexscaves:mob/tremorsaurus/tremorsaurus_throw"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.tremorsaurus_throw"
   },
   "trilocaris_death": {
     "sounds": [
@@ -312,6 +291,14 @@
     ],
     "subtitle": "alexscaves.sound.subtitle.trilocaris_death"
   },
+  "trilocaris_hurt": {
+    "sounds": [
+      "alexscaves:mob/trilocaris/trilocaris_hurt_0",
+      "alexscaves:mob/trilocaris/trilocaris_hurt_1",
+      "alexscaves:mob/trilocaris/trilocaris_hurt_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.trilocaris_hurt"
+  },
   "trilocaris_step": {
     "sounds": [
       "alexscaves:mob/trilocaris/trilocaris_step_0",
@@ -319,5 +306,60 @@
       "alexscaves:mob/trilocaris/trilocaris_step_2"
     ],
     "subtitle": "alexscaves.sound.subtitle.trilocaris_step"
+  },
+  "vallumraptor_attack": {
+    "sounds": [
+      "alexscaves:mob/vallumraptor/vallumraptor_attack_0",
+      "alexscaves:mob/vallumraptor/vallumraptor_attack_1",
+      "alexscaves:mob/vallumraptor/vallumraptor_attack_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.vallumraptor_attack"
+  },
+  "vallumraptor_call": {
+    "sounds": [
+      "alexscaves:mob/vallumraptor/vallumraptor_call_0",
+      "alexscaves:mob/vallumraptor/vallumraptor_call_1",
+      "alexscaves:mob/vallumraptor/vallumraptor_call_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.vallumraptor_call"
+  },
+  "vallumraptor_death": {
+    "sounds": [
+      "alexscaves:mob/vallumraptor/vallumraptor_death_0",
+      "alexscaves:mob/vallumraptor/vallumraptor_death_1"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.vallumraptor_death"
+  },
+  "vallumraptor_hurt": {
+    "sounds": [
+      "alexscaves:mob/vallumraptor/vallumraptor_hurt_0",
+      "alexscaves:mob/vallumraptor/vallumraptor_hurt_1",
+      "alexscaves:mob/vallumraptor/vallumraptor_hurt_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.vallumraptor_hurt"
+  },
+  "vallumraptor_idle": {
+    "sounds": [
+      "alexscaves:mob/vallumraptor/vallumraptor_idle_0",
+      "alexscaves:mob/vallumraptor/vallumraptor_idle_1",
+      "alexscaves:mob/vallumraptor/vallumraptor_idle_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.vallumraptor_idle"
+  },
+  "vallumraptor_scratch": {
+    "sounds": [
+      "alexscaves:mob/vallumraptor/vallumraptor_scratch_0",
+      "alexscaves:mob/vallumraptor/vallumraptor_scratch_1",
+      "alexscaves:mob/vallumraptor/vallumraptor_scratch_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.vallumraptor_scratch"
+  },
+  "vallumraptor_sleep": {
+    "sounds": [
+      "alexscaves:mob/vallumraptor/vallumraptor_sleep_0",
+      "alexscaves:mob/vallumraptor/vallumraptor_sleep_1",
+      "alexscaves:mob/vallumraptor/vallumraptor_sleep_2"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.vallumraptor_sleep"
   }
 }

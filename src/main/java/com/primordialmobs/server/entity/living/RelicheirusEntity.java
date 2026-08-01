@@ -172,17 +172,19 @@ public class RelicheirusEntity extends DinosaurEntity implements IAnimatedEntity
     /**
      * The Logger wades and fishes for a living, so it is less sluggish in water than a land dinosaur.
      *
-     * This is vanilla's per-tick water drag: velocity *= factor, so terminal speed is a*f/(1-f). Raising the
-     * default 0.8 to 0.87 takes that from 4a to ~6.7a, i.e. roughly 1.65x -- noticeably quicker without
-     * turning it into a fish (a sprinting player uses 0.9). Tune HERE if it feels wrong.
+     * This is vanilla's per-tick water drag: velocity *= factor, so terminal speed is a*f/(1-f); vanilla's
+     * land default is 0.8F. The value is CALIBRATED, not derived: measured on a headless server with the
+     * same chase goal on a land track vs a flooded channel (see anotaciones.md, 2026-08-01), 0.84 puts the
+     * sustained swim speed at ~1.15x the sustained walk speed, which is the design brief's target. Tune
+     * HERE if it feels wrong (0.87 measured ~1.5x land).
      */
     @Override
     protected float getWaterSlowDown() {
         return WATER_SLOWDOWN;
     }
 
-    /** See {@link #getWaterSlowDown()}. Vanilla's land default is 0.8F. */
-    public static final float WATER_SLOWDOWN = 0.87F;
+    /** See {@link #getWaterSlowDown()}. */
+    public static final float WATER_SLOWDOWN = 0.84F;
 
     public boolean isTamingFood(ItemStack stack) {
         return stack.is(PMBlockRegistry.TREE_STAR.get().asItem());
@@ -195,7 +197,8 @@ public class RelicheirusEntity extends DinosaurEntity implements IAnimatedEntity
     }
 
     public boolean canOwnerMount(Player player) {
-        return !this.isBaby();
+        // Never mountable while the Seething Stew has it in tree-felling frenzy.
+        return !this.isBaby() && this.getPushingTreesFor() <= 0;
     }
 
     public boolean canOwnerCommand(Player ownerPlayer) {
@@ -330,7 +333,18 @@ public class RelicheirusEntity extends DinosaurEntity implements IAnimatedEntity
             }
             if (this.getPushingTreesFor() > 0) {
                 this.setPushingTreesFor(this.getPushingTreesFor() - 1);
+                // The stew frenzy and carrying a rider are mutually exclusive (a fed Logger cannot be
+                // mounted, and one fed while ridden throws its rider).
+                if (this.isVehicle()) {
+                    this.ejectPassengers();
+                }
             }
+        }
+        // A ridden Logger keeps its arms down: no idle scratching/shaking and no tree-work swings.
+        if (this.isVehicle() && (this.getAnimation() == ANIMATION_SCRATCH_1 || this.getAnimation() == ANIMATION_SCRATCH_2
+                || this.getAnimation() == ANIMATION_SHAKE || this.getAnimation() == ANIMATION_PUSH_TREE
+                || this.getAnimation() == ANIMATION_EAT_TREE)) {
+            this.setAnimation(NO_ANIMATION);
         }
         if (this.getAnimation() == ANIMATION_SPEAK_1 && this.getAnimationTick() == 1 || this.getAnimation() == ANIMATION_SPEAK_2 && this.getAnimationTick() == 1) {
             actuallyPlayAmbientSound();
@@ -393,6 +407,23 @@ public class RelicheirusEntity extends DinosaurEntity implements IAnimatedEntity
     public Entity getHeldMob() {
         int id = getHeldMobId();
         return id == -1 ? null : level().getEntity(id);
+    }
+
+    /**
+     * The Seething Stew frenzy timer survives saving/reloading (the original mod lost it on relog, which
+     * also made it untestable headless: it is now plain entity NBT, so `/data merge entity <id>
+     * {PushingTreesFor:1200}` triggers the exact tree-felling code path a stew feeding does).
+     */
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("PushingTreesFor", this.getPushingTreesFor());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.setPushingTreesFor(compound.getInt("PushingTreesFor"));
     }
 
     public void setPushingTreesFor(int time) {

@@ -109,6 +109,8 @@ public class PrimordialMobs {
             MinecraftForge.EVENT_BUS.register(new CommonEvents());
             PMBlockRegistry.DEF_REG.register(modEventBus);
             PMItemRegistry.DEF_REG.register(modEventBus);
+            com.primordialmobs.server.block.blockentity.PMBlockEntityRegistry.DEF_REG.register(modEventBus);
+            com.primordialmobs.server.misc.PMPotPatternRegistry.DEF_REG.register(modEventBus);
             PMParticleRegistry.DEF_REG.register(modEventBus);
             PMEntityRegistry.DEF_REG.register(modEventBus);
             modEventBus.addListener(PMEntityRegistry::initializeAttributes);
@@ -130,6 +132,9 @@ public class PrimordialMobs {
             event.enqueueWork(() -> {
                 PMItemRegistry.setup();
                 PMAdvancementTriggerRegistry.setup();
+                // Wire the four pottery sherds into the vanilla decorated-pot pattern map (needs the
+                // DecoratedPotPatterns accesstransformer line). Compat mode: Alex's Caves does this.
+                com.primordialmobs.server.misc.PMPotPatternRegistry.expandVanillaDefinitions();
             });
         }
     }

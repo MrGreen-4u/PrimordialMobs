@@ -39,6 +39,11 @@ public class PMItemRegistry {
     public static final RegistryObject<Item> PRIMITIVE_CLUB = DEF_REG.register("primitive_club", () -> new PrimitiveClubItem(new Item.Properties().defaultDurability(120)));
     public static final RegistryObject<Item> PRIMITIVE_CLUB_SPRITE = DEF_REG.register("primitive_club_inventory", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> TECTONIC_SHARD = DEF_REG.register("tectonic_shard", () -> new Item(new Item.Properties().rarity(RARITY_DEMONIC).fireResistant()));
+    public static final RegistryObject<Item> PEWEN_SAP = DEF_REG.register("pewen_sap", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DINOSAUR_POTTERY_SHERD = DEF_REG.register("dinosaur_pottery_sherd", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> FOOTPRINT_POTTERY_SHERD = DEF_REG.register("footprint_pottery_sherd", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> GUARDIAN_POTTERY_SHERD = DEF_REG.register("guardian_pottery_sherd", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> HERO_POTTERY_SHERD = DEF_REG.register("hero_pottery_sherd", () -> new Item(new Item.Properties()));
 
     static {
         spawnEgg("trilocaris", PMEntityRegistry.TRILOCARIS, 0X713E0D, 0X8B2010);
@@ -57,6 +62,7 @@ public class PMItemRegistry {
     public static void setup() {
         DispenserBlock.registerBehavior(TRILOCARIS_BUCKET.get(), new FluidContainerDispenseItemBehavior());
         ComposterBlock.COMPOSTABLES.put(PINE_NUTS.get(), 0.5F);
+        ComposterBlock.COMPOSTABLES.put(PEWEN_SAP.get(), 0.2F);
         ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.TREE_STAR.get().asItem(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.FERN_THATCH.get().asItem(), 0.85F);
         ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.CURLY_FERN.get().asItem(), 0.3F);

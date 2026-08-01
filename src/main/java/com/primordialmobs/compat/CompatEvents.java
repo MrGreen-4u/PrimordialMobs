@@ -91,6 +91,8 @@ public class CompatEvents {
             if (speed != null && speed.getBaseValue() != LOGGER_MOVEMENT_SPEED) {
                 speed.setBaseValue(LOGGER_MOVEMENT_SPEED);
             }
+            // Water speed parity with standalone comes from the getWaterSlowDown mixin (RelicheirusEntityMixin),
+            // which reads the same calibrated WATER_SLOWDOWN constant.
         }
         if (CompatDinosaurs.isTameableByUs(dinosaur)) {
             addTameableGoals(dinosaur);

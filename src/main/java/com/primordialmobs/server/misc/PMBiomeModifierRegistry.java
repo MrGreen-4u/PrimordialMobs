@@ -49,8 +49,9 @@ public class PMBiomeModifierRegistry {
             }
             EntityType<?> trilocaris = net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES.getValue(TrilocarisSpawns.TRILOCARIS);
             if (trilocaris != null) {
-                // Rarer than the axolotls themselves (weight 10, 4-6), so they read as the odd one out.
-                builder.getMobSpawnSettings().addSpawn(MobCategory.AXOLOTLS, new MobSpawnSettings.SpawnerData(trilocaris, 2, 1, 4));
+                // 1.5x the axolotl's own spawn weight (10, packs of 4-6): the Trilocaris outnumbers the
+                // axolotls in the Lush Caves, in the same spawner list (design brief, Parches.md 2026-08).
+                builder.getMobSpawnSettings().addSpawn(MobCategory.AXOLOTLS, new MobSpawnSettings.SpawnerData(trilocaris, 15, 1, 4));
             } else {
                 PrimordialMobs.LOGGER.warn("Lush Caves found but alexscaves:trilocaris did not resolve; no Trilocaris spawns added");
             }

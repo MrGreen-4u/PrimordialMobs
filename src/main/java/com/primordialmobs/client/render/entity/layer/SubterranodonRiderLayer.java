@@ -24,7 +24,9 @@ public class SubterranodonRiderLayer extends RenderLayer<SubterranodonEntity, Su
 
     public void render(PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn, SubterranodonEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         float bodyYaw = entity.yBodyRotO + (entity.yBodyRot - entity.yBodyRotO) * partialTicks;
-        if (entity.isVehicle()) {
+        // On the ground the rider simply sits on the back at the logical seat (positionRider), rendered
+        // by the normal entity render. The talon-carry takeover below only applies once airborne.
+        if (entity.isVehicle() && entity.isFlying()) {
             float flight = entity.getFlyProgress(partialTicks) - entity.getHoverProgress(partialTicks);
             float flightRoll = flight * entity.getFlightRoll(partialTicks);
             Vec3 offset = new Vec3(0, 0.25F, 0.5F);

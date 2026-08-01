@@ -29,6 +29,12 @@ public class RelicheirusNibblePewensGoal extends MoveToBlockGoal {
     }
 
 
+    @Override
+    public boolean canUse() {
+        // Never nibble trees (arm-raising animation) while a rider is aboard.
+        return !relicheirus.isVehicle() && super.canUse();
+    }
+
     protected int nextStartTick(PathfinderMob mob) {
         return reducedTickDelay(220 + relicheirus.getRandom().nextInt(500));
     }

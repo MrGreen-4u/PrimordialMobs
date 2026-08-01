@@ -22,7 +22,8 @@ public class RelicheirusMeleeGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return relicheirus.getTarget() != null && relicheirus.getTarget().isAlive();
+        // A ridden Logger is player-driven: no autonomous slash animations ("scratching in the air").
+        return !relicheirus.isVehicle() && relicheirus.getTarget() != null && relicheirus.getTarget().isAlive();
     }
 
     public void tick() {

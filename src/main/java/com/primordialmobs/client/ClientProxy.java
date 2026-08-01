@@ -2,9 +2,17 @@ package com.primordialmobs.client;
 
 import com.primordialmobs.PrimordialMobs;
 import com.primordialmobs.client.event.ClientEvents;
+import com.primordialmobs.client.particle.AmberMonolithParticle;
 import com.primordialmobs.client.particle.PMParticleRegistry;
+import com.primordialmobs.client.particle.SmallExplosionParticle;
 import com.primordialmobs.client.particle.StunStarParticle;
 import com.primordialmobs.client.particle.WaterTremorParticle;
+import com.primordialmobs.client.render.blockentity.AmberMonolithBlockRenderer;
+import com.primordialmobs.server.block.blockentity.PMBlockEntityRegistry;
+import com.primordialmobs.server.item.PMItemRegistry;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import com.primordialmobs.client.render.entity.FallingTreeBlockRenderer;
 import com.primordialmobs.client.render.entity.GrottoceratopsRenderer;
 import com.primordialmobs.client.render.entity.PrimordialSnifferRenderer;
@@ -29,12 +37,22 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class ClientProxy extends CommonProxy {
 
     public static final RandomSource random = RandomSource.create();
     public static int lastTremorTick = -1;
     public static float[] randomTremorOffsets = new float[3];
     public static int renderNukeSkyDarkFor = 0;
+    /**
+     * Entities whose normal world render must be suppressed for one frame because a layer already drew
+     * them (Logger's held fish, Roarer's held prey, Drifter's rider). ClientEvents#preRenderLiving
+     * consumes this; without it both renders happen and the entity appears twice.
+     */
+    public static final List<UUID> blockedEntityRenders = new ArrayList<>();
     private final PMItemRenderProperties isterProperties = new PMItemRenderProperties();
 
     @Override
@@ -64,12 +82,19 @@ public class ClientProxy extends CommonProxy {
             EntityRenderers.register(PMEntityRegistry.GROTTOCERATOPS.get(), GrottoceratopsRenderer::new);
             EntityRenderers.register(PMEntityRegistry.TREMORSAURUS.get(), TremorsaurusRenderer::new);
             EntityRenderers.register(PMEntityRegistry.RELICHEIRUS.get(), RelicheirusRenderer::new);
+            BlockEntityRenderers.register(PMBlockEntityRegistry.AMBER_MONOLITH.get(), AmberMonolithBlockRenderer::new);
+            // Dinosaur Nuggets come in four shapes, chosen by stack count exactly like upstream.
+            ItemProperties.register(PMItemRegistry.DINOSAUR_NUGGET.get(), new ResourceLocation("nugget"), (stack, level, living, j) -> {
+                return (stack.getCount() % 4) / 4F;
+            });
         }
     }
 
     public void setupParticles(RegisterParticleProvidersEvent registry) {
         registry.registerSpriteSet(PMParticleRegistry.WATER_TREMOR.get(), WaterTremorParticle.Factory::new);
         registry.registerSpecial(PMParticleRegistry.STUN_STAR.get(), new StunStarParticle.Factory());
+        registry.registerSpriteSet(PMParticleRegistry.AMBER_MONOLITH.get(), AmberMonolithParticle.Factory::new);
+        registry.registerSpriteSet(PMParticleRegistry.AMBER_EXPLOSION.get(), SmallExplosionParticle.AmberFactory::new);
     }
 
     private void registerKeybinds(RegisterKeyMappingsEvent e) {
@@ -117,5 +142,15 @@ public class ClientProxy extends CommonProxy {
     @Override
     public boolean isFirstPersonPlayer(Entity entity) {
         return entity.equals(Minecraft.getInstance().cameraEntity) && Minecraft.getInstance().options.getCameraType().isFirstPerson();
+    }
+
+    @Override
+    public void blockRenderingEntity(UUID id) {
+        blockedEntityRenders.add(id);
+    }
+
+    @Override
+    public void releaseRenderingEntity(UUID id) {
+        blockedEntityRenders.remove(id);
     }
 }

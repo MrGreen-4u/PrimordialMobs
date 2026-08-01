@@ -37,7 +37,9 @@ public class RelicheirusPushTreesGoal extends MoveToBlockGoal {
     }
 
     public boolean canUse() {
-        return relicheirus.getPushingTreesFor() > 0 && !relicheirus.isBaby() && super.canUse();
+        // isVehicle: a ridden Logger never works trees (the rider drives; letting the goal fight
+        // tickRidden made the felling look nothing like the original mod's).
+        return relicheirus.getPushingTreesFor() > 0 && !relicheirus.isBaby() && !relicheirus.isVehicle() && super.canUse();
     }
 
     public boolean canContinueToUse() {
