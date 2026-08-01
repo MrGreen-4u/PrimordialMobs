@@ -46,7 +46,7 @@ public class ClientProxy extends CommonProxy {
             bus.addListener(this::setupParticles);
             bus.addListener(this::registerKeybinds);
         } else {
-            // Force our renamed names (Roarer/Rammer/... and their items) to win over Alex's Caves' lang.
+            // Force our renamed names (Roarer/Grazer/... and their items) to win over Alex's Caves' lang.
             bus.addListener(new com.primordialmobs.compat.client.CompatLangPack()::addPackFinders);
         }
     }

@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
@@ -73,6 +74,11 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
 
     @Nonnull
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+        // Warm-ocean archaeology owns the vanilla Sniffer Egg roll. Never replace a successful roll with
+        // a primordial spawn egg or relic, so this modifier does not alter the vanilla egg's probability.
+        if (generatedLoot.stream().anyMatch(stack -> stack.is(Items.SNIFFER_EGG))) {
+            return generatedLoot;
+        }
         RandomSource random = context.getRandom();
         ItemStack discovery = ItemStack.EMPTY;
         if (random.nextFloat() < spawnEggChance) {

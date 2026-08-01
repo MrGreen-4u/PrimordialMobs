@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Compat only, client only: the Rammer's sit pose.
+ * Compat only, client only: the Grazer's sit pose.
  *
  * Alex's Caves' Grottoceratops can never be told to sit (its canOwnerCommand returns false), so its model
- * has no rest pose at all — with Primordial Mobs' taming grafted on, a parked Rammer just stood there. This
+ * has no rest pose at all — with Primordial Mobs' taming grafted on, a parked Grazer just stood there. This
  * ports the pose from our standalone GrottoceratopsModel verbatim, including the forward-kinematics
  * reasoning that produced the angles.
  *

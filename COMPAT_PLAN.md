@@ -4,7 +4,7 @@ Fecha: 2026-07-26. Contexto: `MOD-PrimordialVanilla/primordialmobs` (Forge 1.20.
 namespace de registro `alexscaves`), con Alex's Caves 2.0.2 instalado (`libs/alexscaves-full-2.0.2.jar`).
 
 **Objetivo del usuario**: que en la Primordial Cave, con AC instalado, los mobs sean los del mod con SUS
-mecánicas (Logger pescando peces de verdad y derribando árboles, Rammer con Serene Salad→Prisa I, variantes,
+mecánicas (Logger pescando peces de verdad y derribando árboles, Grazer con Serene Salad→Prisa I, variantes,
 loot) en lugar de los Grottoceratops/Relicheirus de Alex's Caves.
 
 ---
@@ -21,10 +21,10 @@ verdad nuestros mobs de los de Alex's Caves**. Recipe: descargar el fuente upstr
 |---|---|---|---|
 | `TremorsaurusEntity` (Roarer) | 623 / 623 | **0** | idéntica |
 | `VallumraptorEntity` (Stealer) | 688 / 688 | **0** | idéntica |
-| `SubterranodonEntity` (Glider) | 675 / 675 | **0** | idéntica |
+| `SubterranodonEntity` (Drifter) | 675 / 675 | **0** | idéntica |
 | `TrilocarisEntity` | 390 / 390 | **0** | idéntica |
 | `DinosaurEntity` (base de las 5) | 384 / 429 | 79 | 4 deltas |
-| `GrottoceratopsEntity` (Rammer) | 238 / 377 | 159 | 4 deltas |
+| `GrottoceratopsEntity` (Grazer) | 238 / 377 | 159 | 4 deltas |
 | `RelicheirusEntity` (Logger) | 374 / 503 | 173 | 5 deltas |
 
 Y en las goals (8 comparadas): `RelicheirusPushTreesGoal`, `RelicheirusNibblePewensGoal`,
@@ -36,7 +36,7 @@ Y en las goals (8 comparadas): `RelicheirusPushTreesGoal`, `RelicheirusNibblePew
 
 **"El Logger derriba árboles" ya funciona hoy en compat**: `RelicheirusPushTreesGoal` está en el jar de
 Alex's Caves 2.0.2 (`com/github/alexmodguy/alexscaves/server/entity/ai/RelicheirusPushTreesGoal.class`,
-10 873 B) y es idéntica a la nuestra. Lo mismo con el ramoneo de pewens, el pastoreo del Rammer, sus ataques,
+10 873 B) y es idéntica a la nuestra. Lo mismo con el ramoneo de pewens, el pastoreo del Grazer, sus ataques,
 sus animaciones, sus sonidos, su loot y sus huevos. Cuatro de los cinco mobs son, línea a línea, el mismo
 código.
 
@@ -46,11 +46,11 @@ código.
 |---|---|---|
 | D1 | Variante recoloreada 15 % con flag propio `Recolored` | `DinosaurEntity.finalizeSpawn` + synched data |
 | D2 | Sentado que no derrapa (anula el delta-movement, para la navegación) | `DinosaurEntity.tick` |
-| D3 | Hitbox que encoge al sentarse (`getSittingDimensionScale`: 0.78 Rammer, 0.85 Logger) | `DinosaurEntity.getDimensions` |
+| D3 | Hitbox que encoge al sentarse (`getSittingDimensionScale`: 0.78 Grazer, 0.85 Logger) | `DinosaurEntity.getDimensions` |
 | D4 | Sin partículas orbitales del cambio de piel ámbar/tectónico | `DinosaurEntity.handleEntityEvent` |
-| D5 | **Rammer y Logger domesticables** con Tree Star (1/3), sit/follow, OwnerHurt targets | `mobInteract` + `registerGoals` |
-| D6 | **Rammer y Logger montables y dirigibles** (asiento en el lomo, velocidad, desmontaje) | `canOwnerMount/Command`, `getControllingPassenger`, `getRiddenInput/Speed`, `tickRidden`, `positionRider` |
-| D7 | **Rammer: Serene Salad → Prisa I 4 min al jugador** | `GrottoceratopsEntity.onFeedMixture` |
+| D5 | **Grazer y Logger domesticables** con Tree Star (1/3), sit/follow, OwnerHurt targets | `mobInteract` + `registerGoals` |
+| D6 | **Grazer y Logger montables y dirigibles** (asiento en el lomo, velocidad, desmontaje) | `canOwnerMount/Command`, `getControllingPassenger`, `getRiddenInput/Speed`, `tickRidden`, `positionRider` |
+| D7 | **Grazer: Serene Salad → Prisa I 4 min al jugador** | `GrottoceratopsEntity.onFeedMixture` |
 | D8 | **Logger pesca cualquier pez de `#alexscaves:relicheirus_fishes`**, no solo Trilocaris | target goal + `tick` + `RelicheirusMeleeGoal` |
 | D9 | Logger un pelín más rápido (0.20→0.22) y sin animaciones de reposo sentado/montado | `createAttributes` + `tick` |
 
@@ -63,7 +63,7 @@ no se doman ni se montan — pero **toda la maquinaria (el `mobInteract` con cic
 
 ## 1. Vía A — entidades propias con ids `primordialmobs:*` y sustitución de spawns
 
-**Idea**: registrar en compat `primordialmobs:rammer`, `primordialmobs:logger`, … quitar los spawns de AC en
+**Idea**: registrar en compat `primordialmobs:grazer`, `primordialmobs:logger`, … quitar los spawns de AC en
 `alexscaves:primordial_caves` con un BiomeModifier (`forge:remove_spawns`) y añadir los nuestros replicando
 pesos y tamaños (grottoceratops w27 2-4, relicheirus w13 1-1, tremorsaurus w5 1-1, vallumraptor w6 6-7,
 subterranodon w6 3-5, minecraft:frog w7 1-2, trilocaris w15 1-2 en water_ambient).
@@ -83,11 +83,11 @@ subterranodon w6 3-5, minecraft:frog w7 1-2, trilocaris w15 1-2 en water_ambient
    `PrehistoricMixtureItem.interactLivingEntity` de AC hace
    `livingEntity instanceof DinosaurEntity dinosaur && dinosaur.onFeedMixture(...)` contra **su**
    `DinosaurEntity`. Nuestras entidades extienden la NUESTRA ⇒ el `instanceof` falla ⇒ **Serene Salad,
-   Primordial Soup y Seething Stew no hacen nada**, incluido el D7 (Rammer→Prisa I) que es literalmente lo
+   Primordial Soup y Seething Stew no hacen nada**, incluido el D7 (Grazer→Prisa I) que es literalmente lo
    que el usuario pide que funcione. Mismo problema en `DinosaurEggBlock` (eclosión), `AnimalLayEggGoal` y
    `CommonEvents`. No hay tag que arregle un `instanceof`.
 
-3. **El Glider se sigue generando aunque le quites el spawn.**
+3. **El Drifter se sigue generando aunque le quites el spawn.**
    `alexscaves:subterranodon_roost` es una **feature de worldgen** en el bioma (paso 4 de la lista de
    `features`), y `SubterranodonRoostFeature` invoca `ACEntityRegistry.SUBTERRANODON` cableado en bytecode
    (`getstatic #232`). Quitar la entrada del spawner no lo detiene; quitar la feature del bioma borra también
@@ -160,7 +160,7 @@ Las entidades siguen siendo `alexscaves:grottoceratops` y `alexscaves:relicheiru
 los pesos y tamaños de grupo de spawn son **exactamente** los de la tabla del encargo (no hay que
 replicarlos: son los originales); los huevos generadores, las loot tables, los huevos-bloque, la receta del
 huevo de Tremorzilla, la lanza de extinción, el `#alexscaves:dinosaurs`, los 9 advancements, las 12 entradas
-de la guía, la feature del nido de Glider y **los mundos en curso** siguen funcionando sin tocarlos.
+de la guía, la feature del nido de Drifter y **los mundos en curso** siguen funcionando sin tocarlos.
 
 **Coste estimado**: medio-bajo (≈8 hooks en 3 clases). **Riesgo**: medio (mixins contra un jar de
 producción). **Rotura neta**: ninguna.
@@ -190,16 +190,16 @@ producción). **Rotura neta**: ninguna.
 
 El argumento no es de preferencia sino de medición: **cuatro de los cinco mobs ya son, línea a línea, el
 mismo código en los dos mods**, así que la vía A no "traería nuestros mobs" — traería copias con ids nuevos
-del mismo comportamiento, a cambio de romper la receta del Tremorzilla, las mixturas (incluida la del Rammer
+del mismo comportamiento, a cambio de romper la receta del Tremorzilla, las mixturas (incluida la del Grazer
 que el encargo pide), 9 advancements, 12 entradas de guía, los huevos generadores y los mundos en curso. La
-vía B produce el resultado que el usuario describe (en la Primordial Cave los mobs se llaman Rammer/Logger,
-se doman, se montan, el Logger pesca peces de verdad y tira árboles, el Rammer da Prisa I con la Serene
+vía B produce el resultado que el usuario describe (en la Primordial Cave los mobs se llaman Grazer/Logger,
+se doman, se montan, el Logger pesca peces de verdad y tira árboles, el Grazer da Prisa I con la Serene
 Salad, con sus variantes y su loot) sin romper nada, porque impone los 9 deltas sobre las entidades que ya
 están ahí.
 
 Dicho de forma honesta: **la vía B no sustituye a los mobs de Alex's Caves, los convierte en los nuestros.**
-Un jugador no puede distinguir el resultado de "se generan el Rammer y el Logger del mod"; lo que no habrá es
-un id `primordialmobs:rammer` en `/summon`. Si el usuario quiere específicamente ids propios visibles en
+Un jugador no puede distinguir el resultado de "se generan el Grazer y el Logger del mod"; lo que no habrá es
+un id `primordialmobs:grazer` en `/summon`. Si el usuario quiere específicamente ids propios visibles en
 comandos, eso es la vía A con las 6 roturas de arriba, y hay que decidirlo a la vista de esa lista.
 
 ---
@@ -225,7 +225,7 @@ con `alexscaves-full-2.0.2.jar`), 0 errores, verificado por RCON.
 - **Verificación RCON**: la piscina de 1 bloque de profundidad de la sesión 2026-07-25 (7 cod + 1 trilocaris
   + Logger, control sin Logger, 180 s). Prueba directa de bajas.
 
-### Fase 2 — Rammer y Logger domesticables y montables (D5, D6)
+### Fase 2 — Grazer y Logger domesticables y montables (D5, D6)
 - `canOwnerMount`/`canOwnerCommand` por `@Inject` (`remap=false`) sobre `DinosaurEntity`, gateados por id.
 - Domar con Tree Star (1/3) desde `PlayerInteractEvent.EntityInteract`, con la precedencia ya establecida
   (item de piel → domar → mixtura → ciclo de órdenes con shift).
@@ -242,7 +242,7 @@ con `alexscaves-full-2.0.2.jar`), 0 errores, verificado por RCON.
 - **Verificación RCON**: mob sentado empujado por vacas 35-45 s → desplazamiento 0.00 (mismo test que el
   Sniffer de v2.6.1); `data get entity ... Pos` antes/después.
 
-### Fase 4 — Rammer: Serene Salad → Prisa I (D7)
+### Fase 4 — Grazer: Serene Salad → Prisa I (D7)
 - `@Inject` HEAD cancellable en `DinosaurEntity.onFeedMixture` (`remap=false`), gateado a
   `alexscaves:grottoceratops` + `alexscaves:serene_salad`.
 - **Verificación**: el efecto necesita un jugador real (igual que en standalone). Headless se verifica que el
@@ -278,7 +278,7 @@ Todas las fases cerradas. `PrimordialMobs-1.20.1.jar` v2.7.0, sha256 `089cdfe4�
 | 0 infraestructura | hecho | `PrimordialMixinPlugin` + `injectors.defaultRequire:1`; arranque limpio en los dos modos |
 | 1 Logger pesca | **RCON-VERIFICADO** | piscina con Logger: 7 bacalaos + 1 trilocaris → **0 en <60 s**; piscina de control **intacta a los 181 s** |
 | 2 domar/mandar/montar | **RCON-VERIFICADO (parcial)** | asiento medido: pasajero en `z = mob.z + 0.35` exacto; desmontaje en `(x, bbMinY, z)` = nuestro `getDismountLocationForPassenger`. Domar/montar con clic derecho exige jugador real |
-| 3 sentado sin derrape + hitbox | **RCON-VERIFICADO** | Rammer y Logger sentados: **0.00 bloques en 60 s** con 4 vacas empujando cada uno, y **0.00 en 90 s** muestreado cada 15 s en el arranque final (control de pie: 1.18 bloques). Hay 1-2 bloques de asentamiento si las vacas se invocan solapadas con el mob (el empujón viene del tick de la vaca, tras nuestro TAIL); idéntico en standalone. Caja medida por sondeo `dx=0,dy=0,dz=0`: de pie **2.49**, sentado **1.94** = ×0.78 exacto |
+| 3 sentado sin derrape + hitbox | **RCON-VERIFICADO** | Grazer y Logger sentados: **0.00 bloques en 60 s** con 4 vacas empujando cada uno, y **0.00 en 90 s** muestreado cada 15 s en el arranque final (control de pie: 1.18 bloques). Hay 1-2 bloques de asentamiento si las vacas se invocan solapadas con el mob (el empujón viene del tick de la vaca, tras nuestro TAIL); idéntico en standalone. Caja medida por sondeo `dx=0,dy=0,dz=0`: de pie **2.49**, sentado **1.94** = ×0.78 exacto |
 | 4 Serene Salad → Prisa I | mixin aplicado | arranque limpio con `defaultRequire:1` = el inject resolvió; el efecto exige un jugador real |
 | 5 renombres derivados | hecho | **892 claves** en 13 idiomas + **83 páginas de guía**; 0 restos de nombres de AC en el pack |
 | 6 funcionalidad cruzada | verificado | ver abajo |
@@ -310,7 +310,7 @@ Todas las fases cerradas. `PrimordialMobs-1.20.1.jar` v2.7.0, sha256 `089cdfe4�
 
 ## 5. Qué queda declarado como no verificable sin cliente
 
-- La altura y orientación del jinete en el lomo del Rammer/Logger (knobs: `RIDER_BACK_HEIGHT`, el offset `z`
+- La altura y orientación del jinete en el lomo del Grazer/Logger (knobs: `RIDER_BACK_HEIGHT`, el offset `z`
   del `seatOffset` y el factor `0.8` del leg-solver).
 - El texto renombrado del pack de compat (es cliente puro).
 - Las texturas `_variant` de los renderers de compat.

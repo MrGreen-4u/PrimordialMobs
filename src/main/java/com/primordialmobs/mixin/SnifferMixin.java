@@ -49,7 +49,7 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
     private static final float AC_LOOK_SPEED = 8.0F;
     /**
      * Body yaw held while lying down. A resting sniffer turns its head (see ac_restingLook) but its body
-     * must not pivot on the ground: measured on a server, a sitting Rammer/Logger/Roarer never rotates its
+     * must not pivot on the ground: measured on a server, a sitting Grazer/Logger/Roarer never rotates its
      * body either (a stationary mob's BodyRotationControl clamps the head instead of turning the body), so
      * pinning the yaw here keeps the sniffer consistent with them even if it is shoved or knocked back.
      */

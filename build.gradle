@@ -44,7 +44,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '2.7.1'
+version = '2.7.2'
 group = 'com.primordialmobs'
 archivesBaseName = 'primordialmobs'
 
@@ -115,7 +115,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20.1-47.4.1'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.10'
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
     implementation fg.deobf("curse.maven:citadel-331936:6702068")
     // Full Alex's Caves 2.0.2, compile-only: the compat renderers/events (com.primordialmobs.compat)

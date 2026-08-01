@@ -19,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 
 /**
- * Compat only: turns Alex's Caves' Grottoceratops into the Rammer.
+ * Compat only: turns Alex's Caves' Grottoceratops into the Grazer.
  *
  * Everything Alex's Caves already gives it (attacks, grazing, eggs, loot, sounds, animations) is our code
  * verbatim — the two classes are identical upstream. What Primordial Mobs adds on top is this file:
@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(GrottoceratopsEntity.class)
 public abstract class GrottoceratopsEntityMixin extends DinosaurEntity {
 
-    /** Four minutes of Haste I: what a Rammer gives back for a Serene Salad. */
+    /** Four minutes of Haste I: what a Grazer gives back for a Serene Salad. */
     private static final int PRIMORDIALMOBS$SALAD_HASTE_TICKS = 4 * 60 * 20;
 
     protected GrottoceratopsEntityMixin(EntityType<?> type, Level level) {
@@ -56,7 +56,7 @@ public abstract class GrottoceratopsEntityMixin extends DinosaurEntity {
         return ownerPlayer.isShiftKeyDown();
     }
 
-    /** Hand a Rammer a Serene Salad and it passes its appetite for stone on to you: Haste I, four minutes. */
+    /** Hand a Grazer a Serene Salad and it passes its appetite for stone on to you: Haste I, four minutes. */
     @Override
     public boolean onFeedMixture(ItemStack itemStack, Player player) {
         if (itemStack.is(CompatDinosaurs.sereneSalad())) {

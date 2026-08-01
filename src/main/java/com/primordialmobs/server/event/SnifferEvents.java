@@ -23,7 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * Everything the mod does to the vanilla Sniffer: alternate skins, the 15% recolored-variant chance and
- * the Rammer/Logger-style taming (tree star food, sit/follow/wander commands, never rideable). All item
+ * the Grazer/Logger-style taming (tree star food, sit/follow/wander commands, never rideable). All item
  * and sound references resolve by id so the same code runs standalone and alongside the full Alex's Caves
  * mod.
  */
@@ -54,7 +54,7 @@ public class SnifferEvents {
             event.setCancellationResult(InteractionResult.SUCCESS);
             return;
         }
-        // 2) Taming with a tree star, mirroring the Rammer/Logger (1-in-3 chance, hearts/smoke feedback).
+        // 2) Taming with a tree star, mirroring the Grazer/Logger (1-in-3 chance, hearts/smoke feedback).
         if (!skinHolder.ac_isTame() && !sniffer.isBaby() && SnifferTaming.isTamingFood(stack)) {
             if (sniffer.level() instanceof ServerLevel serverLevel) {
                 if (!player.getAbilities().instabuild) {

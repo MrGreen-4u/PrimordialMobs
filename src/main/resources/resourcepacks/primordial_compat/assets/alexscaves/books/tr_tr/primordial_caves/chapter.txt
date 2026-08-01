@@ -18,12 +18,12 @@
     • {Giriş|primordial_caves/general.json}
     • {Kaynaklar|primordial_caves/resources.json}
     • Yerliler
-        • {YGliderprimordial_caves/sGliderjson}
-        • {HStealerprimordial_caves/vStealerjson}
-        • {MRammerprimordial_caves/gRammerjson}
+        • {Drifter|primordial_caves/subterranodon.json}
+        • {Stealer|primordial_caves/vallumraptor.json}
+        • {Grazer|primordial_caves/grottoceratops.json}
         • {Trilokaris|primordial_caves/trilocaris.json}
-        • {TRoarerprimordial_caves/tRoarerjson}
-        • {YLoggerprimordial_caves/rLoggerjson}
+        • {Roarer|primordial_caves/tremorsaurus.json}
+        • {Logger|primordial_caves/relicheirus.json}
         • {Lukstruzor|primordial_caves/luxtructosaurus.json}
         • {Atlatitan|primordial_caves/atlatitan.json}
     • {Araçlar|primordial_caves/utilities.json}

@@ -23,5 +23,5 @@
         • {Нукліпер|toxic_caves/nucleeper.json}
         • {Промен. кіт|toxic_caves/raycat.json}
         • {Радозябр|toxic_caves/radgill.json}
-        • {Roarerzilla|toxic_caves/Roarerzilla.json}
+        • {Roarerzilla|toxic_caves/tremorzilla.json}
     • {Приладдя|toxic_caves/utilities.json}

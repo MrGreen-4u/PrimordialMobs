@@ -37,4 +37,4 @@
 
 
 
-    This spear channels the spirits of dinosaurs consumed by the eruption long ago. When a target is stabbed with it, the spirit of a Roarer will lash out and deal additional damage. When held down, multiple spirits of the Rammer will surround the user and block incoming damage. If the spear is thrown and hits a target, a Glider spirit will lift it up into the air and drop it. The spear also deals additional explosive damage in an area after launch, and will return to its thrower afterwards.
+    This spear channels the spirits of dinosaurs consumed by the eruption long ago. When a target is stabbed with it, the spirit of a Roarer will lash out and deal additional damage. When held down, multiple spirits of the Grazer will surround the user and block incoming damage. If the spear is thrown and hits a target, a Drifter spirit will lift it up into the air and drop it. The spear also deals additional explosive damage in an area after launch, and will return to its thrower afterwards.

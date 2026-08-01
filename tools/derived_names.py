@@ -37,8 +37,8 @@ AC_JAR = os.path.join(PROJ, 'libs/alexscaves-full-2.0.2.jar')
 # Alex's Caves entity id -> the Primordial Mobs name. The first five are the mod's own renames; the
 # Tremorzilla is included because it is a NAME derivative of the Tremorsaurus (Roarer), so wherever
 # a locale writes its own "Tremorzilla" we write Roarerzilla.
-MOBS = {'grottoceratops': 'Rammer', 'relicheirus': 'Logger', 'tremorsaurus': 'Roarer',
-        'subterranodon': 'Glider', 'vallumraptor': 'Stealer', 'tremorzilla': 'Roarerzilla'}
+MOBS = {'grottoceratops': 'Grazer', 'relicheirus': 'Logger', 'tremorsaurus': 'Roarer',
+        'subterranodon': 'Drifter', 'vallumraptor': 'Stealer', 'tremorzilla': 'Roarerzilla'}
 
 # Keys stage 1 already writes; re-deriving them here would fight it. Only the FIVE renamed mobs --
 # the Tremorzilla is not stage 1's business, so its egg block and spawn egg must be derived here.
@@ -84,6 +84,22 @@ def substitute_all(locale, text, pairs):
                 out = head + english + tail
                 i = j + len(english)
     return out
+
+
+BOOK_LINK = re.compile(r'\{([^{}|]+)\|([^{}]+)\}')
+
+
+def substitute_book(locale, text, pairs):
+    """Rename visible book prose and link labels without changing resource-path link targets."""
+    out = []
+    cursor = 0
+    for match in BOOK_LINK.finditer(text):
+        out.append(substitute_all(locale, text[cursor:match.start()], pairs))
+        label = substitute_all(locale, match.group(1), pairs)
+        out.append('{%s|%s}' % (label, match.group(2)))
+        cursor = match.end()
+    out.append(substitute_all(locale, text[cursor:], pairs))
+    return ''.join(out)
 
 
 def name_pairs(ac_lang, ac_en):
@@ -147,12 +163,14 @@ def main():
             ac = dict(ac_en)
         pairs = name_pairs(ac, ac_en)
         text = jar.read(name).decode('utf-8')
-        new = substitute_all(locale, text, pairs)
+        new = substitute_book(locale, text, pairs)
         if new == text:
             continue
         out = os.path.join(PACK, 'books', rel)
         os.makedirs(os.path.dirname(out), exist_ok=True)
-        with open(out, 'w', encoding='utf-8') as fh:
+        # The upstream pages already use CRLF. newline='' prevents Windows text mode from turning
+        # each existing CRLF into CRCRLF and makes repeated generation byte-for-byte stable.
+        with open(out, 'w', encoding='utf-8', newline='') as fh:
             fh.write(new)
         written += 1
     print('%d derived lang keys, %d guide pages rewritten' % (total_keys, written))

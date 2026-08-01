@@ -18,12 +18,12 @@
     • {综合介绍|primordial_caves/general.json}
     • {自然资源|primordial_caves/resources.json}
     • 栖息物种
-        • {Glider|primordial_caves/Glider.json}
-        • {Stealer|primordial_caves/Stealer.json}
-        • {Rammer|primordial_caves/Rammer.json}
+        • {Drifter|primordial_caves/subterranodon.json}
+        • {Stealer|primordial_caves/vallumraptor.json}
+        • {Grazer|primordial_caves/grottoceratops.json}
         • {三叶虾|primordial_caves/trilocaris.json}
-        • {Roarer|primordial_caves/Roarer.json}
-        • {Logger|primordial_caves/Logger.json}
+        • {Roarer|primordial_caves/tremorsaurus.json}
+        • {Logger|primordial_caves/relicheirus.json}
         • {暝煌龙|primordial_caves/luxtructosaurus.json}
         • {擎天龙|primordial_caves/atlatitan.json}
     • {实用物品|primordial_caves/utilities.json}

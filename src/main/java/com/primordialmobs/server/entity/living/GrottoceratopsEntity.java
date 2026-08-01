@@ -63,13 +63,13 @@ public class GrottoceratopsEntity extends DinosaurEntity implements IAnimatedEnt
         super(type, level);
     }
 
-    /** Four minutes of Haste I: what a Rammer gives back for a Serene Salad. */
+    /** Four minutes of Haste I: what a Grazer gives back for a Serene Salad. */
     private static final int SALAD_HASTE_TICKS = 4 * 60 * 20;
 
     /**
-     * The Rammer's own reaction to a prehistoric mixture, in the same slot where a Logger reacts to the
+     * The Grazer's own reaction to a prehistoric mixture, in the same slot where a Logger reacts to the
      * Primordial Soup and a Roarer or a Stealer react to the Serene Salad: hand a **Serene Salad** to a
-     * Rammer and the digger of the family passes its appetite for stone on to you — Haste I for four
+     * Grazer and the digger of the family passes its appetite for stone on to you — Haste I for four
      * minutes. Returning true means the item's generic branch (mob effects, curing Stunned) is skipped;
      * the healing and the returned bowl still happen in PrehistoricMixtureItem.
      */

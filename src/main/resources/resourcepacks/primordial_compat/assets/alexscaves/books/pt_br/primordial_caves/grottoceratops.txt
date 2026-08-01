@@ -13,7 +13,7 @@
     • 50.0 ♥
     • 10.0 🗡
 
-	Rammer são grandes dinossauros herbívoros que parecem pensar apenas em comer mais plantas. Esses répteis vorazes alegremente ignorarão quase qualquer coisa em seu caminho, desde que não os ataque primeiro.
-	Rammer são a única fonte de §lBrotos §lde §lSamambaia§r, que aparecem depois que eles pegam e comem uma Samambaia Cacheada.
+	Grazer são grandes dinossauros herbívoros que parecem pensar apenas em comer mais plantas. Esses répteis vorazes alegremente ignorarão quase qualquer coisa em seu caminho, desde que não os ataque primeiro.
+	Grazer são a única fonte de §lBrotos §lde §lSamambaia§r, que aparecem depois que eles pegam e comem uma Samambaia Cacheada.
 	Se atacados, eles se defenderão usando seu grande chifre para lançar os atacantes no ar ou balançando sua cauda espinhosa em direção ao alvo.
-	Rammer podem ser procriados com uma Árvore Estrela e, em seguida, colocarão um único ovo. Quando mortos, Rammer podem dropar uma §lCosteleta §lde §lDinossauro§r e um pouco de de sua §lPele §lResistente§r.
+	Grazer podem ser procriados com uma Árvore Estrela e, em seguida, colocarão um único ovo. Quando mortos, Grazer podem dropar uma §lCosteleta §lde §lDinossauro§r e um pouco de de sua §lPele §lResistente§r.

@@ -23,7 +23,7 @@ public class CompatDinosaurs {
 
     /**
      * The two Primordial Caves dinosaurs that Alex's Caves leaves wild but Primordial Mobs makes tameable,
-     * commandable and rideable. The other three (Roarer, Glider, Stealer) already do all of that in Alex's
+     * commandable and rideable. The other three (Roarer, Drifter, Stealer) already do all of that in Alex's
      * Caves with exactly our code, so they need no overlay at all.
      */
     public static boolean isTameableByUs(Entity entity) {
@@ -31,7 +31,7 @@ public class CompatDinosaurs {
         return GROTTOCERATOPS.equals(id) || RELICHEIRUS.equals(id);
     }
 
-    public static boolean isRammer(Entity entity) {
+    public static boolean isGrazer(Entity entity) {
         return GROTTOCERATOPS.equals(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()));
     }
 

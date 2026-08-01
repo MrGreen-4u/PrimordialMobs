@@ -15,7 +15,7 @@ import java.nio.file.Path;
 /**
  * When the full Alex's Caves mod is installed, BOTH mods ship {@code assets/alexscaves/lang/*.json}. Forge
  * orders competing mod resource packs by mod-file discovery order (NOT by mods.toml {@code ordering=AFTER}),
- * so our renamed names (Roarer/Rammer/Logger/Glider/Stealer and their items) are not guaranteed to win.
+ * so our renamed names (Roarer/Grazer/Logger/Drifter/Stealer and their items) are not guaranteed to win.
  *
  * To make the rename deterministic, we register a dedicated resource pack (bundled at
  * {@code resourcepacks/primordial_compat/}) via {@link AddPackFindersEvent}. A pack added this way carries a

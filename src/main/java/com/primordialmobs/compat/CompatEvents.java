@@ -34,7 +34,7 @@ import java.util.Set;
  * Two jobs:
  *  - give Alex's Caves' five Primordial Caves dinosaurs the same 15% recolored-variant chance they have
  *    standalone;
- *  - graft on the AI goals that Primordial Mobs adds to the Rammer and the Logger (sit, follow, retaliate
+ *  - graft on the AI goals that Primordial Mobs adds to the Grazer and the Logger (sit, follow, retaliate
  *    for the owner, and the Logger's broader fishing target).
  *
  * Goals are added on {@link EntityJoinLevelEvent} rather than by injecting into {@code registerGoals}: the
@@ -98,8 +98,8 @@ public class CompatEvents {
     }
 
     /**
-     * Taming the Rammer and the Logger with a Tree Star, 1 chance in 3, hearts on success and smoke on
-     * failure — the same deal as standalone, and the same one the Roarer, Glider and Stealer already have in
+     * Taming the Grazer and the Logger with a Tree Star, 1 chance in 3, hearts on success and smoke on
+     * failure — the same deal as standalone, and the same one the Roarer, Drifter and Stealer already have in
      * Alex's Caves with their own foods.
      *
      * Done from the interact event rather than by injecting into {@code mobInteract} so it takes precedence
@@ -139,7 +139,7 @@ public class CompatEvents {
     }
 
     /**
-     * The Rammer and the Logger are wild in Alex's Caves; Primordial Mobs tames them. Alex's Caves already
+     * The Grazer and the Logger are wild in Alex's Caves; Primordial Mobs tames them. Alex's Caves already
      * ships the whole tamed-dinosaur pipeline in DinosaurEntity (command cycle, mounting, the
      * entity.alexscaves.all.command_N messages) — it is simply never reachable because its canOwnerMount and
      * canOwnerCommand return false for these two. Our mixin opens that gate; these are the goals that make a

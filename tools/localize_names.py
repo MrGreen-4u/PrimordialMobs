@@ -1,4 +1,4 @@
-"""Propagate the five renamed mobs (Rammer / Logger / Roarer / Glider / Stealer) into every
+"""Propagate the five renamed mobs (Grazer / Logger / Roarer / Drifter / Stealer) into every
 language file, and rebuild the compat resource pack from the main lang files.
 
 Why this exists
@@ -38,13 +38,13 @@ LANG = os.path.join(PROJ, 'src/main/resources/assets/alexscaves/lang')
 PACK = os.path.join(PROJ, 'src/main/resources/resourcepacks/primordial_compat/assets/alexscaves/lang')
 AC_JAR = os.path.join(PROJ, 'libs/alexscaves-full-2.0.2.jar')
 
-MOBS = {'grottoceratops': 'Rammer', 'relicheirus': 'Logger', 'tremorsaurus': 'Roarer',
-        'subterranodon': 'Glider', 'vallumraptor': 'Stealer'}
+MOBS = {'grottoceratops': 'Grazer', 'relicheirus': 'Logger', 'tremorsaurus': 'Roarer',
+        'subterranodon': 'Drifter', 'vallumraptor': 'Stealer'}
 
 # Alex's Caves strings whose creature name is misspelled, so substring substitution misses it.
 MANUAL = {
     ('pl_pl', 'block.alexscaves.vallumraptor_egg'): 'Jajo Stealera',
-    ('zh_tw', 'item.alexscaves.spawn_egg_subterranodon'): 'Glider 生怪蛋',
+    ('zh_tw', 'item.alexscaves.spawn_egg_subterranodon'): 'Drifter 生怪蛋',
 }
 
 # Keys that name Alex's Caves' own UI: ours standalone, theirs in compat mode.
