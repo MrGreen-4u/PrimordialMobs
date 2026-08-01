@@ -63,12 +63,22 @@ public class CompatEvents {
      * Keeping them independent makes the textures compose exactly as they do standalone.
      */
     @SubscribeEvent
-    public void dinosaurVariantOnSpawn(MobSpawnEvent.FinalizeSpawn event) {
-        if (event.getEntity() instanceof DinosaurEntity dinosaur && dinosaur instanceof PMRecolorable recolorable) {
+    public void dinosaurVariantOnSpawn(EntityJoinLevelEvent event) {
+        // Rolled on the FIRST world join rather than in FinalizeSpawn: Alex's Caves' own
+        // SubterranodonRoostFeature (the main natural source of Drifters in the Primordial Caves)
+        // spawns via addFreshEntity without finalizeSpawn, so those never reached the old hook.
+        // ForgeData one-shot flag so dimension changes/reloads never re-roll.
+        if (event.getLevel().isClientSide || event.loadedFromDisk()) {
+            return;
+        }
+        if (event.getEntity() instanceof DinosaurEntity dinosaur && dinosaur instanceof PMRecolorable recolorable
+                && !dinosaur.getPersistentData().getBoolean("PMVariantRolled")) {
             ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(dinosaur.getType());
-            if (id != null && PRIMORDIAL_DINOSAURS.contains(id)
-                    && !recolorable.pm_isRecolored() && dinosaur.getRandom().nextFloat() < 0.15F) {
-                recolorable.pm_setRecolored(true);
+            if (id != null && PRIMORDIAL_DINOSAURS.contains(id)) {
+                dinosaur.getPersistentData().putBoolean("PMVariantRolled", true);
+                if (!recolorable.pm_isRecolored() && dinosaur.getRandom().nextFloat() < 0.15F) {
+                    recolorable.pm_setRecolored(true);
+                }
             }
         }
     }

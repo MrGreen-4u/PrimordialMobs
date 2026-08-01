@@ -49,6 +49,24 @@
     ],
     "subtitle": "alexscaves.sound.subtitle.amber_step"
   },
+  "extinction_spear_hit": {
+    "sounds": [
+      "alexscaves:item/extinction_spear/extinction_spear_hit"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.extinction_spear_hit"
+  },
+  "extinction_spear_summon": {
+    "sounds": [
+      "alexscaves:item/extinction_spear/extinction_spear_summon"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.extinction_spear_summon"
+  },
+  "extinction_spear_throw": {
+    "sounds": [
+      "alexscaves:item/extinction_spear/extinction_spear_throw"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.extinction_spear_throw"
+  },
   "grottoceratops_attack": {
     "sounds": [
       "alexscaves:mob/grottoceratops/grottoceratops_attack_0",
@@ -105,6 +123,12 @@
       "alexscaves:mob/grottoceratops/grottoceratops_step_3"
     ],
     "subtitle": "alexscaves.sound.subtitle.grottoceratops_step"
+  },
+  "limestone_spear_hit": {
+    "sounds": [
+      "alexscaves:item/limestone_spear/limestone_spear_hit"
+    ],
+    "subtitle": "alexscaves.sound.subtitle.limestone_spear_hit"
   },
   "pewen_branch_break": {
     "sounds": [

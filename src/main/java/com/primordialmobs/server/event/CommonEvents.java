@@ -16,6 +16,23 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class CommonEvents {
 
+    /**
+     * The 15% recoloured-variant roll, standalone mode. Rolled on the dinosaur's FIRST join to the world
+     * rather than in finalizeSpawn, because several natural paths never call finalizeSpawn (hatching from
+     * egg blocks, feature-driven spawning); every path goes through EntityJoinLevelEvent. The one-shot
+     * flag lives in ForgeData so dimension changes and reloads never re-roll.
+     */
+    @SubscribeEvent
+    public void dinosaurVariantOnFirstJoin(net.minecraftforge.event.entity.EntityJoinLevelEvent event) {
+        if (!event.getLevel().isClientSide && !event.loadedFromDisk() && event.getEntity() instanceof DinosaurEntity dinosaur
+                && !dinosaur.getPersistentData().getBoolean("PMVariantRolled")) {
+            dinosaur.getPersistentData().putBoolean("PMVariantRolled", true);
+            if (!dinosaur.isRecolored() && dinosaur.getRandom().nextFloat() < 0.15F) {
+                dinosaur.setRecolored(true);
+            }
+        }
+    }
+
     @SubscribeEvent
     public void livingFindTarget(LivingChangeTargetEvent event) {
         if (event.getEntity() instanceof Mob mob && event.getNewTarget() instanceof VallumraptorEntity vallumraptor && vallumraptor.getHideFor() > 0) {

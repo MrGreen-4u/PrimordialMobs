@@ -241,13 +241,9 @@ public abstract class DinosaurEntity extends TamableAnimal implements IDancesToJ
         this.setAltSkin(altSkin);
     }
 
-    @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if (!this.isRecolored() && this.getRandom().nextFloat() < 0.15F) {
-            this.setRecolored(true);
-        }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-    }
+    // The 15% recoloured-variant roll used to live in finalizeSpawn here; it moved to
+    // CommonEvents#dinosaurVariantOnFirstJoin so dinosaurs from paths that never call finalizeSpawn
+    // (egg-block hatching, feature spawns) get their roll too.
 
     public boolean tamesFromHatching() {
         return false;

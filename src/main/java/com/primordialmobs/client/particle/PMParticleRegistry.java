@@ -14,4 +14,6 @@ public class PMParticleRegistry {
     public static final RegistryObject<SimpleParticleType> STUN_STAR = DEF_REG.register("stun_star", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> AMBER_MONOLITH = DEF_REG.register("amber_monolith", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> AMBER_EXPLOSION = DEF_REG.register("amber_explosion", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> FLY = DEF_REG.register("fly", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> TEPHRA_FLAME = DEF_REG.register("tephra_flame", () -> new SimpleParticleType(false));
 }

@@ -63,6 +63,7 @@ public class ClientProxy extends CommonProxy {
             // special-ability keybind already exists; registering ours would duplicate both.
             bus.addListener(this::setupParticles);
             bus.addListener(this::registerKeybinds);
+            bus.addListener(com.primordialmobs.client.model.PMModelLayers::register);
         } else {
             // Force our renamed names (Roarer/Grazer/... and their items) to win over Alex's Caves' lang.
             bus.addListener(new com.primordialmobs.compat.client.CompatLangPack()::addPackFinders);
@@ -83,9 +84,14 @@ public class ClientProxy extends CommonProxy {
             EntityRenderers.register(PMEntityRegistry.TREMORSAURUS.get(), TremorsaurusRenderer::new);
             EntityRenderers.register(PMEntityRegistry.RELICHEIRUS.get(), RelicheirusRenderer::new);
             BlockEntityRenderers.register(PMBlockEntityRegistry.AMBER_MONOLITH.get(), AmberMonolithBlockRenderer::new);
+            EntityRenderers.register(PMEntityRegistry.EXTINCTION_SPEAR.get(), com.primordialmobs.client.render.entity.ExtinctionSpearRenderer::new);
+            EntityRenderers.register(PMEntityRegistry.DINOSAUR_SPIRIT.get(), com.primordialmobs.client.render.entity.DinosaurSpiritRenderer::new);
             // Dinosaur Nuggets come in four shapes, chosen by stack count exactly like upstream.
             ItemProperties.register(PMItemRegistry.DINOSAUR_NUGGET.get(), new ResourceLocation("nugget"), (stack, level, living, j) -> {
                 return (stack.getCount() % 4) / 4F;
+            });
+            ItemProperties.register(PMItemRegistry.EXTINCTION_SPEAR.get(), new ResourceLocation("throwing"), (stack, level, living, j) -> {
+                return living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0F : 0.0F;
             });
         }
     }
@@ -95,6 +101,8 @@ public class ClientProxy extends CommonProxy {
         registry.registerSpecial(PMParticleRegistry.STUN_STAR.get(), new StunStarParticle.Factory());
         registry.registerSpriteSet(PMParticleRegistry.AMBER_MONOLITH.get(), AmberMonolithParticle.Factory::new);
         registry.registerSpriteSet(PMParticleRegistry.AMBER_EXPLOSION.get(), SmallExplosionParticle.AmberFactory::new);
+        registry.registerSpriteSet(PMParticleRegistry.FLY.get(), com.primordialmobs.client.particle.FlyParticle.Factory::new);
+        registry.registerSpriteSet(PMParticleRegistry.TEPHRA_FLAME.get(), com.primordialmobs.client.particle.TephraParticle.FlameFactory::new);
     }
 
     private void registerKeybinds(RegisterKeyMappingsEvent e) {
@@ -132,6 +140,13 @@ public class ClientProxy extends CommonProxy {
     @Override
     public Object getISTERProperties() {
         return isterProperties;
+    }
+
+    private final com.primordialmobs.client.render.item.PMArmorRenderProperties armorProperties = new com.primordialmobs.client.render.item.PMArmorRenderProperties();
+
+    @Override
+    public Object getArmorProperties() {
+        return armorProperties;
     }
 
     @Override

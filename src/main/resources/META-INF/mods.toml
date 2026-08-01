@@ -4,7 +4,7 @@ license="GPL-3.0-only"
 issueTrackerURL="https://github.com/MrGreen-4u/PrimordialMobs/issues" #optional
 [[mods]] #mandatory
 modId="primordialmobs" #mandatory
-version="2.8.0" #mandatory
+version="2.9.0" #mandatory
 displayName="Primordial Mobs" #mandatory
 displayURL="https://github.com/MrGreen-4u/PrimordialMobs" #optional
 authors="MrGreen_4u; based on Alex's Caves by Alexthe668 and Noonyeyz" #optional

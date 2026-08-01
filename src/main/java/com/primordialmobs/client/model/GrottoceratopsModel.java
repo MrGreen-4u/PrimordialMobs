@@ -469,6 +469,10 @@ public class GrottoceratopsModel extends AdvancedEntityModel<GrottoceratopsEntit
     }
 
 
+    public void animateSpirit(com.primordialmobs.server.entity.item.DinosaurSpiritEntity entityIn, float partialTicks) {
+        this.resetToDefaultPose();
+    }
+
     public void renderSpiritToBuffer(PoseStack poseStack, VertexConsumer ivertexbuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         poseStack.translate(0, 1.3F, 1);

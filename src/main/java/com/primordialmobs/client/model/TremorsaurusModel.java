@@ -445,6 +445,16 @@ public class TremorsaurusModel extends AdvancedEntityModel<TremorsaurusEntity> {
     }
 
 
+    public void animateSpirit(com.primordialmobs.server.entity.item.DinosaurSpiritEntity entityIn, float partialTicks) {
+        this.resetToDefaultPose();
+        float abilityProgress = entityIn.getAbilityProgress(partialTicks);
+        float middleProgress = (float) Math.sin(abilityProgress * Math.PI);
+        progressRotationPrev(neck, middleProgress, (float) Math.toRadians(-20F), 0, 0, 1F);
+        progressRotationPrev(head, middleProgress, (float) Math.toRadians(-70F), 0, 0, 1F);
+        progressRotationPrev(jaw, middleProgress, (float) Math.toRadians(70F), 0, 0, 1F);
+        progressPositionPrev(neck, abilityProgress, 0, -4, -9, 1F);
+    }
+
     public void renderSpiritToBuffer(PoseStack poseStack, VertexConsumer ivertexbuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
         poseStack.pushPose();
         poseStack.translate(0, 1.3F, 1);

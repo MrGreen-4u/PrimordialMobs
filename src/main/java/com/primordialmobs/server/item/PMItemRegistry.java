@@ -40,6 +40,12 @@ public class PMItemRegistry {
     public static final RegistryObject<Item> PRIMITIVE_CLUB_SPRITE = DEF_REG.register("primitive_club_inventory", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> TECTONIC_SHARD = DEF_REG.register("tectonic_shard", () -> new Item(new Item.Properties().rarity(RARITY_DEMONIC).fireResistant()));
     public static final RegistryObject<Item> PEWEN_SAP = DEF_REG.register("pewen_sap", () -> new Item(new Item.Properties()));
+    public static final PMArmorMaterial PRIMORDIAL_ARMOR_MATERIAL = new PMArmorMaterial("primordial", 20, new int[]{3, 4, 3, 2}, 25, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER, 0F);
+    public static final RegistryObject<Item> PRIMORDIAL_HELMET = DEF_REG.register("primordial_helmet", () -> new PrimordialArmorItem(PRIMORDIAL_ARMOR_MATERIAL, net.minecraft.world.item.ArmorItem.Type.HELMET));
+    public static final RegistryObject<Item> PRIMORDIAL_TUNIC = DEF_REG.register("primordial_tunic", () -> new PrimordialArmorItem(PRIMORDIAL_ARMOR_MATERIAL, net.minecraft.world.item.ArmorItem.Type.CHESTPLATE));
+    public static final RegistryObject<Item> PRIMORDIAL_PANTS = DEF_REG.register("primordial_pants", () -> new PrimordialArmorItem(PRIMORDIAL_ARMOR_MATERIAL, net.minecraft.world.item.ArmorItem.Type.LEGGINGS));
+    public static final RegistryObject<Item> EXTINCTION_SPEAR = DEF_REG.register("extinction_spear", () -> new ExtinctionSpearItem(new Item.Properties().durability(1300).rarity(RARITY_DEMONIC).fireResistant()));
+    public static final RegistryObject<Item> EXTINCTION_SPEAR_SPRITE = DEF_REG.register("extinction_spear_inventory", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> DINOSAUR_POTTERY_SHERD = DEF_REG.register("dinosaur_pottery_sherd", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> FOOTPRINT_POTTERY_SHERD = DEF_REG.register("footprint_pottery_sherd", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> GUARDIAN_POTTERY_SHERD = DEF_REG.register("guardian_pottery_sherd", () -> new Item(new Item.Properties()));
@@ -69,6 +75,12 @@ public class PMItemRegistry {
         ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.FIDDLEHEAD.get().asItem(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.PEWEN_SAPLING.get().asItem(), 0.3F);
         ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.PEWEN_PINES.get().asItem(), 0.3F);
+        ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.ANCIENT_SAPLING.get().asItem(), 0.3F);
+        ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.FLYTRAP.get().asItem(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.CYCAD.get().asItem(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.ARCHAIC_VINE.get().asItem(), 0.5F);
+        PRIMORDIAL_ARMOR_MATERIAL.setRepairMaterial(net.minecraft.world.item.crafting.Ingredient.of(TOUGH_HIDE.get()));
+        PMBlockRegistry.setupFlowerPots();
     }
 
     public static List<RegistryObject<Item>> getSpawnEggs() {

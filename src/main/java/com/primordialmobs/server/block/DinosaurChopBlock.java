@@ -161,7 +161,9 @@ public class DinosaurChopBlock extends Block implements SimpleWaterloggedBlock {
             return InteractionResult.PASS;
         } else {
             player.awardStat(Stats.EAT_CAKE_SLICE);
-            player.getFoodData().eat(this.foodAmount, this.saturationAmount);
+            // Upstream parity: the raw chop feeds more per worn Primordial armor piece.
+            int extraShanksFromArmor = this == PMBlockRegistry.DINOSAUR_CHOP.get() ? com.primordialmobs.server.item.PrimordialArmorItem.getExtraSaturationFromArmor(player) : 0;
+            player.getFoodData().eat(this.foodAmount + extraShanksFromArmor, this.saturationAmount + (extraShanksFromArmor * 0.125F));
             int i = blockState.getValue(BITES);
             levelAccessor.gameEvent(player, GameEvent.EAT, blockPos);
             if (i < 3) {

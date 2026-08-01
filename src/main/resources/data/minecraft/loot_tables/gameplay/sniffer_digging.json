@@ -69,6 +69,36 @@
               }
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alexscaves:ancient_sapling",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alexscaves:cycad",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alexscaves:flytrap",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "alexscaves:archaic_vine",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1.0,
+                "max": 2.0,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
         }
       ]
     }

@@ -40,6 +40,10 @@ public class PMCreativeTabRegistry {
                 add(output, PMItemRegistry.PRIMORDIAL_SOUP.get());
                 add(output, PMItemRegistry.SEETHING_STEW.get());
                 add(output, PMItemRegistry.PRIMITIVE_CLUB.get());
+                add(output, PMItemRegistry.EXTINCTION_SPEAR.get());
+                add(output, PMItemRegistry.PRIMORDIAL_HELMET.get());
+                add(output, PMItemRegistry.PRIMORDIAL_TUNIC.get());
+                add(output, PMItemRegistry.PRIMORDIAL_PANTS.get());
                 add(output, PMItemRegistry.AMBER_CURIOSITY.get());
                 add(output, PMItemRegistry.TECTONIC_SHARD.get());
                 add(output, PMItemRegistry.PEWEN_SAP.get());
@@ -60,6 +64,11 @@ public class PMCreativeTabRegistry {
                 add(output, PMBlockRegistry.STRIPPED_PEWEN_WOOD.get());
                 add(output, PMBlockRegistry.PEWEN_BRANCH.get());
                 add(output, PMBlockRegistry.PEWEN_PINES.get());
+                add(output, PMBlockRegistry.ANCIENT_SAPLING.get());
+                add(output, PMBlockRegistry.ANCIENT_LEAVES.get());
+                add(output, PMBlockRegistry.CYCAD.get());
+                add(output, PMBlockRegistry.FLYTRAP.get());
+                add(output, PMBlockRegistry.ARCHAIC_VINE.get());
             })
             .build());
 

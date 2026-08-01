@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "alexscaves"
+      }
+    }
+  ],
+  "pattern": [
+    " T ",
+    "TST",
+    "ABA"
+  ],
+  "key": {
+    "T": {
+      "item": "alexscaves:tectonic_shard"
+    },
+    "S": {
+      "item": "alexscaves:primitive_club"
+    },
+    "A": {
+      "item": "alexscaves:amber_curiosity"
+    },
+    "B": {
+      "item": "alexscaves:heavy_bone"
+    }
+  },
+  "result": {
+    "item": "alexscaves:extinction_spear"
+  }
+}

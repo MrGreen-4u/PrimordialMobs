@@ -259,6 +259,16 @@ public class SubterranodonModel extends AdvancedEntityModel<SubterranodonEntity>
         this.walk(lwing, 2F, 0.05F, false, 2F, 0.1F, ageInTicks, glide);
     }
 
+    public void animateSpirit(com.primordialmobs.server.entity.item.DinosaurSpiritEntity entityIn, float partialTicks) {
+        this.resetToDefaultPose();
+        float ageInTicks = entityIn.tickCount + partialTicks;
+        float flyProgress = 1f;
+        float flapAmount = flyProgress;
+        float hoverProgress = 1F;
+        this.body.rotationPointY -= 16;
+        animateFlight(ageInTicks, flyProgress, hoverProgress, 0F, flapAmount, true, false);
+    }
+
     public Vec3 getLegPosition(boolean right, Vec3 offsetIn) {
         PoseStack translationStack = new PoseStack();
         translationStack.pushPose();

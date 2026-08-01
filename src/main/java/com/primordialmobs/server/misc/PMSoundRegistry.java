@@ -55,6 +55,10 @@ public class PMSoundRegistry {
     public static final RegistryObject<SoundEvent> AMBER_PLACE = createSoundEvent("amber_place");
     public static final RegistryObject<SoundEvent> AMBER_STEP = createSoundEvent("amber_step");
     public static final RegistryObject<SoundEvent> TECTONIC_SHARD_TRANSFORM = createSoundEvent("tectonic_shard_transform");
+    public static final RegistryObject<SoundEvent> EXTINCTION_SPEAR_THROW = createSoundEvent("extinction_spear_throw");
+    public static final RegistryObject<SoundEvent> EXTINCTION_SPEAR_HIT = createSoundEvent("extinction_spear_hit");
+    public static final RegistryObject<SoundEvent> EXTINCTION_SPEAR_SUMMON = createSoundEvent("extinction_spear_summon");
+    public static final RegistryObject<SoundEvent> LIMESTONE_SPEAR_HIT = createSoundEvent("limestone_spear_hit");
 
     private static RegistryObject<SoundEvent> createSoundEvent(final String soundName) {
         return DEF_REG.register(soundName, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(PrimordialMobs.NAMESPACE, soundName)));
