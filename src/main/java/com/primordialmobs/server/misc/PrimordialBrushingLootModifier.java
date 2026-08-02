@@ -6,14 +6,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
-import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +25,7 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
             RecordCodecBuilder.create(inst ->
                     inst.group(
                                     LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(lm -> lm.conditions),
-                                    Codec.FLOAT.fieldOf("spawn_egg_chance").forGetter(lm -> lm.spawnEggChance),
+                                    Codec.FLOAT.fieldOf("egg_chance").forGetter(lm -> lm.eggChance),
                                     Codec.FLOAT.fieldOf("relic_chance").forGetter(lm -> lm.relicChance)
                             )
                             .apply(inst, PrimordialBrushingLootModifier::new));
@@ -61,14 +59,14 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
 
     private final Predicate<LootContext> orConditions;
 
-    private final float spawnEggChance;
+    private final float eggChance;
 
     private final float relicChance;
 
-    protected PrimordialBrushingLootModifier(LootItemCondition[] conditionsIn, float spawnEggChance, float relicChance) {
+    protected PrimordialBrushingLootModifier(LootItemCondition[] conditionsIn, float eggChance, float relicChance) {
         this.conditions = conditionsIn;
         this.orConditions = LootItemConditions.orConditions(conditionsIn);
-        this.spawnEggChance = spawnEggChance;
+        this.eggChance = eggChance;
         this.relicChance = relicChance;
     }
 
@@ -81,14 +79,14 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
     @Nonnull
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         // Warm-ocean archaeology owns the vanilla Sniffer Egg roll. Never replace a successful roll with
-        // a primordial spawn egg or relic, so this modifier does not alter the vanilla egg's probability.
+        // a primordial egg or relic, so this modifier does not alter the vanilla egg's probability.
         if (generatedLoot.stream().anyMatch(stack -> stack.is(Items.SNIFFER_EGG))) {
             return generatedLoot;
         }
         RandomSource random = context.getRandom();
         ItemStack discovery = ItemStack.EMPTY;
-        if (random.nextFloat() < spawnEggChance) {
-            discovery = rollSpawnEgg(random);
+        if (random.nextFloat() < eggChance) {
+            discovery = rollEgg(random);
         } else if (random.nextFloat() < relicChance) {
             discovery = rollRelic(random);
         }
@@ -99,13 +97,15 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
         return generatedLoot;
     }
 
-    private static ItemStack rollSpawnEgg(RandomSource random) {
+    /**
+     * The rare find is the dinosaur's <em>egg block</em> ({@code alexscaves:<dinosaur>_egg}), not its spawn
+     * egg: you carry the egg home, place it on solid ground and wait for it to hatch, and the baby that
+     * comes out imprints on you. A buried, fossilised egg is the thing archaeology should turn up — a
+     * spawn egg is a creative-mode item and handed the finished adult over for free.
+     */
+    private static ItemStack rollEgg(RandomSource random) {
         String dinosaur = DINOSAURS[random.nextInt(DINOSAURS.length)];
-        EntityType<?> type = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(PrimordialMobs.NAMESPACE, dinosaur));
-        if (type == null) {
-            return ItemStack.EMPTY;
-        }
-        Item egg = ForgeSpawnEggItem.fromEntityType(type);
+        Item egg = ForgeRegistries.ITEMS.getValue(new ResourceLocation(PrimordialMobs.NAMESPACE, dinosaur + "_egg"));
         return egg == null ? ItemStack.EMPTY : new ItemStack(egg);
     }
 
