@@ -4,28 +4,60 @@
   "ambientocclusion": true,
   "display": {
     "thirdperson_righthand": {
-      "translation": [0, 0, 0]
+      "translation": [
+        0,
+        0,
+        0
+      ]
     },
     "thirdperson_lefthand": {
-      "translation": [0, 0, 0]
+      "translation": [
+        0,
+        0,
+        0
+      ]
     },
     "firstperson_righthand": {
-      "translation": [0, 0, 0]
+      "translation": [
+        0,
+        0,
+        0
+      ]
     },
     "firstperson_lefthand": {
-      "translation": [0, 0, 0]
+      "translation": [
+        0,
+        0,
+        0
+      ]
     },
     "ground": {
-      "translation": [0, 0, 0]
+      "translation": [
+        0,
+        0,
+        0
+      ]
     },
     "gui": {
-      "translation": [0, 0, 0]
+      "translation": [
+        0,
+        0,
+        0
+      ]
     },
     "head": {
-      "translation": [0, 0, 0]
+      "translation": [
+        0,
+        0,
+        0
+      ]
     },
     "fixed": {
-      "translation": [0, 0, 0]
+      "translation": [
+        0,
+        0,
+        0
+      ]
     }
   },
   "overrides": [
@@ -33,7 +65,7 @@
       "predicate": {
         "throwing": 1
       },
-      "model": "alexscaves:item/limestone_spear_throwing"
+      "model": "alexscaves:item/extinction_spear_throwing"
     }
   ]
 }

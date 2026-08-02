@@ -9,6 +9,7 @@
     "SnifferAccessor",
     "SnifferMixin",
     "standalone.FoodDataMixin",
+    "standalone.MobMixin",
     "compat.DinosaurEntityMixin",
     "compat.GrottoceratopsEntityMixin",
     "compat.RelicheirusEntityMixin",

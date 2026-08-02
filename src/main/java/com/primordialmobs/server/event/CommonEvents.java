@@ -33,6 +33,50 @@ public class CommonEvents {
         }
     }
 
+    /**
+     * Bonking: killing a mob with an enchanted Primitive Club has a 1-in-3 chance to drop its head, by
+     * running the mob's custom death loot against a synthetic charged-creeper damage source (the only
+     * thing vanilla accepts as a head-dropping kill). Equipment drop chances are zeroed for the duration
+     * so the fake kill cannot also duplicate the mob's gear.
+     */
+    @SubscribeEvent
+    public void livingDie(net.minecraftforge.event.entity.living.LivingDeathEvent event) {
+        if (event.getEntity().level().isClientSide || !(event.getEntity() instanceof Mob mob)) {
+            return;
+        }
+        if (event.getSource() == null || !(event.getSource().getDirectEntity() instanceof LivingEntity directSource)) {
+            return;
+        }
+        net.minecraft.world.item.ItemStack held = directSource.getItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND);
+        if (!held.is(com.primordialmobs.server.item.PMItemRegistry.PRIMITIVE_CLUB.get())
+                || held.getEnchantmentLevel(com.primordialmobs.server.enchantment.PMEnchantmentRegistry.BONKING.get()) <= 0
+                || mob.level().random.nextFloat() >= 0.33F) {
+            return;
+        }
+        net.minecraft.world.entity.monster.Creeper fakeCreeperForSkullDrop = net.minecraft.world.entity.EntityType.CREEPER.create(mob.level());
+        if (fakeCreeperForSkullDrop == null) {
+            return;
+        }
+        if (mob.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            net.minecraft.world.entity.LightningBolt fakeThunder = net.minecraft.world.entity.EntityType.LIGHTNING_BOLT.create(serverLevel);
+            if (fakeThunder != null) {
+                fakeThunder.setVisualOnly(true);
+                fakeCreeperForSkullDrop.thunderHit(serverLevel, fakeThunder);
+            }
+        }
+        net.minecraft.world.damagesource.DamageSource fakeCreeperDamage = mob.level().damageSources().mobAttack(fakeCreeperForSkullDrop);
+        java.util.HashMap<net.minecraft.world.entity.EquipmentSlot, Float> prevLootDropChances = new java.util.HashMap<>();
+        com.primordialmobs.server.entity.util.EntityDropChanceAccessor dropChanceAccessor = (com.primordialmobs.server.entity.util.EntityDropChanceAccessor) mob;
+        for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlot.values()) {
+            prevLootDropChances.put(slot, dropChanceAccessor.pm_getEquipmentDropChance(slot));
+            dropChanceAccessor.pm_setDropChance(slot, 0.0F);
+        }
+        dropChanceAccessor.pm_dropCustomDeathLoot(fakeCreeperDamage, 0, false);
+        for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlot.values()) {
+            dropChanceAccessor.pm_setDropChance(slot, prevLootDropChances.get(slot));
+        }
+    }
+
     @SubscribeEvent
     public void livingFindTarget(LivingChangeTargetEvent event) {
         if (event.getEntity() instanceof Mob mob && event.getNewTarget() instanceof VallumraptorEntity vallumraptor && vallumraptor.getHideFor() > 0) {

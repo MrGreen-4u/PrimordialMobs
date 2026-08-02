@@ -16,11 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * Faithful port of the upstream Extinction Spear minus its three exclusive enchantments (Herd Phalanx,
- * Chomping Spirit, Plummeting Flight were pruned with the enchantment registry): the ghost counts and
- * spirit strengths are the unenchanted baseline.
- */
+/** Faithful port of the upstream Extinction Spear, enchantments included. */
 public class ExtinctionSpearItem extends SpearItem {
     public ExtinctionSpearItem(Item.Properties properties) {
         super(properties, 8.0D);
@@ -53,7 +49,8 @@ public class ExtinctionSpearItem extends SpearItem {
     public void onUseTick(Level level, LivingEntity living, ItemStack stack, int timeUsing) {
         if (timeUsing == getUseDuration(stack)) {
             level.playSound((Player) null, living, PMSoundRegistry.EXTINCTION_SPEAR_SUMMON.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-            int grottoHeads = 3;
+            // Herd Phalanx summons extra orbiting Grottoceratops heads.
+            int grottoHeads = 3 + stack.getEnchantmentLevel(com.primordialmobs.server.enchantment.PMEnchantmentRegistry.HERD_PHALANX.get());
             float grottoRotateBy = 360F / grottoHeads;
             for (int i = 0; i < grottoHeads; i++) {
                 DinosaurSpiritEntity dinosaurSpirit = PMEntityRegistry.DINOSAUR_SPIRIT.get().create(level);
@@ -91,6 +88,8 @@ public class ExtinctionSpearItem extends SpearItem {
         dinosaurSpirit.setPos(between.x, player.getY() + 1.0F, between.z);
         dinosaurSpirit.setDinosaurType(DinosaurSpiritEntity.DinosaurType.TREMORSAURUS);
         dinosaurSpirit.setPlayerUUID(player.getUUID());
+        // Chomping Spirit makes the Tremorsaurus spirit bite harder.
+        dinosaurSpirit.setEnchantmentLevel(stack.getEnchantmentLevel(com.primordialmobs.server.enchantment.PMEnchantmentRegistry.CHOMPING_SPIRIT.get()));
         dinosaurSpirit.setAttackingEntityId(hurtEntity.getId());
         dinosaurSpirit.lookAt(EntityAnchorArgument.Anchor.EYES, hurtEntity.getEyePosition());
         dinosaurSpirit.setDelaySpawn(5);

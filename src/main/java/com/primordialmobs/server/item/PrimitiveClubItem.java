@@ -1,6 +1,7 @@
 package com.primordialmobs.server.item;
 
 import com.primordialmobs.PrimordialMobs;
+import com.primordialmobs.server.enchantment.PMEnchantmentRegistry;
 import com.primordialmobs.server.message.UpdateEffectVisualityEntityMessage;
 import com.primordialmobs.server.misc.PMSoundRegistry;
 import com.primordialmobs.server.potion.PMEffectRegistry;
@@ -63,6 +64,21 @@ public class PrimitiveClubItem extends Item {
                     PrimordialMobs.sendMSGToAll(new UpdateEffectVisualityEntityMessage(hurtEntity.getId(), player.getId(), 3, instance.getDuration()));
                     soundEvent = PMSoundRegistry.PRIMITIVE_CLUB_HIT.get();
                 }
+                // Dazing Sweep: the stun splashes onto everything around the victim.
+                int dazingEdgeLevel = stack.getEnchantmentLevel(PMEnchantmentRegistry.DAZING_SWEEP.get());
+                if (dazingEdgeLevel > 0) {
+                    float f = dazingEdgeLevel + 1.2F;
+                    AABB aabb = AABB.ofSize(hurtEntity.position(), f, f, f);
+                    for (Entity entity : hurtEntity.level().getEntities(player, aabb, Entity::canBeHitByProjectile)) {
+                        if (!entity.is(hurtEntity) && !entity.isAlliedTo(player) && entity.distanceTo(hurtEntity) <= f && entity instanceof LivingEntity inflict) {
+                            MobEffectInstance instance2 = new MobEffectInstance(PMEffectRegistry.STUNNED.get(), 80 + hurtEntity.getRandom().nextInt(80), 0, false, false);
+                            inflict.hurt(inflict.level().damageSources().mobAttack(player), 1.0F);
+                            if (inflict.addEffect(instance2)) {
+                                PrimordialMobs.sendMSGToAll(new UpdateEffectVisualityEntityMessage(inflict.getId(), player.getId(), 3, instance2.getDuration()));
+                            }
+                        }
+                    }
+                }
             }
             player.level().playSound((Player) null, player.getX(), player.getY(), player.getZ(), soundEvent, player.getSoundSource(), 1.0F, 1.0F);
 
@@ -92,7 +108,9 @@ public class PrimitiveClubItem extends Item {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        return slot == EquipmentSlot.MAINHAND ? defaultModifiers[0] : super.getAttributeModifiers(slot, stack);
+        // Swiftwood raises the attack speed; the four modifier sets were built for levels 0-3 in the ctor.
+        int swift = stack.getEnchantmentLevel(PMEnchantmentRegistry.SWIFTWOOD.get());
+        return slot == EquipmentSlot.MAINHAND ? defaultModifiers[Mth.clamp(swift, 0, 3)] : super.getAttributeModifiers(slot, stack);
     }
 
     @Override

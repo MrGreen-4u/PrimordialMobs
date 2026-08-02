@@ -77,6 +77,8 @@ public class PMCreativeTabRegistry {
                 add(output, PMItemRegistry.PEWEN_HANGING_SIGN.get());
                 add(output, PMItemRegistry.PEWEN_BOAT.get());
                 add(output, PMItemRegistry.PEWEN_CHEST_BOAT.get());
+                com.primordialmobs.server.enchantment.PMEnchantmentRegistry.addAllEnchantsToCreativeTab(output, com.primordialmobs.server.enchantment.PMEnchantmentRegistry.PRIMITIVE_CLUB);
+                com.primordialmobs.server.enchantment.PMEnchantmentRegistry.addAllEnchantsToCreativeTab(output, com.primordialmobs.server.enchantment.PMEnchantmentRegistry.EXTINCTION_SPEAR);
                 add(output, PMBlockRegistry.ANCIENT_SAPLING.get());
                 add(output, PMBlockRegistry.ANCIENT_LEAVES.get());
                 add(output, PMBlockRegistry.CYCAD.get());

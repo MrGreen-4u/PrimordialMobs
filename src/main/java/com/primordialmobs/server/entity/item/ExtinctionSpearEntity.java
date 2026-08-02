@@ -32,7 +32,8 @@ import net.minecraftforge.network.PlayMessages;
 import javax.annotation.Nullable;
 
 /**
- * Faithful port of the upstream Extinction Spear projectile with one approximation: upstream's ground
+ * Faithful port of the upstream Extinction Spear projectile, enchantments included, with one
+ * approximation: upstream's ground
  * explosion is a TephraExplosion (whose block-side machinery belongs to the pruned Luxtructosaurus boss
  * fight); since the spear uses it with BlockInteraction.KEEP its net effect is entity damage plus tephra
  * visuals, so this port uses a vanilla block-preserving explosion plus a burst of tephra-flame particles.
@@ -180,6 +181,8 @@ public class ExtinctionSpearEntity extends AbstractArrow {
                 dinosaurSpirit.setPlayerUUID(entity1.getUUID());
                 dinosaurSpirit.setAttackingEntityId(entity.getId());
                 dinosaurSpirit.lookAt(EntityAnchorArgument.Anchor.EYES, entity1.getEyePosition());
+                // Plummeting Flight carries the victim higher and for longer.
+                dinosaurSpirit.setEnchantmentLevel(spearItem.getEnchantmentLevel(com.primordialmobs.server.enchantment.PMEnchantmentRegistry.PLUMMETING_FLIGHT.get()));
                 this.playSound(PMSoundRegistry.EXTINCTION_SPEAR_SUMMON.get(), 1.0F, 1.0F);
                 level().addFreshEntity(dinosaurSpirit);
             }

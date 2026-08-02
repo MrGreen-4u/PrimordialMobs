@@ -111,6 +111,7 @@ public class PrimordialMobs {
             PMItemRegistry.DEF_REG.register(modEventBus);
             com.primordialmobs.server.block.blockentity.PMBlockEntityRegistry.DEF_REG.register(modEventBus);
             com.primordialmobs.server.misc.PMPotPatternRegistry.DEF_REG.register(modEventBus);
+            com.primordialmobs.server.enchantment.PMEnchantmentRegistry.DEF_REG.register(modEventBus);
             PMParticleRegistry.DEF_REG.register(modEventBus);
             PMEntityRegistry.DEF_REG.register(modEventBus);
             modEventBus.addListener(PMEntityRegistry::initializeAttributes);
