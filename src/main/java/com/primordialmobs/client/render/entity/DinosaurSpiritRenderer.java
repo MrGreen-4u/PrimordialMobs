@@ -4,6 +4,8 @@ import com.primordialmobs.PrimordialMobs;
 import com.primordialmobs.client.model.GrottoceratopsModel;
 import com.primordialmobs.client.model.SubterranodonModel;
 import com.primordialmobs.client.model.TremorsaurusModel;
+import com.primordialmobs.client.render.PMInternalShaders;
+import com.primordialmobs.client.render.PMRenderTypes;
 import com.primordialmobs.server.entity.item.DinosaurSpiritEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -19,9 +21,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * The Extinction Spear's ghost dinosaurs. Upstream draws these with a custom "red ghost" core shader;
- * this port approximates it with the vanilla translucent-emissive render type tinted red, which reads
- * the same in-game (glowing red translucent silhouettes) without shipping shader files.
+ * The Extinction Spear's ghost dinosaurs, drawn with upstream Alex's Caves' own "red ghost" core shader
+ * (shipped under this mod's namespace): the texture is collapsed to its brightest channel, recoloured to
+ * ember red and blended additively over the world, so the Grazer, Roarer and Drifter spirits show up as
+ * translucent glowing silhouettes rather than solid red models.
  */
 public class DinosaurSpiritRenderer extends EntityRenderer<DinosaurSpiritEntity> {
 
@@ -31,16 +34,19 @@ public class DinosaurSpiritRenderer extends EntityRenderer<DinosaurSpiritEntity>
     private static final SubterranodonModel SUBTERRANODON_MODEL = new SubterranodonModel();
     private static final TremorsaurusModel TREMORSAURUS_MODEL = new TremorsaurusModel();
     private static final GrottoceratopsModel GROTTOCERATOPS_MODEL = new GrottoceratopsModel();
-    private static final float GHOST_RED = 1.0F;
-    private static final float GHOST_GREEN = 0.3F;
-    private static final float GHOST_BLUE = 0.25F;
 
     public DinosaurSpiritRenderer(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);
     }
 
+    /**
+     * Falls back to the vanilla translucent-emissive type if the core shader failed to load, so a broken
+     * shader shows a dim ghost instead of crashing the render thread.
+     */
     private static RenderType ghostRenderType(ResourceLocation texture) {
-        return RenderType.entityTranslucentEmissive(texture);
+        return PMInternalShaders.getRenderTypeRedGhostShader() == null
+                ? RenderType.entityTranslucentEmissive(texture)
+                : PMRenderTypes.getRedGhost(texture);
     }
 
     public void render(DinosaurSpiritEntity entityIn, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
@@ -70,7 +76,7 @@ public class DinosaurSpiritRenderer extends EntityRenderer<DinosaurSpiritEntity>
                 SUBTERRANODON_MODEL.young = false;
                 ivertexbuilder = bufferIn.getBuffer(ghostRenderType(SUBTERRANODON_TEXTURE));
                 SUBTERRANODON_MODEL.animateSpirit(entityIn, partialTicks);
-                SUBTERRANODON_MODEL.renderToBuffer(poseStack, ivertexbuilder, 240, OverlayTexture.NO_OVERLAY, GHOST_RED, GHOST_GREEN, GHOST_BLUE, ghostAlpha);
+                SUBTERRANODON_MODEL.renderToBuffer(poseStack, ivertexbuilder, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, ghostAlpha);
                 SUBTERRANODON_MODEL.young = prevBaby;
                 break;
             case GROTTOCERATOPS:
@@ -78,7 +84,7 @@ public class DinosaurSpiritRenderer extends EntityRenderer<DinosaurSpiritEntity>
                 GROTTOCERATOPS_MODEL.young = false;
                 ivertexbuilder = bufferIn.getBuffer(ghostRenderType(GROTTOCERATOPS_TEXTURE));
                 GROTTOCERATOPS_MODEL.animateSpirit(entityIn, partialTicks);
-                GROTTOCERATOPS_MODEL.renderSpiritToBuffer(poseStack, ivertexbuilder, 240, OverlayTexture.NO_OVERLAY, GHOST_RED, GHOST_GREEN, GHOST_BLUE, ghostAlpha);
+                GROTTOCERATOPS_MODEL.renderSpiritToBuffer(poseStack, ivertexbuilder, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, ghostAlpha);
                 GROTTOCERATOPS_MODEL.young = prevBaby;
                 break;
             case TREMORSAURUS:
@@ -86,7 +92,7 @@ public class DinosaurSpiritRenderer extends EntityRenderer<DinosaurSpiritEntity>
                 TREMORSAURUS_MODEL.young = false;
                 ivertexbuilder = bufferIn.getBuffer(ghostRenderType(TREMORSAURUS_TEXTURE));
                 TREMORSAURUS_MODEL.animateSpirit(entityIn, partialTicks);
-                TREMORSAURUS_MODEL.renderSpiritToBuffer(poseStack, ivertexbuilder, 240, OverlayTexture.NO_OVERLAY, GHOST_RED, GHOST_GREEN, GHOST_BLUE, ghostAlpha);
+                TREMORSAURUS_MODEL.renderSpiritToBuffer(poseStack, ivertexbuilder, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, ghostAlpha);
                 TREMORSAURUS_MODEL.young = prevBaby;
                 break;
         }

@@ -57,13 +57,13 @@
   "enchantment.alexscaves.bonking": "裂颅一击",
   "enchantment.alexscaves.bonking.desc": "原始大棒在击杀生物后会掉落头颅",
   "enchantment.alexscaves.chomping_spirit": "悍勇之灵",
-  "enchantment.alexscaves.chomping_spirit.desc": "灭绝长矛的撼地龙灵魂造成的伤害增加",
+  "enchantment.alexscaves.chomping_spirit.desc": "灭绝长矛的Roarer 灵魂造成的伤害增加",
   "enchantment.alexscaves.dazing_sweep": "巨力横扫",
   "enchantment.alexscaves.dazing_sweep.desc": "原始大棒能在更大范围内造成眩晕效果",
   "enchantment.alexscaves.herd_phalanx": "兽阵之灵",
-  "enchantment.alexscaves.herd_phalanx.desc": "灭绝长矛蓄力时，洞穴角龙灵魂能召唤更多装甲头颅进行防御",
+  "enchantment.alexscaves.herd_phalanx.desc": "灭绝长矛蓄力时，Grazer 灵魂能召唤更多装甲头颅进行防御",
   "enchantment.alexscaves.plummeting_flight": "天坠之灵",
-  "enchantment.alexscaves.plummeting_flight.desc": "灭绝长矛击中目标时，地底翼龙灵魂击飞高度更高，持续时间更久",
+  "enchantment.alexscaves.plummeting_flight.desc": "灭绝长矛击中目标时，Drifter 灵魂击飞高度更高，持续时间更久",
   "enchantment.alexscaves.swiftwood": "轻便",
   "enchantment.alexscaves.swiftwood.desc": "原始大棒挥动的速度更快",
   "entity.alexscaves.all.command_0": "%s 在游荡",
@@ -114,5 +114,5 @@
   "item.alexscaves.trilocaris_bucket": "三叶虾桶",
   "item.alexscaves.trilocaris_tail": "生三叶虾尾",
   "itemGroup.alexscaves.primordial_caves": "原初生物",
-  "key.special_ability": "Alex的洞穴 - 特殊能力"
+  "key.special_ability": "Primordial Mobs - 特殊能力"
 }

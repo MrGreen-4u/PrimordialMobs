@@ -49,7 +49,7 @@ public class AnimalLootChestsGoal extends MoveToBlockGoal {
                         return true;
                     }
                 } catch (Exception e) {
-                    PrimordialMobs.LOGGER.warn("Alex's Caves stopped a " + entity.getClass().getSimpleName() + " from causing a crash during access");
+                    PrimordialMobs.LOGGER.warn("Primordial Mobs stopped a " + entity.getClass().getSimpleName() + " from causing a crash during access");
                     e.printStackTrace();
                 }
             }

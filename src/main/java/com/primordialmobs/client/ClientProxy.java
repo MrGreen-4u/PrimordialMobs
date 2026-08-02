@@ -63,6 +63,7 @@ public class ClientProxy extends CommonProxy {
             // special-ability keybind already exists; registering ours would duplicate both.
             bus.addListener(this::setupParticles);
             bus.addListener(this::registerKeybinds);
+            bus.addListener(this::registerShaders);
             bus.addListener(com.primordialmobs.client.model.PMModelLayers::register);
         } else {
             // Force our renamed names (Roarer/Grazer/... and their items) to win over Alex's Caves' lang.
@@ -111,6 +112,19 @@ public class ClientProxy extends CommonProxy {
 
     private void registerKeybinds(RegisterKeyMappingsEvent e) {
         e.register(PMKeybindRegistry.KEY_SPECIAL_ABILITY);
+    }
+
+    /**
+     * The core shader the Extinction Spear's dinosaur spirits are drawn with. Only needed standalone:
+     * with the full Alex's Caves installed its own renderer (and its own copy of this shader) handles
+     * the spirits, and our DinosaurSpiritRenderer is never registered.
+     */
+    private void registerShaders(final net.minecraftforge.client.event.RegisterShadersEvent e) {
+        try {
+            e.registerShader(new net.minecraft.client.renderer.ShaderInstance(e.getResourceProvider(), new ResourceLocation(PrimordialMobs.MODID, "rendertype_red_ghost"), com.mojang.blaze3d.vertex.DefaultVertexFormat.NEW_ENTITY), com.primordialmobs.client.render.PMInternalShaders::setRenderTypeRedGhostShader);
+        } catch (java.io.IOException exception) {
+            PrimordialMobs.LOGGER.error("could not register the red ghost shader", exception);
+        }
     }
 
     @Override

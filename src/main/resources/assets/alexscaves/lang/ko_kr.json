@@ -57,13 +57,13 @@
   "enchantment.alexscaves.bonking": "두개골 가격",
   "enchantment.alexscaves.bonking.desc": "원시 곤봉으로 몹을 죽였을 때 일정 확률로 충전된 크리퍼에 터졌을 때와 같이 해당 몹의 머리를 떨굽니다",
   "enchantment.alexscaves.chomping_spirit": "깨물어부수는 영혼",
-  "enchantment.alexscaves.chomping_spirit.desc": "멸종의 창이 소환한 트레머사우르스 영혼이 가하는 피해가 증가합니다",
+  "enchantment.alexscaves.chomping_spirit.desc": "멸종의 창이 소환한 Roarer 영혼이 가하는 피해가 증가합니다",
   "enchantment.alexscaves.dazing_sweep": "눈부신 휩쓸기",
   "enchantment.alexscaves.dazing_sweep.desc": "원시 곤봉의 기절 효과가 더 넓은 범위에 부여될 수 있습니다",
   "enchantment.alexscaves.herd_phalanx": "무리 증원",
-  "enchantment.alexscaves.herd_phalanx.desc": "멸종의 창이 소환한 그로토케라톱스 영혼의 수가 늘어납니다",
+  "enchantment.alexscaves.herd_phalanx.desc": "멸종의 창이 소환한 Grazer 영혼의 수가 늘어납니다",
   "enchantment.alexscaves.plummeting_flight": "급강하 비행",
-  "enchantment.alexscaves.plummeting_flight.desc": "멸종의 창이 소환한 서브테라노돈 영혼이 적을 더 오랫동안, 더 높이 적을 잡고 날아갑니다",
+  "enchantment.alexscaves.plummeting_flight.desc": "멸종의 창이 소환한 Drifter 영혼이 적을 더 오랫동안, 더 높이 적을 잡고 날아갑니다",
   "enchantment.alexscaves.swiftwood": "가속목",
   "enchantment.alexscaves.swiftwood.desc": "원시 곤봉의 공격 속도가 대폭 증가합니다",
   "entity.alexscaves.all.command_0": "%s이(가) 떠돌아다닙니다",
@@ -114,5 +114,5 @@
   "item.alexscaves.trilocaris_bucket": "트릴로카리스가 담긴 양동이",
   "item.alexscaves.trilocaris_tail": "익히지 않은 트릴로카리스 꼬리",
   "itemGroup.alexscaves.primordial_caves": "태고의 몹",
-  "key.special_ability": "알렉스의 동굴들 특수 능력"
+  "key.special_ability": "Primordial Mobs 특수 능력"
 }

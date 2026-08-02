@@ -4,13 +4,15 @@ license="GPL-3.0-only"
 issueTrackerURL="https://github.com/MrGreen-4u/PrimordialMobs/issues" #optional
 [[mods]] #mandatory
 modId="primordialmobs" #mandatory
-version="2.11.0" #mandatory
+version="2.12.0" #mandatory
 displayName="Primordial Mobs" #mandatory
 displayURL="https://github.com/MrGreen-4u/PrimordialMobs" #optional
-authors="MrGreen_4u; based on Alex's Caves by Alexthe668 and Noonyeyz" #optional
-credits="LudoCrypt, _Ninni, PrismaticPinky, RenRen, Gatetoh, arby698, PlummetStudios, HolidayRaptor" #optional
+authors="MrGreen_4u" #optional
+# GPL-3.0 attribution for the upstream work this mod derives from. Kept deliberately: the licence
+# requires the original authors' notices to be preserved. See LICENSE for the full text.
+credits="Derived from Alex's Caves by Alexthe668 and Noonyeyz, under the GPL-3.0. Additional inherited credits: LudoCrypt, _Ninni, PrismaticPinky, RenRen, Gatetoh, arby698, PlummetStudios, HolidayRaptor" #optional
 description='''Discover primordial creatures by brushing suspicious sand and gravel: the Grazer, the Logger, the Roarer, the Drifter and the Stealer. Tame all five, ride the first four, and tame a Sniffer to dig up the prehistoric plants. With the full Alex's Caves mod installed it becomes an overlay for the Primordial Caves instead: renamed creatures, recolored variants, brushing finds and a passive Sniffer down there.'''
-logoFile="assets/alexscaves/textures/misc/mod_logo.png" #optional
+logoFile="assets/primordialmobs/textures/misc/mod_logo.png" #optional
 [[dependencies.primordialmobs]] #optional
 # the modid of the dependency
 modId="citadel" #mandatory

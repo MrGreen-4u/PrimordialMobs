@@ -31,9 +31,13 @@ The distributable JAR is created in `build/libs`.
 
 ## Credits and license
 
-Primordial Mobs is maintained by MrGreen_4u and is a derivative work of
+Primordial Mobs is maintained by MrGreen_4u. It is a derivative work of
 [Alex's Caves](https://github.com/AlexModGuy/AlexsCaves), by Alexthe668 and
-Noonyeyz. Additional inherited credits are listed in the mod metadata.
+Noonyeyz, whose original models, animations, sounds and textures it builds on.
+That attribution is kept because the GPL-3.0 requires it; beyond it and the
+optional compatibility layer, the mod carries no Alex's Caves branding — it has
+its own name, logo, keybind and creative-tab names, and its own config file.
+Additional inherited credits are listed in the mod metadata.
 
 This project is distributed under the
 [GNU General Public License v3](LICENSE).

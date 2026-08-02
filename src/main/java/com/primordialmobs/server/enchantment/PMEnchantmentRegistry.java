@@ -39,13 +39,23 @@ public class PMEnchantmentRegistry {
         return true;
     }
 
+    /**
+     * Offers an enchanted book for <em>every</em> level of each enchantment of the given category, from
+     * {@link Enchantment#getMinLevel()} up to {@link Enchantment#getMaxLevel()} — the same thing vanilla
+     * does for its own enchantments in the Ingredients tab. Upstream only ever offered the maximum level,
+     * which left Swiftwood I/II, Dazing Sweep I, Herd Phalanx I/II, Chomping Spirit I and Plummeting
+     * Flight I/II unobtainable in creative (these books are not in the vanilla Ingredients tab either,
+     * because {@link PMWeaponEnchantment#isAllowedOnBooks()} is off unless the enchantments_in_loot
+     * config option is enabled).
+     */
     public static void addAllEnchantsToCreativeTab(CreativeModeTab.Output output, EnchantmentCategory enchantmentCategory) {
         for (RegistryObject<Enchantment> enchantObject : DEF_REG.getEntries()) {
             if (enchantObject.isPresent()) {
                 Enchantment enchant = enchantObject.get();
                 if (enchant.category == enchantmentCategory) {
-                    EnchantmentInstance instance = new EnchantmentInstance(enchant, enchant.getMaxLevel());
-                    output.accept(EnchantedBookItem.createForEnchantment(instance));
+                    for (int level = enchant.getMinLevel(); level <= enchant.getMaxLevel(); level++) {
+                        output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchant, level)));
+                    }
                 }
             }
         }
