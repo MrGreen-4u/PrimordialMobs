@@ -86,6 +86,10 @@ public class ClientProxy extends CommonProxy {
             BlockEntityRenderers.register(PMBlockEntityRegistry.AMBER_MONOLITH.get(), AmberMonolithBlockRenderer::new);
             EntityRenderers.register(PMEntityRegistry.EXTINCTION_SPEAR.get(), com.primordialmobs.client.render.entity.ExtinctionSpearRenderer::new);
             EntityRenderers.register(PMEntityRegistry.DINOSAUR_SPIRIT.get(), com.primordialmobs.client.render.entity.DinosaurSpiritRenderer::new);
+            EntityRenderers.register(PMEntityRegistry.BOAT.get(), context -> new com.primordialmobs.client.render.entity.PMBoatRenderer(context, false));
+            EntityRenderers.register(PMEntityRegistry.CHEST_BOAT.get(), context -> new com.primordialmobs.client.render.entity.PMBoatRenderer(context, true));
+            // Registers the pewen sign/hanging-sign material so the sign block entity renderer can draw them.
+            net.minecraft.client.renderer.Sheets.addWoodType(com.primordialmobs.server.block.PMBlockRegistry.PEWEN_WOOD_TYPE);
             // Dinosaur Nuggets come in four shapes, chosen by stack count exactly like upstream.
             ItemProperties.register(PMItemRegistry.DINOSAUR_NUGGET.get(), new ResourceLocation("nugget"), (stack, level, living, j) -> {
                 return (stack.getCount() % 4) / 4F;

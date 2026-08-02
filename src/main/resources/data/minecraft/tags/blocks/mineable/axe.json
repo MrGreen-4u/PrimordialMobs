@@ -8,6 +8,19 @@
     "alexscaves:stripped_pewen_log",
     "alexscaves:stripped_pewen_wood",
     "alexscaves:pewen_branch",
-    "alexscaves:cycad"
+    "alexscaves:cycad",
+    "alexscaves:pewen_planks",
+    "alexscaves:pewen_stairs",
+    "alexscaves:pewen_slab",
+    "alexscaves:pewen_fence",
+    "alexscaves:pewen_sign",
+    "alexscaves:pewen_wall_sign",
+    "alexscaves:pewen_hanging_sign",
+    "alexscaves:pewen_wall_hanging_sign",
+    "alexscaves:pewen_pressure_plate",
+    "alexscaves:pewen_trapdoor",
+    "alexscaves:pewen_button",
+    "alexscaves:pewen_fence_gate",
+    "alexscaves:pewen_door"
   ]
 }

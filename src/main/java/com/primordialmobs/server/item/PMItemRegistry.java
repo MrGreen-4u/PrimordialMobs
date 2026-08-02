@@ -40,6 +40,11 @@ public class PMItemRegistry {
     public static final RegistryObject<Item> PRIMITIVE_CLUB_SPRITE = DEF_REG.register("primitive_club_inventory", () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> TECTONIC_SHARD = DEF_REG.register("tectonic_shard", () -> new Item(new Item.Properties().rarity(RARITY_DEMONIC).fireResistant()));
     public static final RegistryObject<Item> PEWEN_SAP = DEF_REG.register("pewen_sap", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> PEWEN_DOOR = DEF_REG.register("pewen_door", () -> new net.minecraft.world.item.DoubleHighBlockItem(PMBlockRegistry.PEWEN_DOOR.get(), new Item.Properties()));
+    public static final RegistryObject<Item> PEWEN_SIGN = DEF_REG.register("pewen_sign", () -> new net.minecraft.world.item.SignItem(new Item.Properties().stacksTo(16), PMBlockRegistry.PEWEN_SIGN.get(), PMBlockRegistry.PEWEN_WALL_SIGN.get()));
+    public static final RegistryObject<Item> PEWEN_HANGING_SIGN = DEF_REG.register("pewen_hanging_sign", () -> new net.minecraft.world.item.HangingSignItem(PMBlockRegistry.PEWEN_HANGING_SIGN.get(), PMBlockRegistry.PEWEN_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+    public static final RegistryObject<Item> PEWEN_BOAT = DEF_REG.register("pewen_boat", () -> new CaveBoatItem(false, com.primordialmobs.server.entity.util.PMBoat.Type.PEWEN, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> PEWEN_CHEST_BOAT = DEF_REG.register("pewen_chest_boat", () -> new CaveBoatItem(true, com.primordialmobs.server.entity.util.PMBoat.Type.PEWEN, new Item.Properties().stacksTo(1)));
     public static final PMArmorMaterial PRIMORDIAL_ARMOR_MATERIAL = new PMArmorMaterial("primordial", 20, new int[]{3, 4, 3, 2}, 25, net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER, 0F);
     public static final RegistryObject<Item> PRIMORDIAL_HELMET = DEF_REG.register("primordial_helmet", () -> new PrimordialArmorItem(PRIMORDIAL_ARMOR_MATERIAL, net.minecraft.world.item.ArmorItem.Type.HELMET));
     public static final RegistryObject<Item> PRIMORDIAL_TUNIC = DEF_REG.register("primordial_tunic", () -> new PrimordialArmorItem(PRIMORDIAL_ARMOR_MATERIAL, net.minecraft.world.item.ArmorItem.Type.CHESTPLATE));
@@ -80,7 +85,9 @@ public class PMItemRegistry {
         ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.CYCAD.get().asItem(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.ARCHAIC_VINE.get().asItem(), 0.5F);
         PRIMORDIAL_ARMOR_MATERIAL.setRepairMaterial(net.minecraft.world.item.crafting.Ingredient.of(TOUGH_HIDE.get()));
+        ComposterBlock.COMPOSTABLES.put(PMBlockRegistry.PEWEN_BRANCH.get().asItem(), 0.3F);
         PMBlockRegistry.setupFlowerPots();
+        PMBlockRegistry.expandSignBlockEntities();
     }
 
     public static List<RegistryObject<Item>> getSpawnEggs() {
