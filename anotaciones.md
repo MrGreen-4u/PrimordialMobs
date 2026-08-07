@@ -70,3 +70,22 @@ Notas no obvias y reutilizables. Leer antes de tocar nada.
 - Los renombres/pack/texturas variantes son cliente puro: no verificables headless. El server
   verifica: arranque limpio con defaultRequire:1 (= todos los mixins compat resolvieron),
   summon de los 8 mobs, GLM registrado, tags, biome modifiers.
+
+## Sesión 2026-08-08 — mixturas del Sniffer y el giro del Rammer montado
+
+- **Mixturas del Sniffer (v3.1)**: Serene Salad DOMESTICA (1/3, sustituye al Tree Star; en uno
+  domado = calmar/descansar), Seething Stew ENFURECE (1200 ticks: persigue y embiste monstruos;
+  daño directo con `hurt()` porque el Sniffer vanilla NO tiene atributo ATTACK_DAMAGE y
+  `doHurtTarget` petaría), Primordial Soup REDUCE A LA MITAD el TTL restante de la memoria
+  SNIFF_COOLDOWN (`brain.getTimeUntilExpiry` + `setMemoryWithExpiry`). La rabia vive en
+  ForgeData `ACSnifferRage` (restaurada en EntityJoinLevel) y corre en el patrón
+  customServerAiStep-cancel ya usado para sit/follow.
+- **Rammer montado que anda "roto"**: `SauropodBaseEntity.turningFast` (público, sin sync)
+  decide la velocidad de giro del CUERPO (10°/tick vs 2°/tick) y SOLO lo activan los melee
+  goals. Montado, `tickRidden` fija el yaw de movimiento al de la cámara al instante y el cuerpo
+  (piernas/cuello/cola cuelgan de yBodyRot) se arrastra a 2°/tick → anda de lado. Fix:
+  AtlatitanEntityMixin TAIL en tickRidden → turningFast = (input del jinete) o (desvío
+  cuerpo-vs-yaw > 20°). tickRidden corre en AMBOS lados (el despacho está antes del check
+  isControlledByLocalInstance en LivingEntity.travelRidden), así que el campo queda coherente.
+- Verificación headless de la rabia: summon sniffer con ForgeData{ACSnifferRage:900} + zombie —
+  el sniffer lo persigue y la vida del zombie baja.

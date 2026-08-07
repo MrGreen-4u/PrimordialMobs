@@ -22,10 +22,10 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
- * Everything the mod does to the vanilla Sniffer: alternate skins, the 15% recolored-variant chance and
- * the Grazer/Logger-style taming (tree star food, sit/follow/wander commands, never rideable). All item
- * and sound references resolve by id so the same code runs standalone and alongside the full Alex's Caves
- * mod.
+ * Everything the mod does to the vanilla Sniffer: alternate skins, the configurable recolored-variant
+ * chance, taming with a Serene Salad (sit/follow/wander commands, never rideable) and the three
+ * prehistoric mixture reactions. All item and sound references resolve by id against Alex's Caves'
+ * registries.
  */
 public class SnifferEvents {
 
@@ -54,30 +54,12 @@ public class SnifferEvents {
             event.setCancellationResult(InteractionResult.SUCCESS);
             return;
         }
-        // 2) Taming with a tree star, mirroring the Grazer/Logger (1-in-3 chance, hearts/smoke feedback).
-        if (!skinHolder.ac_isTame() && !sniffer.isBaby() && SnifferTaming.isTamingFood(stack)) {
-            if (sniffer.level() instanceof ServerLevel serverLevel) {
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                }
-                sniffer.playSound(sniffer.getEatingSound(stack));
-                if (sniffer.getRandom().nextInt(3) == 0) {
-                    skinHolder.ac_setOwnerUUID(player.getUUID());
-                    skinHolder.ac_setCommand(1);
-                    spawnTamingParticles(serverLevel, sniffer, ParticleTypes.HEART);
-                } else {
-                    spawnTamingParticles(serverLevel, sniffer, ParticleTypes.SMOKE);
-                }
-            }
-            player.swing(event.getHand());
-            event.setCanceled(true);
-            event.setCancellationResult(InteractionResult.sidedSuccess(sniffer.level().isClientSide));
-            return;
-        }
-        // 3) The prehistoric mixtures (serene salad / primordial soup / seething stew) work on a Sniffer too.
-        // Handled here rather than in PrehistoricMixtureItem so it also applies with the full Alex's Caves
-        // installed, where the item classes are its own; the items are matched by id and the healing, the
-        // food effects, the particles and the returned bowl mirror what that item does for any other mob.
+        // 2) The prehistoric mixtures. Each does one distinct thing (see SnifferTaming.Mixture): the
+        // Serene Salad tames a wild Sniffer (1 in 3) or rests a tame one, the Seething Stew enrages it,
+        // the Primordial Soup halves the wait until its next sniff. Handled here rather than in
+        // PrehistoricMixtureItem so it also applies with the full Alex's Caves installed, where the item
+        // classes are its own; the items are matched by id and the healing, the food effects, the
+        // particles and the returned bowl mirror what that item does for any other mob.
         SnifferTaming.Mixture mixture = SnifferTaming.mixtureOf(stack);
         if (mixture != SnifferTaming.Mixture.NONE && !player.isShiftKeyDown()) {
             if (sniffer.level() instanceof ServerLevel serverLevel) {
@@ -88,7 +70,14 @@ public class SnifferEvents {
                         sniffer.addEffect(new MobEffectInstance(effect.getFirst()));
                     }
                 }
-                SnifferTaming.applyMixture(sniffer, mixture);
+                boolean tamingAttempt = mixture == SnifferTaming.Mixture.SERENE_SALAD
+                        && !skinHolder.ac_isTame() && !sniffer.isBaby();
+                boolean reacted = SnifferTaming.applyMixture(sniffer, mixture, player);
+                if (tamingAttempt) {
+                    spawnTamingParticles(serverLevel, sniffer, reacted ? ParticleTypes.HEART : ParticleTypes.SMOKE);
+                } else if (mixture == SnifferTaming.Mixture.SEETHING_STEW && reacted) {
+                    spawnTamingParticles(serverLevel, sniffer, ParticleTypes.ANGRY_VILLAGER);
+                }
                 for (int i = 0; i < 4 + sniffer.getRandom().nextInt(3); i++) {
                     serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack),
                             sniffer.getRandomX(0.8F), sniffer.getRandomY(), sniffer.getRandomZ(0.8F),
@@ -107,7 +96,7 @@ public class SnifferEvents {
             event.setCancellationResult(InteractionResult.sidedSuccess(sniffer.level().isClientSide));
             return;
         }
-        // 4) Shift-click by the owner cycles wander -> sit -> follow, like the dinosaurs.
+        // 3) Shift-click by the owner cycles wander -> sit -> follow, like the dinosaurs.
         if (skinHolder.ac_isTame() && player.getUUID().equals(skinHolder.ac_getOwnerUUID()) && player.isShiftKeyDown() && !sniffer.isFood(stack)) {
             if (!sniffer.level().isClientSide) {
                 int command = skinHolder.ac_getCommand() + 1;
@@ -134,7 +123,10 @@ public class SnifferEvents {
     @SubscribeEvent
     public void snifferSkinOnSpawn(MobSpawnEvent.FinalizeSpawn event) {
         if (event.getEntity() instanceof Sniffer sniffer && sniffer instanceof SnifferSkinHolder skinHolder) {
-            if (!skinHolder.ac_isRecolored() && sniffer.getRandom().nextFloat() < 0.15F) {
+            // Same configurable lottery as the dinosaurs (alternative-textures section, 15% default).
+            float chance = com.primordialmobs.PrimordialMobs.COMMON_CONFIG.alternativeTextures.get()
+                    ? com.primordialmobs.PrimordialMobs.COMMON_CONFIG.alternativeTextureChance.get().floatValue() : 0.0F;
+            if (!skinHolder.ac_isRecolored() && chance > 0.0F && sniffer.getRandom().nextFloat() < chance) {
                 skinHolder.ac_setRecolored(true);
             }
         }
@@ -154,6 +146,10 @@ public class SnifferEvents {
             }
             if (sniffer.getPersistentData().contains("ACSnifferCommand")) {
                 skinHolder.ac_setCommand(sniffer.getPersistentData().getInt("ACSnifferCommand"));
+            }
+            int rage = sniffer.getPersistentData().getInt("ACSnifferRage");
+            if (rage > 0) {
+                skinHolder.ac_enrage(rage);
             }
         }
     }

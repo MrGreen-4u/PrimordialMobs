@@ -28,6 +28,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class SnifferTaming {
 
     public static final ResourceLocation PRIMORDIAL_CAVES_BIOME = new ResourceLocation(PrimordialMobs.NAMESPACE, "primordial_caves");
+    /** How long a Seething Stew keeps a Sniffer enraged: one minute. */
+    public static final int RAGE_TICKS = 1200;
     /**
      * The sit pose reuses the vanilla SNIFFER_DIG animation (8s), but only its first ~2 seconds are the
      * lie-down (body drops to y=-7, all six legs tuck). At 2.0s the body rotation is back to 0 and the
@@ -35,16 +37,10 @@ public class SnifferTaming {
      * the animation here to hold a clean settled pose instead of playing the 6-second ground-sniffing loop.
      */
     public static final long SIT_ANIM_FREEZE_MS = 2000L;
-    private static final ResourceLocation TREE_STAR_ID = new ResourceLocation(PrimordialMobs.NAMESPACE, "tree_star");
     private static final ResourceLocation AMBER_CURIOSITY_ID = new ResourceLocation(PrimordialMobs.NAMESPACE, "amber_curiosity");
     private static final ResourceLocation TECTONIC_SHARD_ID = new ResourceLocation(PrimordialMobs.NAMESPACE, "tectonic_shard");
     private static final ResourceLocation AMBER_SOUND_ID = new ResourceLocation(PrimordialMobs.NAMESPACE, "amber_monolith_summon");
     private static final ResourceLocation TECTONIC_SOUND_ID = new ResourceLocation(PrimordialMobs.NAMESPACE, "tectonic_shard_transform");
-
-    public static boolean isTamingFood(ItemStack stack) {
-        Item treeStar = ForgeRegistries.ITEMS.getValue(TREE_STAR_ID);
-        return treeStar != null && stack.is(treeStar);
-    }
 
     public static boolean isAmberCuriosity(ItemStack stack) {
         Item item = ForgeRegistries.ITEMS.getValue(AMBER_CURIOSITY_ID);
@@ -66,15 +62,17 @@ public class SnifferTaming {
     private static final ResourceLocation STUNNED_EFFECT_ID = new ResourceLocation(PrimordialMobs.NAMESPACE, "stunned");
 
     /**
-     * The three prehistoric mixtures, and what each one does to a Sniffer. The dinosaurs each react to one
-     * of them (a Primordial Soup sends a Logger to push trees over, a Serene Salad calms a stunned Roarer or
-     * a relaxed Stealer); the Sniffer had no reaction at all, so each mixture now drives the one thing a
-     * Sniffer is for — digging:
-     *   SERENE_SALAD    calm: clears Stunned and sends a tame Sniffer to lie down and rest.
-     *   PRIMORDIAL_SOUP back to work: erases the sniff cooldown (vanilla makes a Sniffer wait 10000-15000
-     *                   ticks between digs), stands it up and lets it start scenting immediately.
-     *   SEETHING_STEW   work the same ground again: the soup's effect plus erasing the explored-positions
-     *                   memory, so it stops refusing to dig where it has already been.
+     * The three prehistoric mixtures. Each does ONE distinct thing to a Sniffer, mirroring how the
+     * dinosaurs each react to a different mixture (a Serene Salad calms a stunned Roarer or tames a
+     * relaxed Stealer, a Seething Stew sends a Logger into a tree-felling frenzy):
+     *   SERENE_SALAD    the calming mixture is also how a wild Sniffer is TAMED (1 chance in 3, like
+     *                   the Stealer). On one that is already tame it clears Stunned and sends it to
+     *                   lie down and rest.
+     *   SEETHING_STEW   rage: for a minute the Sniffer drops everything and headbutts the hostile
+     *                   mobs around it — the seething mixture makes it seethe.
+     *   PRIMORDIAL_SOUP patience food: halves the remaining wait until the next sniff (vanilla makes
+     *                   a Sniffer wait 9600 ticks between digs), and stands a resting one up so it
+     *                   can get on with it.
      * All three still heal the Sniffer and apply their own food effects (see SnifferEvents).
      */
     public enum Mixture {
@@ -100,45 +98,65 @@ public class SnifferTaming {
     }
 
     /**
-     * Applies a mixture's Sniffer-specific effect (server side). Returns the particle/feedback flag: true if
-     * the sniffer visibly reacted.
+     * Applies a mixture's Sniffer-specific effect (server side). {@code player} is whoever fed it —
+     * the Serene Salad's taming roll needs them. Returns true if the sniffer visibly reacted.
      */
-    public static boolean applyMixture(Sniffer sniffer, Mixture mixture) {
+    public static boolean applyMixture(Sniffer sniffer, Mixture mixture, net.minecraft.world.entity.player.Player player) {
         SnifferSkinHolder holder = sniffer instanceof SnifferSkinHolder h ? h : null;
         switch (mixture) {
             case SERENE_SALAD -> {
-                // the salad is the calming mixture everywhere in the mod: it clears Stunned
+                // the salad is the calming mixture everywhere in the mod: it clears Stunned...
                 MobEffect stunned = ForgeRegistries.MOB_EFFECTS.getValue(STUNNED_EFFECT_ID);
                 if (stunned != null) {
                     sniffer.removeEffect(stunned);
                 }
-                if (holder != null && holder.ac_isTame()) {
-                    holder.ac_setCommand(1);
+                if (holder == null) {
+                    return true;
                 }
+                // ...and, exactly like the Stealer's, it is the TAMING food: 1 chance in 3 on a wild
+                // adult. The caller shows the hearts/smoke (see SnifferEvents).
+                if (!holder.ac_isTame() && !sniffer.isBaby()) {
+                    if (sniffer.getRandom().nextInt(3) == 0) {
+                        holder.ac_setOwnerUUID(player.getUUID());
+                        holder.ac_setCommand(1);
+                        return true;
+                    }
+                    return false;
+                }
+                // On one already tamed it stays the calming mixture: lie down and rest.
+                holder.ac_setCommand(1);
                 return true;
             }
             case SEETHING_STEW -> {
-                sniffer.getBrain().eraseMemory(MemoryModuleType.SNIFFER_EXPLORED_POSITIONS);
-                wakeUpToDig(sniffer, holder);
+                // The seething mixture makes it seethe: a minute of headbutting rage.
+                if (holder == null || sniffer.isBaby()) {
+                    return false;
+                }
+                if (holder.ac_isOrderedToSit()) {
+                    holder.ac_setCommand(0);
+                }
+                holder.ac_enrage(RAGE_TICKS);
                 return true;
             }
             case PRIMORDIAL_SOUP -> {
-                wakeUpToDig(sniffer, holder);
+                // Patience food: the wait until the next sniff is halved, not erased.
+                if (holder != null && holder.ac_isTame() && holder.ac_getCommand() == 1) {
+                    holder.ac_setCommand(0);         // stand up: a sitting sniffer never sniffs
+                }
+                var brain = sniffer.getBrain();
+                if (brain.getMemory(MemoryModuleType.SNIFF_COOLDOWN).isPresent()) {
+                    long remaining = brain.getTimeUntilExpiry(MemoryModuleType.SNIFF_COOLDOWN);
+                    brain.eraseMemory(MemoryModuleType.SNIFF_COOLDOWN);
+                    if (remaining > 1) {
+                        brain.setMemoryWithExpiry(MemoryModuleType.SNIFF_COOLDOWN, net.minecraft.util.Unit.INSTANCE, remaining / 2);
+                    }
+                }
                 return true;
             }
             default -> {
                 return false;
             }
         }
-    }
-
-    private static void wakeUpToDig(Sniffer sniffer, SnifferSkinHolder holder) {
-        if (holder != null && holder.ac_isTame() && holder.ac_getCommand() == 1) {
-            holder.ac_setCommand(0);                 // stand up: a sitting sniffer never sniffs
-        }
-        sniffer.getBrain().eraseMemory(MemoryModuleType.SNIFF_COOLDOWN);
-        sniffer.getBrain().eraseMemory(MemoryModuleType.SNIFFER_DIGGING);
-        sniffer.getBrain().eraseMemory(MemoryModuleType.SNIFFER_SNIFFING_TARGET);
     }
 
     /**

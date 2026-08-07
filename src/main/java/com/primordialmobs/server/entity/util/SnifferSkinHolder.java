@@ -34,4 +34,12 @@ public interface SnifferSkinHolder {
     default boolean ac_isOrderedToSit() {
         return ac_getCommand() == 1;
     }
+
+    /**
+     * The Seething Stew's rage: for this many ticks the sniffer drops everything and headbutts
+     * hostile mobs around it (see SnifferMixin#ac_rageStep). Server side only.
+     */
+    void ac_enrage(int ticks);
+
+    boolean ac_isEnraged();
 }

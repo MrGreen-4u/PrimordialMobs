@@ -65,6 +65,15 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
     @Nullable
     private LivingEntity ac_lookTarget;
 
+    /** Seething Stew rage (server side): ticks left, the current victim, and the headbutt cooldown. */
+    @Unique
+    private int ac_rageTicks;
+    @Unique
+    private int ac_rageAttackCooldown;
+    @Unique
+    @Nullable
+    private LivingEntity ac_rageTarget;
+
     protected SnifferMixin(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
     }
@@ -138,13 +147,27 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
         }
     }
 
+    @Override
+    public void ac_enrage(int ticks) {
+        this.ac_rageTicks = ticks;
+        this.getPersistentData().putInt("ACSnifferRage", ticks);
+        this.ac_rageTarget = null;
+        this.ac_rageAttackCooldown = 0;
+    }
+
+    @Override
+    public boolean ac_isEnraged() {
+        return this.ac_rageTicks > 0;
+    }
+
     /**
-     * Sitting uses the digging lie-down pose, and in the Primordial Caves the sniffing/digging feature is
-     * disabled entirely, so in both situations the brain must never start scenting/sniffing/searching.
+     * Sitting uses the digging lie-down pose, in the Primordial Caves the sniffing/digging feature is
+     * disabled entirely, and a seething sniffer has other things on its mind — in all three situations
+     * the brain must never start scenting/sniffing/searching.
      */
     @Unique
     private boolean ac_blocksSniffing() {
-        return this.ac_isOrderedToSit() || SnifferTaming.isInPrimordialCaves((Sniffer) (Object) this);
+        return this.ac_isOrderedToSit() || this.ac_isEnraged() || SnifferTaming.isInPrimordialCaves((Sniffer) (Object) this);
     }
 
     @Inject(method = "canSniff", at = @At("HEAD"), cancellable = true)
@@ -195,6 +218,14 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
         SnifferAccessor accessor = (SnifferAccessor) this;
         if (this.ac_risingTicks > 0 && --this.ac_risingTicks == 0 && accessor.ac_invokeGetState() == Sniffer.State.RISING) {
             self.transitionTo(Sniffer.State.IDLING);
+        }
+        if (this.ac_rageTicks > 0) {
+            // The Seething Stew rage runs the sniffer itself; the vanilla brain (wander, scenting)
+            // stays suspended exactly like it does for a commanded sit/follow. Navigation and the
+            // look control still tick in Mob#serverAiStep after this returns.
+            this.ac_rageStep();
+            ci.cancel();
+            return;
         }
         int command = this.ac_getCommand();
         if (command == 1) {
@@ -306,6 +337,77 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
             this.getNavigation().moveTo(owner, 1.2D);
         }
         this.getLookControl().setLookAt(owner, 10.0F, (float) this.getMaxHeadXRot());
+    }
+
+    /**
+     * The Seething Stew rage: for a minute the sniffer charges the hostile mobs around it and
+     * headbutts them across the room. It prefers whatever last hurt it (never its owner), then the
+     * nearest monster in sight. With nothing to fight it paws the ground where it stands until the
+     * seething wears off. Damage is dealt directly ({@code hurt}) because the vanilla Sniffer has no
+     * attack-damage attribute to route {@code doHurtTarget} through.
+     */
+    @Unique
+    private void ac_rageStep() {
+        Sniffer self = (Sniffer) (Object) this;
+        this.ac_rageTicks--;
+        if (this.ac_rageTicks % 20 == 0) {
+            this.getPersistentData().putInt("ACSnifferRage", this.ac_rageTicks);
+            if (this.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.ANGRY_VILLAGER,
+                        this.getRandomX(0.7D), this.getEyeY() + 0.6D, this.getRandomZ(0.7D),
+                        1, 0.0D, 0.0D, 0.0D, 0.0D);
+            }
+        }
+        if (this.ac_rageAttackCooldown > 0) {
+            this.ac_rageAttackCooldown--;
+        }
+        if (this.ac_rageTarget == null || !this.ac_rageTarget.isAlive() || this.ac_rageTicks % 10 == 0) {
+            this.ac_rageTarget = this.ac_findRageTarget();
+        }
+        LivingEntity target = this.ac_rageTarget;
+        if (target == null) {
+            return;
+        }
+        this.getNavigation().moveTo(target, 1.4D);
+        this.getLookControl().setLookAt(target, 30.0F, 30.0F);
+        double reach = this.getBbWidth() * 0.5D + target.getBbWidth() * 0.5D + 1.2D;
+        if (this.ac_rageAttackCooldown == 0 && this.distanceTo(target) < reach && this.hasLineOfSight(target)) {
+            this.ac_rageAttackCooldown = 25;
+            if (target.hurt(this.damageSources().mobAttack(self), 6.0F)) {
+                // the headbutt: vanilla mob knockback along the sniffer's facing, half again as hard
+                target.knockback(0.9D,
+                        Math.sin(this.getYRot() * (Math.PI / 180.0D)),
+                        -Math.cos(this.getYRot() * (Math.PI / 180.0D)));
+                this.playSound(net.minecraft.sounds.SoundEvents.SNIFFER_SNIFFING, 1.0F, 0.6F);
+                if (this.level() instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.CRIT,
+                            target.getX(), target.getY(0.6D), target.getZ(), 5, 0.3D, 0.3D, 0.3D, 0.1D);
+                }
+            }
+        }
+    }
+
+    @Unique
+    @Nullable
+    private LivingEntity ac_findRageTarget() {
+        LivingEntity attacker = this.getLastHurtByMob();
+        UUID ownerId = this.ac_getOwnerUUID();
+        if (attacker != null && attacker.isAlive() && !(attacker instanceof Sniffer)
+                && (ownerId == null || !ownerId.equals(attacker.getUUID()))
+                && this.distanceToSqr(attacker) < 400.0D) {
+            return attacker;
+        }
+        LivingEntity closest = null;
+        double closestDist = Double.MAX_VALUE;
+        for (LivingEntity candidate : this.level().getEntitiesOfClass(net.minecraft.world.entity.monster.Monster.class,
+                this.getBoundingBox().inflate(12.0D), monster -> monster.isAlive() && this.hasLineOfSight(monster))) {
+            double dist = candidate.distanceToSqr(this);
+            if (dist < closestDist) {
+                closestDist = dist;
+                closest = candidate;
+            }
+        }
+        return closest;
     }
 
     @Unique

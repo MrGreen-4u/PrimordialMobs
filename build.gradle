@@ -44,7 +44,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '3.0.0'
+version = '3.1.0'
 group = 'com.primordialmobs'
 archivesBaseName = 'primordialmobs'
 

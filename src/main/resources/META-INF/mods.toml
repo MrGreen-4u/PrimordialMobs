@@ -4,7 +4,7 @@ license="GPL-3.0-only"
 issueTrackerURL="https://github.com/MrGreen-4u/PrimordialMobs/issues" #optional
 [[mods]] #mandatory
 modId="primordialmobs" #mandatory
-version="3.0.0" #mandatory
+version="3.1.0" #mandatory
 displayName="Primordial Mobs" #mandatory
 displayURL="https://github.com/MrGreen-4u/PrimordialMobs" #optional
 authors="MrGreen_4u" #optional

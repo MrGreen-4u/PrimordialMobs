@@ -8,6 +8,7 @@
   "mixins": [
     "SnifferAccessor",
     "SnifferMixin",
+    "compat.AtlatitanEntityMixin",
     "compat.DinosaurEntityMixin",
     "compat.GrottoceratopsEntityMixin",
     "compat.RelicheirusEntityMixin",
