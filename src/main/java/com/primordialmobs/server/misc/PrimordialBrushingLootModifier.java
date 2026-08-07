@@ -21,12 +21,17 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
+    /**
+     * The JSON carries only the archaeology-table conditions; the two probabilities live in the config
+     * ({@code brushing.egg_chance} / {@code brushing.relic_chance}) so players can tune them without a
+     * datapack. The optional JSON fields remain readable for datapacks that want to override a world.
+     */
     public static final Supplier<Codec<PrimordialBrushingLootModifier>> CODEC = () ->
             RecordCodecBuilder.create(inst ->
                     inst.group(
                                     LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(lm -> lm.conditions),
-                                    Codec.FLOAT.fieldOf("egg_chance").forGetter(lm -> lm.eggChance),
-                                    Codec.FLOAT.fieldOf("relic_chance").forGetter(lm -> lm.relicChance)
+                                    Codec.FLOAT.optionalFieldOf("egg_chance", -1.0F).forGetter(lm -> lm.eggChance),
+                                    Codec.FLOAT.optionalFieldOf("relic_chance", -1.0F).forGetter(lm -> lm.relicChance)
                             )
                             .apply(inst, PrimordialBrushingLootModifier::new));
 
@@ -84,10 +89,16 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
             return generatedLoot;
         }
         RandomSource random = context.getRandom();
+        // A negative JSON value (the default) means "use the config"; a datapack can still pin a world
+        // to fixed probabilities by writing the optional fields.
+        float effectiveEggChance = this.eggChance >= 0.0F ? this.eggChance
+                : PrimordialMobs.COMMON_CONFIG.brushingEggChance.get().floatValue();
+        float effectiveRelicChance = this.relicChance >= 0.0F ? this.relicChance
+                : PrimordialMobs.COMMON_CONFIG.brushingRelicChance.get().floatValue();
         ItemStack discovery = ItemStack.EMPTY;
-        if (random.nextFloat() < eggChance) {
+        if (random.nextFloat() < effectiveEggChance) {
             discovery = rollEgg(random);
-        } else if (random.nextFloat() < relicChance) {
+        } else if (random.nextFloat() < effectiveRelicChance) {
             discovery = rollRelic(random);
         }
         if (!discovery.isEmpty()) {

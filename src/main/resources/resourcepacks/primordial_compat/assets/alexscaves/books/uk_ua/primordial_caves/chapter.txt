@@ -18,10 +18,10 @@
     • {Вступ|primordial_caves/general.json}
     • {Ресурси|primordial_caves/resources.json}
     • Мешканці
-        • {Атлатитан|primordial_caves/atlatitan.json}
+        • {Rammer|primordial_caves/atlatitan.json}
         • {Stealer|primordial_caves/vallumraptor.json}
         • {Ґротоцераптос|primordial_caves/grottoceratops.json}
-        • {Люкструктозавр|primordial_caves/luxtructosaurus.json}
+        • {Scorcher|primordial_caves/luxtructosaurus.json}
         • {Roarer|primordial_caves/tremorsaurus.json}
         • {Трилокарис|primordial_caves/trilocaris.json}
         • {Logger|primordial_caves/relicheirus.json}

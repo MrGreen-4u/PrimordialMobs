@@ -8,16 +8,14 @@
   "mixins": [
     "SnifferAccessor",
     "SnifferMixin",
-    "standalone.FoodDataMixin",
-    "standalone.MobMixin",
     "compat.DinosaurEntityMixin",
     "compat.GrottoceratopsEntityMixin",
     "compat.RelicheirusEntityMixin",
     "compat.RelicheirusMeleeGoalMixin"
   ],
   "client": [
-    "client.ClientPacketListenerMixin",
     "client.SnifferModelMixin",
+    "compat.client.AtlatitanRendererMixin",
     "compat.client.GrottoceratopsRendererMixin",
     "compat.client.RelicheirusRendererMixin",
     "compat.client.SubterranodonRendererMixin",

@@ -25,7 +25,5 @@
       "condition": "forge:loot_table_id",
       "loot_table_id": "minecraft:archaeology/ocean_ruin_warm"
     }
-  ],
-  "egg_chance": 0.02,
-  "relic_chance": 0.08
+  ]
 }

@@ -13,7 +13,7 @@
     • 600.0 ♥
     • 12.0 🗡
     • 20.0 ⛨
-    Lukstruzor, İlkel Mağaralarda ortaya çıkan volkanların kalbinin derinliklerinde kilitli, bir canavardır.
+    Scorcher, İlkel Mağaralarda ortaya çıkan volkanların kalbinin derinliklerinde kilitli, bir canavardır.
     Bu muazzam yaratık, bir zamanlar İlkel Mağaralar'ın evi olarak adlandırılan birçok dinozor türünün neslinin tükenmesinin sebebidir. Ruhunun sayısız bin yıl boyunca bir yanardağın çekirdeğinde sıkışıp kalması sayesinde ateşe karşı bağışıklığı olan ölümsüz bir dinozordur.
     Bu canavarı uyandırmak ve patlamayı tetiklemek için Uğursuz Katalizörün bir yanardağa atılması gerekir.
 
@@ -24,11 +24,11 @@
 
 
 
-    Lukstruzor güçlü saldırılardan oluşan bir cephaneliğe sahiptir. Ön ayaklarıyla şaha kalkabilir ve çarparak blok katmanlarını yok edebilir. Ayrıca bacaklarıyla ileriye doğru tekmeyle hedefleri uçurabilir. Bir hedefe yaklaştığında kuyruğunu kullanarak hedefleri fırlatabilir ve kalkanları devre dışı bırakabilir.
-    Lukstruzor ara sıra yüksek sesle kükrer ve savaşında ona yardımcı olmak için yanardağın gücünü kanalize eder. Bu, dinozorun lav damlatmasına neden olur ve diğer saldırılarını daha da yıkıcı hale getirmenin yanı sıra alev püskürtme yeteneği kazandırır. Bu durumda, dinozorun saldırısı, hedefin ayaklarının altında İlksel Magma ile dolu devasa yarıkları açığa çıkarabilir.
-    Bir Luxtructosaurus avına ulaşamazsa, yükselere sıçrar veya yoluna çıkan blokları parçalayabilir.
+    LuScorcherüçlü saldırılardan oluşan bir cephaneliğe sahiptir. Ön ayaklarıyla şaha kalkabilir ve çarparak blok katmanlarını yok edebilir. Ayrıca bacaklarıyla ileriye doğru tekmeyle hedefleri uçurabilir. Bir hedefe yaklaştığında kuyruğunu kullanarak hedefleri fırlatabilir ve kalkanları devre dışı bırakabilir.
+    LuScorcherra sıra yüksek sesle kükrer ve savaşında ona yardımcı olmak için yanardağın gücünü kanalize eder. Bu, dinozorun lav damlatmasına neden olur ve diğer saldırılarını daha da yıkıcı hale getirmenin yanı sıra alev püskürtme yeteneği kazandırır. Bu durumda, dinozorun saldırısı, hedefin ayaklarının altında İlksel Magma ile dolu devasa yarıkları açığa çıkarabilir.
+    Bir LuxScorcherına ulaşamazsa, yükselere sıçrar veya yoluna çıkan blokları parçalayabilir.
     Tüm boss savaşı boyunca gökyüzü kırmızılaşacak, volkanik külle kalınlaşacak ve volkanlar tefra kusarak patlamaya başlayacak. Bu da mücadeleyi daha da zorlaştıracak.
-    Lukstruzor'un yenilmesi çok zor olsa da, yenilirse küle dönüşür ve arkasında birden fazla §lTektonik §lParça§r düşürür.
+    LukScorcher yenilmesi çok zor olsa da, yenilirse küle dönüşür ve arkasında birden fazla §lTektonik §lParça§r düşürür.
     Bu büyük canavar yenildiğinde geride kalan İlkel Magma geri çekilmeye başlayacak ve daha önce İlkel Mağaralarda nesli tükenen bir dinozor türü, Kehribar Anıtlarda ortaya çıkmaya başlayacaktır.
     Tektonik Parçalar, İlkel Mağaraların nihai silahını yaratmak için kullanılabilir: §lYokoluş §lMızrağı§r.
 

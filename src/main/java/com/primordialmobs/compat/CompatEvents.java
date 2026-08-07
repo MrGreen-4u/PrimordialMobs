@@ -28,12 +28,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.Set;
 
 /**
- * Registered ONLY when the full Alex's Caves mod is installed (this class references its
- * DinosaurEntity, so it must never be class-loaded standalone).
+ * The behaviour overlay over Alex's Caves' Primordial Caves dinosaurs.
  *
  * Two jobs:
- *  - give Alex's Caves' five Primordial Caves dinosaurs the same 15% recolored-variant chance they have
- *    standalone;
+ *  - give the Primordial Caves dinosaurs (and the Rammer) the configurable recolored-variant chance
+ *    (15% by default);
  *  - graft on the AI goals that Primordial Mobs adds to the Grazer and the Logger (sit, follow, retaliate
  *    for the owner, and the Logger's broader fishing target).
  *
@@ -51,10 +50,14 @@ public class CompatEvents {
             new ResourceLocation(PrimordialMobs.NAMESPACE, "relicheirus"),
             new ResourceLocation(PrimordialMobs.NAMESPACE, "tremorsaurus"),
             new ResourceLocation(PrimordialMobs.NAMESPACE, "subterranodon"),
-            new ResourceLocation(PrimordialMobs.NAMESPACE, "vallumraptor"));
+            new ResourceLocation(PrimordialMobs.NAMESPACE, "vallumraptor"),
+            // The Rammer joined the variant lottery with its own three recolours. Its AtlatitanEntity
+            // extends SauropodBaseEntity extends DinosaurEntity, so the PMRecolorable flag mixin and this
+            // event already cover it. The Scorcher (Luxtructosaurus) is rename-only, hence absent.
+            new ResourceLocation(PrimordialMobs.NAMESPACE, "atlatitan"));
 
     /**
-     * Same 15% recoloured-variant chance the five dinosaurs have standalone.
+     * The recoloured-variant lottery (alternative-textures config section; 15% by default).
      *
      * The flag is our OWN synched value (see {@link com.primordialmobs.compat.PMRecolorable}), not a slot in
      * Alex's Caves' AltSkin. The first compat build wrote AltSkin 3 here, which the Amber Curiosity and the
@@ -76,7 +79,9 @@ public class CompatEvents {
             ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(dinosaur.getType());
             if (id != null && PRIMORDIAL_DINOSAURS.contains(id)) {
                 dinosaur.getPersistentData().putBoolean("PMVariantRolled", true);
-                if (!recolorable.pm_isRecolored() && dinosaur.getRandom().nextFloat() < 0.15F) {
+                float chance = PrimordialMobs.COMMON_CONFIG.alternativeTextures.get()
+                        ? PrimordialMobs.COMMON_CONFIG.alternativeTextureChance.get().floatValue() : 0.0F;
+                if (!recolorable.pm_isRecolored() && chance > 0.0F && dinosaur.getRandom().nextFloat() < chance) {
                     recolorable.pm_setRecolored(true);
                 }
             }

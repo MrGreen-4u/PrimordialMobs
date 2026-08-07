@@ -9,29 +9,21 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Gates the {@code com.primordialmobs.mixin.compat.*} mixins on the full Alex's Caves mod being present.
+ * Gates the {@code com.primordialmobs.mixin.compat.*} mixins on Alex's Caves actually being present.
  *
- * Those mixins target Alex's Caves' OWN classes (DinosaurEntity, RelicheirusEntity, ...), which do not exist
- * standalone. Without this gate Mixin would fail to resolve the target class and, with
- * {@code injectors.defaultRequire = 1}, abort the whole game — so the check must happen before the mixin is
- * ever prepared, which is exactly what {@link #shouldApplyMixin} is for.
+ * Alex's Caves is a mandatory dependency, but mixins are applied BEFORE Forge validates the mod list:
+ * if a player installs this add-on without Alex's Caves, an ungated mixin would fail to resolve its
+ * target class and (with {@code injectors.defaultRequire = 1}) abort the launch with a mixin crash.
+ * Skipping the compat mixins here instead lets the load continue to Forge's friendly
+ * "missing dependency: alexscaves" screen.
  *
- * The presence check uses the loading mod list rather than {@code ModList.isLoaded}: mixin config plugins run
- * during class transformation, long before {@code ModList} exists. Same idiom as
- * {@code PrimordialMobs.ALEXS_CAVES_INSTALLED}, which cannot be reused here because touching that class from
- * a plugin would class-load the mod entrypoint far too early.
+ * The presence check uses the loading mod list rather than {@code ModList.isLoaded}: mixin config
+ * plugins run during class transformation, long before {@code ModList} exists.
  */
 public class PrimordialMixinPlugin implements IMixinConfigPlugin {
 
-    /** Prefix (relative to the config's {@code package}) of every mixin that needs Alex's Caves loaded. */
+    /** Prefix (relative to the config's {@code package}) of every mixin that targets an Alex's Caves class. */
     private static final String COMPAT_PACKAGE = "com.primordialmobs.mixin.compat.";
-
-    /**
-     * Prefix of every mixin that must apply ONLY standalone: with the full Alex's Caves installed the same
-     * hook exists in that mod (e.g. its FoodDataMixin serving its own Primordial armor), and ours would
-     * reference registry objects this mod never registers in compat mode.
-     */
-    private static final String STANDALONE_PACKAGE = "com.primordialmobs.mixin.standalone.";
 
     private static final boolean ALEXS_CAVES_PRESENT =
             FMLLoader.getLoadingModList() != null && FMLLoader.getLoadingModList().getModFileById("alexscaves") != null;
@@ -49,9 +41,6 @@ public class PrimordialMixinPlugin implements IMixinConfigPlugin {
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (mixinClassName.startsWith(COMPAT_PACKAGE)) {
             return ALEXS_CAVES_PRESENT;
-        }
-        if (mixinClassName.startsWith(STANDALONE_PACKAGE)) {
-            return !ALEXS_CAVES_PRESENT;
         }
         return true;
     }

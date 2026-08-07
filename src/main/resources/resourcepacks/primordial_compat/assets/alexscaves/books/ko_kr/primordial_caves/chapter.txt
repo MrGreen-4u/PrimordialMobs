@@ -25,5 +25,5 @@
         • {Roarer|primordial_caves/tremorsaurus.json}
         • {Logger|primordial_caves/relicheirus.json}
         • {럭스트럭토사우루스|primordial_caves/luxtructosaurus.json}
-        • {아틀라티탄|primordial_caves/atlatitan.json}
+        • {Rammer|primordial_caves/atlatitan.json}
     • {유용한 것들|primordial_caves/utilities.json}
