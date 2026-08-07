@@ -11,7 +11,7 @@ brushed out of vanilla suspicious sand and gravel, and Trilocaris spawns in the 
 At the Alex's Caves authors' request it reuses none of their assets — it ships only its own
 additions (the rename overlay, the variant textures, the sitting poses and the glue code).
 
-See [PrimordialMobs.md](../PrimordialMobs.md) for the player-facing description and
+See [PrimordialMobs.md](PrimordialMobs.md) for the player-facing description and
 [REFACTOR_PLAN.md](REFACTOR_PLAN.md) for the 3.0.0 architecture.
 
 ## Requirements
