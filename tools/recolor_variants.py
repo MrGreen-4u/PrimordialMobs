@@ -279,21 +279,26 @@ def rammer_variants():
         save(name, from_hsv(h, s, v, alpha))
 
     # The bioluminescent blue (eyes + glow markings) sits at the SAME UV pixels on all three
-    # skins, but on the retro texture its dimmer edge pixels blend into the navy hide. Deriving
-    # the mask once, from the standard texture where blue is unambiguous, keeps every variant's
-    # eyes intact. Grown by one pixel to catch anti-aliased edges.
+    # skins, but on the retro texture its dimmer edge pixels blend into the navy hide. The
+    # standard texture (where blue is unambiguous) locates them; a pixel is then protected only
+    # if it is ALSO blue on the skin being recoloured — the tectonic skin paints some of those
+    # locations red, and those must follow that skin's own rules, not survive as red islands.
     rgba_std = load_base('atlatitan')
     h0, s0, v0 = to_hsv(rgba_std)
-    eye_mask = hue_in(h0, 180, 265) & (s0 > 0.35) & (rgba_std[..., 3] > 0)
-    grown = eye_mask.copy()
-    grown[1:, :] |= eye_mask[:-1, :]; grown[:-1, :] |= eye_mask[1:, :]
-    grown[:, 1:] |= eye_mask[:, :-1]; grown[:, :-1] |= eye_mask[:, 1:]
-    eye_mask = grown
+    eye_locs = hue_in(h0, 180, 265) & (s0 > 0.35) & (rgba_std[..., 3] > 0)
+    grown = eye_locs.copy()
+    grown[1:, :] |= eye_locs[:-1, :]; grown[:-1, :] |= eye_locs[1:, :]
+    grown[:, 1:] |= eye_locs[:, :-1]; grown[:, :-1] |= eye_locs[:, 1:]
+    eye_locs = grown
+
+    def eye_mask_for(h, s):
+        return eye_locs & hue_in(h, 170, 280) & (s > 0.15)
 
     # STANDARD -> purple. The brown/orange hide rotates into purple; the pale keratin spikes
     # (low saturation) and the bioluminescent blue keep their identity.
     alpha = rgba_std[..., 3]; opaque = alpha > 0
     h, s, v = h0.copy(), s0.copy(), v0.copy()
+    eye_mask = eye_mask_for(h, s)
     keratin = (s < 0.28) | spikes & (s < 0.45)
     hide = opaque & ~eye_mask & ~teeth & ~keratin & hue_in(h, 350, 70)
     h, s, v = rotate_hue(h, s, v, hide, 245, sat_scale=0.75)             # ~25 deg -> ~270 purple
@@ -304,6 +309,7 @@ def rammer_variants():
     rgba = load_base('atlatitan_retro')
     alpha = rgba[..., 3]; opaque = alpha > 0
     h, s, v = to_hsv(rgba)
+    eye_mask = eye_mask_for(h, s)
     pale = (v > 0.55) & (s < 0.55)                                       # icy spikes/highlights
     body = opaque & ~eye_mask & ~teeth & ~pale & hue_in(h, 180, 300)
     h, s, v = rotate_hue(h, s, v, body, -110, sat_scale=1.1)             # navy -> deep green
@@ -311,17 +317,44 @@ def rammer_variants():
     h, s, v = set_hue(h, s, v, lime, 80, sat_scale=1.7, val_scale=1.05)  # icy -> lime
     finish('atlatitan_retro_variant', h, s, v, alpha)
 
-    # TECTONIC -> ash. The whole hide (including the red magma web) cools into pale ashen grey;
-    # only the BRIGHTEST lava pixels stay as dim embers glowing through the ash. Bone spikes,
-    # teeth and the blue eyes stay themselves.
+    # TECTONIC -> ash. A cooled, burnt-out counterpart of the magma skin, built like the other
+    # recolours: the base's shading structure is KEPT and only remapped, never flattened.
+    #   - the dark rust hide lifts into layered ash greys through a contrast-preserving tone
+    #     curve (its 0.08-0.60 value range maps onto 0.30-0.82, so scale shadows survive);
+    #   - the red magma web inverts into DARK charcoal seams — burnt-out veins scored into the
+    #     ash, which keeps the crack pattern legible exactly where the base had it glowing;
+    #   - only the hottest vein cores stay as sparse dim embers still smouldering through;
+    #   - bone spikes soften toward ash-grey bone; teeth and the blue eyes stay themselves.
     rgba = load_base('atlatitan_tectonic')
     alpha = rgba[..., 3]; opaque = alpha > 0
     h, s, v = to_hsv(rgba)
-    bone = (spikes | teeth) & ~hue_in(h, 340, 30)
-    bright_ember = hue_in(h, 340, 40) & (s > 0.55) & (v > 0.5) & opaque
-    ash = opaque & ~eye_mask & ~bone & ~bright_ember
-    h, s, v = set_hue(h, s, v, ash, 30, sat=0.06, val_scale=0.5, val_add=0.4)      # ashen grey
-    h, s, v = rotate_hue(h, s, v, bright_ember & ~eye_mask, 0, sat_scale=0.55, val_scale=0.85)  # dim embers
+    eye_mask = eye_mask_for(h, s)
+    bone = (spikes | teeth) & ~(hue_in(h, 340, 30) & (s > 0.5))
+    # Only the GLOWING vein web (bright, saturated warm): the merely reddish dark hide is body,
+    # or the whole panel would land in the charcoal rule and stay black.
+    magma = hue_in(h, 340, 45) & (s > 0.45) & (v > 0.38) & opaque & ~bone & ~eye_mask
+    # Only the white-hot vein CORES smoulder on; the mid-red glow (including the rings around
+    # the eye sockets) cools into charcoal with the rest of the web, or it muddies into brown.
+    ember_core = magma & (s > 0.6) & (v > 0.63)
+    body = opaque & ~eye_mask & ~bone & ~magma
+    h = h.copy(); s = s.copy(); v = v.copy()
+    v_orig = v.copy()
+    # body: cool ash with the base shading stretched, faint warm undertone kept for depth
+    bn = np.clip((v - 0.08) / 0.52, 0, 1)
+    v[body] = (0.38 + 0.48 * (bn ** 0.65))[body]
+    s[body] = np.clip(s[body] * 0.12, 0, 0.10)
+    h[body] = 30.0
+    # magma web -> charcoal seams (dark on light: inverted contrast, same pattern)
+    mn = np.clip((v - 0.24) / 0.46, 0, 1)
+    v[magma] = (0.17 + 0.22 * mn)[magma]
+    s[magma] = 0.12
+    h[magma] = 20.0
+    # the hottest cores keep a real smoulder: brighter than the ash around them
+    s[ember_core] = 0.72
+    v[ember_core] = np.clip(v_orig[ember_core] * 0.9, 0.5, 0.8)
+    h[ember_core] = 17.0
+    # bone spikes: toward ash-grey bone so they sit in the palette without vanishing
+    h, s, v = rotate_hue(h, s, v, bone & opaque, 0, sat_scale=0.5, val_scale=0.95)
     finish('atlatitan_tectonic_variant', h, s, v, alpha)
 
 
