@@ -89,3 +89,10 @@ Notas no obvias y reutilizables. Leer antes de tocar nada.
   isControlledByLocalInstance en LivingEntity.travelRidden), así que el campo queda coherente.
 - Verificación headless de la rabia: summon sniffer con ForgeData{ACSnifferRage:900} + zombie —
   el sniffer lo persigue y la vida del zombie baja.
+- Postura de rabia del Sniffer: flag AC_ENRAGED synched (5º defineId, orden estable) + progreso
+  0..5 easing en tick (ambos lados) → SnifferModelMixin TAIL en setupAnim resta
+  `angry * 0.55` rad al head.xRot. Convención verificada en el fuente vanilla: headPitch
+  POSITIVO = mirar abajo (`head.xRot = headPitch * π/180`), así que subir = restar.
+- Tectónica del Rammer v3: paleta amarillo-negro (avispa) — TODO el brillo rojo (h335-50,
+  s>.4, v>.22) → amarillo h49 s.92 con gradiente del brillo original; núcleos blancos v.97;
+  cuerpo → negro cálido (curva v 0.07-0.33); púas hueso amarillento h48.

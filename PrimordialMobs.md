@@ -42,8 +42,8 @@ arrive: hatching, breeding, spawn eggs, natural spawns, even the Drifter roosts 
 Amber Curiosity and Tectonic Shard summon, and including the baby Grazer and the elder Stealer.
 
 New in 3.0: the **Rammer** joins the lottery with three recolours of its own — a purple-toned
-standard hide, a green-and-lime retro hide, and a pale ashen tectonic hide with embers cooling
-under the grey. And the Stealer's six recolours were redone with care for what each pixel actually
+standard hide, a green-and-lime retro hide, and a hornet-toned tectonic hide: near-black scales
+with its vein web glowing hot yellow. And the Stealer's six recolours were redone with care for what each pixel actually
 is on the model: claws now read as keratin, teeth stay ivory, eyes stay eyes, and the tectonic
 Stealer keeps its magma claws.
 
@@ -73,8 +73,8 @@ Everything else about them is Alex's Caves' own, untouched.
   * a **Serene Salad** is how you **tame** one — about one in three works, just like handing one
     to a relaxed Stealer. Shift-click then cycles *wander → stay → follow*; told to stay it lies
     down in its own rest pose, and a salad handed to a tame one calms it back into resting.
-  * a **Seething Stew** makes it **seethe**: for a minute it drops everything and headbutts the
-    hostile mobs around it across the room.
+  * a **Seething Stew** makes it **seethe**: for a minute it throws its snout in the air and
+    headbutts the hostile mobs around it across the room.
   * a **Primordial Soup** is patience food: it **halves the remaining wait** until the next sniff
     (vanilla makes a Sniffer wait ages between digs), and stands a resting one up to get on with
     it.

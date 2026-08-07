@@ -65,7 +65,7 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
     @Nullable
     private LivingEntity ac_lookTarget;
 
-    /** Seething Stew rage (server side): ticks left, the current victim, and the headbutt cooldown. */
+    /** Seething Stew rage: ticks left, the current victim, and the headbutt cooldown (server side). */
     @Unique
     private int ac_rageTicks;
     @Unique
@@ -73,6 +73,14 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
     @Unique
     @Nullable
     private LivingEntity ac_rageTarget;
+    /** Synched on/off rage state, so the client can pose the angry animal. */
+    @Unique
+    private static final EntityDataAccessor<Boolean> AC_ENRAGED = SynchedEntityData.defineId(Sniffer.class, EntityDataSerializers.BOOLEAN);
+    /** The angry rear-up posture, eased over 5 ticks on both sides for smooth rendering. */
+    @Unique
+    private float ac_angryProgress;
+    @Unique
+    private float ac_angryProgressPrev;
 
     protected SnifferMixin(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -84,6 +92,7 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
         this.entityData.define(AC_RECOLORED, false);
         this.entityData.define(AC_OWNER, Optional.empty());
         this.entityData.define(AC_COMMAND, 0);
+        this.entityData.define(AC_ENRAGED, false);
     }
 
     @Override
@@ -153,11 +162,30 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
         this.getPersistentData().putInt("ACSnifferRage", ticks);
         this.ac_rageTarget = null;
         this.ac_rageAttackCooldown = 0;
+        if (!this.level().isClientSide) {
+            this.entityData.set(AC_ENRAGED, ticks > 0);
+        }
     }
 
     @Override
     public boolean ac_isEnraged() {
-        return this.ac_rageTicks > 0;
+        return this.entityData.get(AC_ENRAGED);
+    }
+
+    @Override
+    public float ac_getAngryHeadAmount(float partialTick) {
+        return (this.ac_angryProgressPrev + (this.ac_angryProgress - this.ac_angryProgressPrev) * partialTick) / 5.0F;
+    }
+
+    /** Eases the angry posture in and out; runs on both sides so the client render is smooth. */
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void ac_easeAngryPosture(CallbackInfo ci) {
+        this.ac_angryProgressPrev = this.ac_angryProgress;
+        if (this.ac_isEnraged() && this.ac_angryProgress < 5.0F) {
+            this.ac_angryProgress++;
+        } else if (!this.ac_isEnraged() && this.ac_angryProgress > 0.0F) {
+            this.ac_angryProgress--;
+        }
     }
 
     /**
@@ -350,6 +378,11 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
     private void ac_rageStep() {
         Sniffer self = (Sniffer) (Object) this;
         this.ac_rageTicks--;
+        if (this.ac_rageTicks <= 0) {
+            this.entityData.set(AC_ENRAGED, false);
+            this.getPersistentData().remove("ACSnifferRage");
+            return;
+        }
         if (this.ac_rageTicks % 20 == 0) {
             this.getPersistentData().putInt("ACSnifferRage", this.ac_rageTicks);
             if (this.level() instanceof ServerLevel serverLevel) {
