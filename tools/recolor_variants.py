@@ -86,9 +86,11 @@ SAUROPOD_BOXES = [
     ('dewlap',   97, 194,  0, 26, 65),  # skin fin under the neck
 ]
 ATLATITAN_EXTRA_BOXES = [
-    ('shoulderspike', 0, 123, 11, 38, 11),   # 4 boxes; shares the chest UV region
+    ('shoulderspike', 0, 123, 11, 38, 11),   # 4 boxes; the free corner of the chest UV region
     ('dorsalspike', 146, 285, 13, 51, 13),   # the big back spikes (dedicated region)
     ('handspike',    20, 236,  0, 47, 10),
+    ('neckspike',   227, 259,  8, 24,  8),   # cube_r11/r12 in AtlatitanModel: the neck-ridge
+    ('neckspike',   139,  62,  8, 17,  8),   # spikes, missing from the first transcription
 ]
 ATLATITAN_TEX = (512, 512)
 
@@ -272,7 +274,7 @@ def stealer_variants():
 def rammer_variants():
     boxes = SAUROPOD_BOXES + ATLATITAN_EXTRA_BOXES
     masks = build_masks(boxes, ATLATITAN_TEX)
-    spikes = union(masks, 'dorsalspike', 'handspike', 'thumb', 'toes')
+    spikes = union(masks, 'dorsalspike', 'handspike', 'neckspike', 'thumb', 'toes')
     teeth = union(masks, 'teeth')
 
     def finish(name, h, s, v, alpha):
@@ -317,47 +319,36 @@ def rammer_variants():
     h, s, v = set_hue(h, s, v, lime, 80, sat_scale=1.7, val_scale=1.05)  # icy -> lime
     finish('atlatitan_retro_variant', h, s, v, alpha)
 
-    # TECTONIC -> amber-black (design brief 2026-08-08; glow retuned same day to Alex's Caves'
-    # OWN warm palette, sampled from grottoceratops_tectonic.png). A hornet-toned counterpart of
-    # the magma skin that keeps the tectonic identity — dark hide, glowing vein web — and only
-    # swaps the temperature of the light:
-    #   - EVERYTHING red-glowing (the vein web, the molten face, the ember patches) takes the
-    #     grottoceratops_tectonic glow ramp: #804819 -> #9a4f00 -> #a65a00 -> #af6600 -> #b97700,
-    #     i.e. hue climbing ~28 -> 39 with brightness at near-full saturation, value capped well
-    #     below white. The base glow's own gradient picks the position on the ramp;
-    #   - the hottest cores get the ramp's top accent (#de990e, v 0.87) — AC's palette has no
-    #     white-hot bleaching anywhere, so neither do we;
-    #   - the dark hide deepens toward black with a faint warm sheen, its scale shading kept
-    #     through a tone curve rather than flattened;
-    #   - bone spikes take a pale yellowed-ivory cast so they band with the palette;
-    #   - teeth and the blue bioluminescent eyes stay themselves.
+    # TECTONIC -> gold-black (remade 2026-08-08 after the flattening disaster; verified on the
+    # model with tools/preview_atlatitan.py). The base tectonic skin is already a BLACK dinosaur
+    # with deep blood-red ZONES (hands, tail tip, neck ridge, molten face, dewlap) that carry
+    # rich internal shading — dark maroon modelling, vein detail, a black scale lattice on top.
+    # The first attempt classified all of that red as "glow" and lifted it into one narrow
+    # bright band, which erased the modelling and produced flat amber slabs on the silhouette.
+    #
+    # The remake re-TEMPERATURES the red instead of repainting it:
+    #   - only the saturated red family is touched; the black body, ivory spikes, teeth and the
+    #     blue bioluminescent eyes keep Alex's Caves' own pixels, byte for byte;
+    #   - value: a LINEAR stretch (monotone, x1.44) from the base red's dark range [0.10..0.55]
+    #     onto [0.16..0.81] — order and local contrast survive (in fact amplified), so every
+    #     vein, scale and shadow stays; the mids/highs land in the gold band of AC's own
+    #     grottoceratops_tectonic palette (#9a4f00..#b97700, tops #de990e at v 0.87);
+    #   - hue rides the FINAL value along that sampled ramp (dark ~26 -> bright 40), so shadow
+    #     reads as dark bronze and light as gold, exactly like the grotto's web;
+    #   - saturation is kept from the base (its reds are already near-full).
     rgba = load_base('atlatitan_tectonic')
     alpha = rgba[..., 3]; opaque = alpha > 0
     h, s, v = to_hsv(rgba)
     eye_mask = eye_mask_for(h, s)
-    bone = (spikes | teeth) & ~(hue_in(h, 340, 30) & (s > 0.5))
-    # The whole glowing web, generously: every saturated warm pixel that is not pure shadow.
-    glow = hue_in(h, 335, 50) & (s > 0.4) & (v > 0.22) & opaque & ~bone & ~eye_mask
-    hot_core = glow & (s > 0.6) & (v > 0.6)
-    body = opaque & ~eye_mask & ~bone & ~glow
+    # No bone exclusion: the ivory of spikes/teeth is far below the saturation gate, while the
+    # magma at the spike BASES is genuinely red and must follow the light like the rest.
+    red = opaque & ~eye_mask & hue_in(h, 330, 55) & (s > 0.45)
     h = h.copy(); s = s.copy(); v = v.copy()
-    # vein web -> the sampled amber-gold ramp, position taken from the base glow's gradient
-    gn = np.clip((v - 0.22) / 0.55, 0, 1)
-    h[glow] = (28.0 + 11.0 * gn)[glow]
-    s[glow] = np.clip(0.8 + 0.4 * gn, 0, 1.0)[glow]
-    v[glow] = (0.50 + 0.23 * gn)[glow]
-    # the hottest cores -> the ramp's golden top accent, never white
-    h[hot_core] = 40.0
-    s[hot_core] = 0.94
-    v[hot_core] = 0.87
-    # hide -> near-black with a warm sheen; the scale texture survives in the dark range
-    bn = np.clip((v - 0.05) / 0.55, 0, 1)
-    v[body] = (0.07 + 0.26 * (bn ** 0.8))[body]
-    s[body] = np.clip(s[body] * 0.5, 0.1, 0.35)
-    h[body] = 35.0
-    # bone spikes -> yellowed ivory, warmed to sit inside the sampled hue band
-    h[bone & opaque] = 42.0
-    s[bone & opaque] = np.clip(s[bone & opaque] * 0.8 + 0.18, 0, 0.4)
+    v_new = np.clip(0.16 + (v - 0.10) * 1.44, 0.10, 0.87)
+    hue_anchors_v = [0.15, 0.30, 0.45, 0.55, 0.62, 0.70, 0.80, 0.87]
+    hue_anchors_h = [26.0, 27.0, 29.0, 31.0, 33.0, 35.0, 39.0, 40.0]
+    h[red] = np.interp(v_new[red], hue_anchors_v, hue_anchors_h)
+    v[red] = v_new[red]
     finish('atlatitan_tectonic_variant', h, s, v, alpha)
 
 

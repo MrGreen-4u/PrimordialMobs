@@ -107,12 +107,25 @@ Notas no obvias y reutilizables. Leer antes de tocar nada.
   sniffing/scenting. ForgeGradle reobfusca el override a `m_7822_` solo (verificado en el jar).
   Convención verificada en el fuente vanilla: headPitch POSITIVO = mirar abajo
   (`head.xRot = headPitch * π/180`), así que subir = restar (SnifferModelMixin, −0.55 rad).
-- Tectónica del Rammer v4 (retune 2026-08-08): el brillo ya no es amarillo plano h49 con
-  núcleos casi blancos — usa la RAMPA ámbar-oro muestreada de grottoceratops_tectonic.png de AC:
-  #804819→#9a4f00→#a65a00→#af6600→#b97700 (hue sube 28→39 con el brillo, s≈1, v tope 0.73) y
-  el acento máximo #de990e (h40 s.94 v.87). La paleta de AC NO tiene blanco quemado: v máx 0.87.
-  Cuerpo negro cálido intacto (curva v 0.07-0.33, sheen h35); púas marfil h42. El script es
-  determinista: regenerar solo cambia el png tocado.
+- Tectónica del Rammer v5 (REHECHA 2026-08-08; la v4 "aplanadora" fue un desastre en el
+  modelo): la base tectónica NO es "cuerpo negro + venas brillantes" — es un dino negro con
+  ZONAS rojo sangre OSCURAS (manos, punta de cola, cuello, cara, dewlap; v mediana 0.27, p95
+  0.50) con modelado interno rico y celosía de escamas negras encima. Clasificar todo ese rojo
+  como "glow" y comprimirlo a una banda brillante borra el modelado → placas ámbar planas.
+  Lo correcto es RE-TEMPERAR: solo la familia roja saturada (h330-55, s>.45, ojos excluidos;
+  las púas NO se excluyen — el magma de su base debe seguir la luz) con estiramiento LINEAL de
+  v ([0.10..0.55]→[0.16..0.81], monótono ×1.44: conserva y amplifica el contraste) y hue en
+  función del v FINAL por la rampa muestreada de grottoceratops_tectonic (26→40; su paleta no
+  tiene blanco quemado, v máx 0.87). Cuerpo/púas/dientes/ojos = píxeles de AC intactos.
+- **tools/preview_atlatitan.py**: renderer ortográfico del Rammer (geometría transcrita del
+  SauropodBaseModel+AtlatitanModel decompilados: rotationPoints, ángulos, texOffs, mirror;
+  convención UV de Cube vanilla con UP V-flipped y mirror = U-flip por cara; painter + backface
+  cull). USARLO SIEMPRE para juzgar un recolor del Rammer — la lámina UV plana engaña.
+  Validado contra la piel estándar (ojos/dientes/dewlap caen donde deben).
+- Geometría no obvia del AtlatitanModel: las púas del cuello son cube_r11/r12 con UV (227,259)
+  8×24×8 y (139,62) 8×17×8 (faltaban en la transcripción → se oscurecían como cuerpo); las púas
+  de hombro (0,123) 11×38×11 usan la ESQUINA LIBRE del unwrap del chest (x<57,y<180), no
+  solapan sus caras.
 - REVERTIDO (v3.1.2, petición del usuario): el AtlatitanEntityMixin de turningFast. El andar
   montado del Rammer debe quedar INTACTO como en el mod original. Verificado contra upstream
   main (1.20.1, 2026-08): tickRidden/tickWalking/areLegsMoving/getLegSlamAmount/turningFast son
