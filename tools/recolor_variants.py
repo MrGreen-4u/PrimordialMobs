@@ -329,13 +329,17 @@ def rammer_variants():
     # The remake re-TEMPERATURES the red instead of repainting it:
     #   - only the saturated red family is touched; the black body, ivory spikes, teeth and the
     #     blue bioluminescent eyes keep Alex's Caves' own pixels, byte for byte;
-    #   - value: a LINEAR stretch (monotone, x1.44) from the base red's dark range [0.10..0.55]
-    #     onto [0.16..0.81] — order and local contrast survive (in fact amplified), so every
-    #     vein, scale and shadow stays; the mids/highs land in the gold band of AC's own
-    #     grottoceratops_tectonic palette (#9a4f00..#b97700, tops #de990e at v 0.87);
-    #   - hue rides the FINAL value along that sampled ramp (dark ~26 -> bright 40), so shadow
-    #     reads as dark bronze and light as gold, exactly like the grotto's web;
-    #   - saturation is kept from the base (its reds are already near-full).
+    #   - value: a monotone curve over the base red's 8 discrete tones (measured 2026-08-08).
+    #     The three DARK tones (0.12/0.16/0.28 — the shading wash on the chest, thighs, upper
+    #     arms and under-neck) sink to near-black (0.10/0.14/0.30) so those areas complete the
+    #     black body instead of reading as brown patches; from the dark gold up (base 0.35+)
+    #     the mapping is the approved one, untouched: 0.35->0.52, 0.44->0.65, 0.50->0.74,
+    #     tops 0.87 — the gold band of AC's grottoceratops_tectonic palette
+    #     (#9a4f00..#b97700, accents #de990e);
+    #   - hue rides the FINAL value along that sampled ramp (dark ~26 -> bright 40);
+    #   - saturation is kept from the base in the gold band but fades toward neutral at the
+    #     dark end, so the sunken shadows blend with the body's blue-black instead of glowing
+    #     faintly brown.
     rgba = load_base('atlatitan_tectonic')
     alpha = rgba[..., 3]; opaque = alpha > 0
     h, s, v = to_hsv(rgba)
@@ -344,10 +348,13 @@ def rammer_variants():
     # magma at the spike BASES is genuinely red and must follow the light like the rest.
     red = opaque & ~eye_mask & hue_in(h, 330, 55) & (s > 0.45)
     h = h.copy(); s = s.copy(); v = v.copy()
-    v_new = np.clip(0.16 + (v - 0.10) * 1.44, 0.10, 0.87)
+    val_anchors_in = [0.00, 0.12, 0.16, 0.28, 0.35, 0.44, 0.50, 0.60, 1.00]
+    val_anchors_out = [0.00, 0.10, 0.14, 0.30, 0.52, 0.65, 0.74, 0.87, 0.87]
+    v_new = np.interp(v, val_anchors_in, val_anchors_out)
     hue_anchors_v = [0.15, 0.30, 0.45, 0.55, 0.62, 0.70, 0.80, 0.87]
     hue_anchors_h = [26.0, 27.0, 29.0, 31.0, 33.0, 35.0, 39.0, 40.0]
     h[red] = np.interp(v_new[red], hue_anchors_v, hue_anchors_h)
+    s[red] = s[red] * np.interp(v_new[red], [0.0, 0.15, 0.32], [0.35, 0.45, 1.0])
     v[red] = v_new[red]
     finish('atlatitan_tectonic_variant', h, s, v, alpha)
 

@@ -113,10 +113,15 @@ Notas no obvias y reutilizables. Leer antes de tocar nada.
   0.50) con modelado interno rico y celosía de escamas negras encima. Clasificar todo ese rojo
   como "glow" y comprimirlo a una banda brillante borra el modelado → placas ámbar planas.
   Lo correcto es RE-TEMPERAR: solo la familia roja saturada (h330-55, s>.45, ojos excluidos;
-  las púas NO se excluyen — el magma de su base debe seguir la luz) con estiramiento LINEAL de
-  v ([0.10..0.55]→[0.16..0.81], monótono ×1.44: conserva y amplifica el contraste) y hue en
-  función del v FINAL por la rampa muestreada de grottoceratops_tectonic (26→40; su paleta no
-  tiene blanco quemado, v máx 0.87). Cuerpo/púas/dientes/ojos = píxeles de AC intactos.
+  las púas NO se excluyen — el magma de su base debe seguir la luz), curva de v MONÓTONA sobre
+  los 8 tonos discretos de la base y hue en función del v FINAL por la rampa muestreada de
+  grottoceratops_tectonic (26→40; su paleta no tiene blanco quemado, v máx 0.87).
+  Afinado v5.1 (feedback del usuario 2026-08-08): los 3 tonos oscuros (0.12/0.16/0.28) NO se
+  estiran hacia arriba (leían como parches marrones en pecho/muslos/brazos/cuello) — se hunden
+  a 0.10/0.14/0.30 con desaturación en el extremo oscuro (s ×0.35..1 interp por v) para fundirse
+  con el cuerpo negro; del oro oscuro hacia arriba (base 0.35→0.52, 0.44→0.65, 0.50→0.74,
+  0.60+→0.87) el mapeo quedó congelado tal cual (aprobado). Cuerpo/púas/dientes/ojos = píxeles
+  de AC intactos.
 - **tools/preview_atlatitan.py**: renderer ortográfico del Rammer (geometría transcrita del
   SauropodBaseModel+AtlatitanModel decompilados: rotationPoints, ángulos, texOffs, mirror;
   convención UV de Cube vanilla con UP V-flipped y mirror = U-flip por cara; painter + backface
