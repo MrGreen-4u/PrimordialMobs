@@ -96,3 +96,10 @@ Notas no obvias y reutilizables. Leer antes de tocar nada.
 - Tectónica del Rammer v3: paleta amarillo-negro (avispa) — TODO el brillo rojo (h335-50,
   s>.4, v>.22) → amarillo h49 s.92 con gradiente del brillo original; núcleos blancos v.97;
   cuerpo → negro cálido (curva v 0.07-0.33); púas hueso amarillento h48.
+- REVERTIDO (v3.1.2, petición del usuario): el AtlatitanEntityMixin de turningFast. El andar
+  montado del Rammer debe quedar INTACTO como en el mod original. Verificado contra upstream
+  main (1.20.1, 2026-08): tickRidden/tickWalking/areLegsMoving/getLegSlamAmount/turningFast son
+  idénticos a 2.0.2 — el "giro lento del cuerpo montado" ES el comportamiento vigente de AC.
+  Tras el revert, NADA nuestro toca el movimiento/animación del Atlatitan (el renderer mixin es
+  solo textura; el sit-pin de DinosaurEntityMixin nunca se activa porque el Atlatitan no tiene
+  goal de sentarse).
