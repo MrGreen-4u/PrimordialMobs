@@ -73,10 +73,23 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
     @Unique
     @Nullable
     private LivingEntity ac_rageTarget;
-    /** Synched on/off rage state, so the client can pose the angry animal. */
+    /** Synched on/off rage state, so the client can suppress sniffing/scenting animations. */
     @Unique
     private static final EntityDataAccessor<Boolean> AC_ENRAGED = SynchedEntityData.defineId(Sniffer.class, EntityDataSerializers.BOOLEAN);
-    /** The angry rear-up posture, eased over 5 ticks on both sides for smooth rendering. */
+    /**
+     * Entity-event byte broadcast when a headbutt LANDS: the client answers by raising the head for
+     * about a second (see ac_headbuttPoseTicks). Vanilla entity events stop at 63, so 78 is free.
+     */
+    @Unique
+    private static final byte AC_HEADBUTT_EVENT = 78;
+    /**
+     * Client-side countdown that keeps the head raised after a landed headbutt. While it runs the
+     * posture eases up (5 ticks), holds, and once it expires eases back down (5 more ticks) — a
+     * ~1 second toss of the snout per hit instead of a permanently reared rage stance.
+     */
+    @Unique
+    private int ac_headbuttPoseTicks;
+    /** The head-toss posture, eased over 5 ticks and interpolated for smooth rendering. */
     @Unique
     private float ac_angryProgress;
     @Unique
@@ -177,14 +190,31 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
         return (this.ac_angryProgressPrev + (this.ac_angryProgress - this.ac_angryProgressPrev) * partialTick) / 5.0F;
     }
 
-    /** Eases the angry posture in and out; runs on both sides so the client render is smooth. */
+    /**
+     * Eases the head-toss posture in while a landed headbutt's pulse runs and back out once it
+     * expires. The pulse is only ever armed client side (broadcastEntityEvent), which is fine:
+     * the posture is pure rendering state.
+     */
     @Inject(method = "tick", at = @At("TAIL"))
     private void ac_easeAngryPosture(CallbackInfo ci) {
         this.ac_angryProgressPrev = this.ac_angryProgress;
-        if (this.ac_isEnraged() && this.ac_angryProgress < 5.0F) {
-            this.ac_angryProgress++;
-        } else if (!this.ac_isEnraged() && this.ac_angryProgress > 0.0F) {
+        if (this.ac_headbuttPoseTicks > 0) {
+            this.ac_headbuttPoseTicks--;
+            if (this.ac_angryProgress < 5.0F) {
+                this.ac_angryProgress++;
+            }
+        } else if (this.ac_angryProgress > 0.0F) {
             this.ac_angryProgress--;
+        }
+    }
+
+    /** Client side: a landed headbutt raises the head for ~1 second (15 pulse ticks + 5 easing out). */
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == AC_HEADBUTT_EVENT) {
+            this.ac_headbuttPoseTicks = 15;
+        } else {
+            super.handleEntityEvent(id);
         }
     }
 
@@ -411,6 +441,8 @@ public abstract class SnifferMixin extends Animal implements SnifferSkinHolder {
                 target.knockback(0.9D,
                         Math.sin(this.getYRot() * (Math.PI / 180.0D)),
                         -Math.cos(this.getYRot() * (Math.PI / 180.0D)));
+                // tell watching clients the blow landed so they play the ~1s head-toss
+                this.level().broadcastEntityEvent(self, AC_HEADBUTT_EVENT);
                 this.playSound(net.minecraft.sounds.SoundEvents.SNIFFER_SNIFFING, 1.0F, 0.6F);
                 if (this.level() instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.CRIT,

@@ -70,6 +70,14 @@ Notas no obvias y reutilizables. Leer antes de tocar nada.
 - Los renombres/pack/texturas variantes son cliente puro: no verificables headless. El server
   verifica: arranque limpio con defaultRequire:1 (= todos los mixins compat resolvieron),
   summon de los 8 mobs, GLM registrado, tags, biome modifiers.
+- Auditoría "add-on limpio" (script en la sesión 2026-08-08, re-ejecutable): byte-compare de CADA
+  entrada del jar contra alexscaves-full-2.0.2.jar (también con el prefijo resourcepacks/ pelado)
+  → 0 idénticos; los lang del overlay con 0 claves iguales a las de AC; los png del sniffer
+  distintos del vanilla (client-extra.jar de la caché de ForgeGradle tiene los assets vanilla).
+  El global_loot_modifiers.json comparte ruta con el de AC a propósito: Forge los FUSIONA
+  (`replace:false` en ambos).
+- `pkill -f unix_args` en este harness se auto-mata (el patrón matchea la propia shell del
+  comando): usar `pgrep -f 'unix_arg[s]'` o matar por PID.
 
 ## Sesión 2026-08-08 — mixturas del Sniffer y el giro del Rammer montado
 
@@ -89,13 +97,22 @@ Notas no obvias y reutilizables. Leer antes de tocar nada.
   isControlledByLocalInstance en LivingEntity.travelRidden), así que el campo queda coherente.
 - Verificación headless de la rabia: summon sniffer con ForgeData{ACSnifferRage:900} + zombie —
   el sniffer lo persigue y la vida del zombie baja.
-- Postura de rabia del Sniffer: flag AC_ENRAGED synched (5º defineId, orden estable) + progreso
-  0..5 easing en tick (ambos lados) → SnifferModelMixin TAIL en setupAnim resta
-  `angry * 0.55` rad al head.xRot. Convención verificada en el fuente vanilla: headPitch
-  POSITIVO = mirar abajo (`head.xRot = headPitch * π/180`), así que subir = restar.
-- Tectónica del Rammer v3: paleta amarillo-negro (avispa) — TODO el brillo rojo (h335-50,
-  s>.4, v>.22) → amarillo h49 s.92 con gradiente del brillo original; núcleos blancos v.97;
-  cuerpo → negro cálido (curva v 0.07-0.33); púas hueso amarillento h48.
+- Postura de rabia del Sniffer (rediseño 3.1.3): la cabeza YA NO se mantiene alzada toda la
+  rabia — solo al ACERTAR un cabezazo sube ~1 s y baja con easing. Mecanismo: ac_rageStep
+  emite `broadcastEntityEvent(self, 78)` al conectar el golpe (los event bytes vanilla llegan
+  hasta 63; 78 libre); el cliente lo recibe en un override de `handleEntityEvent` MERGEADO por
+  el mixin (el Sniffer vanilla NO declara ese método — Animal sí, id 18 corazones — así que el
+  merge como override es legal) y arma un contador de 15 ticks → easing 0..5 al subir, hold,
+  easing al bajar (20 ticks totales). AC_ENRAGED se conserva synched solo para suprimir
+  sniffing/scenting. ForgeGradle reobfusca el override a `m_7822_` solo (verificado en el jar).
+  Convención verificada en el fuente vanilla: headPitch POSITIVO = mirar abajo
+  (`head.xRot = headPitch * π/180`), así que subir = restar (SnifferModelMixin, −0.55 rad).
+- Tectónica del Rammer v4 (retune 2026-08-08): el brillo ya no es amarillo plano h49 con
+  núcleos casi blancos — usa la RAMPA ámbar-oro muestreada de grottoceratops_tectonic.png de AC:
+  #804819→#9a4f00→#a65a00→#af6600→#b97700 (hue sube 28→39 con el brillo, s≈1, v tope 0.73) y
+  el acento máximo #de990e (h40 s.94 v.87). La paleta de AC NO tiene blanco quemado: v máx 0.87.
+  Cuerpo negro cálido intacto (curva v 0.07-0.33, sheen h35); púas marfil h42. El script es
+  determinista: regenerar solo cambia el png tocado.
 - REVERTIDO (v3.1.2, petición del usuario): el AtlatitanEntityMixin de turningFast. El andar
   montado del Rammer debe quedar INTACTO como en el mod original. Verificado contra upstream
   main (1.20.1, 2026-08): tickRidden/tickWalking/areLegsMoving/getLegSlamAmount/turningFast son

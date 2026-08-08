@@ -24,10 +24,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  *    so a seated pet holds the lie-down pose instead of playing the full 8-second SNIFFER_DIG, whose
  *    last ~6 seconds are the head-down ground-sniffing loop (a wild sniffer digging naturally still
  *    plays the whole animation);
- *  - the Seething Stew's angry posture: an enraged sniffer throws its snout in the air (~32 degrees),
- *    eased in and out over 5 ticks by SnifferMixin. Vanilla maps positive head xRot to looking DOWN
- *    ({@code this.head.xRot = headPitch * PI/180} with headPitch > 0 below the horizon), so raising is
- *    a subtraction.
+ *  - the Seething Stew's headbutt: when an enraged sniffer LANDS a blow it throws its snout in the
+ *    air (~32 degrees) for about a second, eased in and out over 5 ticks by SnifferMixin (armed by
+ *    the entity event the server broadcasts on the hit). Vanilla maps positive head xRot to looking
+ *    DOWN ({@code this.head.xRot = headPitch * PI/180} with headPitch > 0 below the horizon), so
+ *    raising is a subtraction.
  */
 @Mixin(SnifferModel.class)
 public abstract class SnifferModelMixin {

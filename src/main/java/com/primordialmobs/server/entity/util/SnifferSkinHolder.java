@@ -38,15 +38,17 @@ public interface SnifferSkinHolder {
     /**
      * The Seething Stew's rage: for this many ticks the sniffer drops everything and headbutts
      * hostile mobs around it (see SnifferMixin#ac_rageStep). The countdown is server side; the
-     * on/off state is synched so the client can pose the animal.
+     * on/off state is synched so the client can suppress the sniffing/scenting animations.
      */
     void ac_enrage(int ticks);
 
     boolean ac_isEnraged();
 
     /**
-     * The angry posture, eased over ~5 ticks and interpolated for rendering: 0 = calm,
-     * 1 = fully reared with the snout in the air. Client side reads this in SnifferModelMixin.
+     * The head-toss posture after a LANDED headbutt, eased over ~5 ticks and interpolated for
+     * rendering: 0 = calm, 1 = snout fully in the air. Armed client side by the entity event an
+     * ac_rageStep hit broadcasts, held for about a second, then eased back down. Client side
+     * reads this in SnifferModelMixin.
      */
     float ac_getAngryHeadAmount(float partialTick);
 }

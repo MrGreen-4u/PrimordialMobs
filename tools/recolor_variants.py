@@ -317,12 +317,16 @@ def rammer_variants():
     h, s, v = set_hue(h, s, v, lime, 80, sat_scale=1.7, val_scale=1.05)  # icy -> lime
     finish('atlatitan_retro_variant', h, s, v, alpha)
 
-    # TECTONIC -> yellow-black (design brief 2026-08-08, replacing the rejected ash grey).
-    # A hornet-toned counterpart of the magma skin that keeps the tectonic identity — dark hide,
-    # glowing vein web — and only swaps the temperature of the light:
-    #   - EVERYTHING red-glowing (the vein web, the molten face, the ember patches) turns hot
-    #     YELLOW, brightness mapped from the base glow so the web keeps its own gradient and the
-    #     white-hot cores read near-white;
+    # TECTONIC -> amber-black (design brief 2026-08-08; glow retuned same day to Alex's Caves'
+    # OWN warm palette, sampled from grottoceratops_tectonic.png). A hornet-toned counterpart of
+    # the magma skin that keeps the tectonic identity — dark hide, glowing vein web — and only
+    # swaps the temperature of the light:
+    #   - EVERYTHING red-glowing (the vein web, the molten face, the ember patches) takes the
+    #     grottoceratops_tectonic glow ramp: #804819 -> #9a4f00 -> #a65a00 -> #af6600 -> #b97700,
+    #     i.e. hue climbing ~28 -> 39 with brightness at near-full saturation, value capped well
+    #     below white. The base glow's own gradient picks the position on the ramp;
+    #   - the hottest cores get the ramp's top accent (#de990e, v 0.87) — AC's palette has no
+    #     white-hot bleaching anywhere, so neither do we;
     #   - the dark hide deepens toward black with a faint warm sheen, its scale shading kept
     #     through a tone curve rather than flattened;
     #   - bone spikes take a pale yellowed-ivory cast so they band with the palette;
@@ -337,21 +341,22 @@ def rammer_variants():
     hot_core = glow & (s > 0.6) & (v > 0.6)
     body = opaque & ~eye_mask & ~bone & ~glow
     h = h.copy(); s = s.copy(); v = v.copy()
-    # vein web -> hot yellow, the base glow gradient stretched brighter
+    # vein web -> the sampled amber-gold ramp, position taken from the base glow's gradient
     gn = np.clip((v - 0.22) / 0.55, 0, 1)
-    h[glow] = 49.0
-    s[glow] = 0.92
-    v[glow] = (0.5 + 0.45 * gn)[glow]
-    # the white-hot cores bleach toward pale yellow
-    s[hot_core] = 0.55
-    v[hot_core] = 0.97
+    h[glow] = (28.0 + 11.0 * gn)[glow]
+    s[glow] = np.clip(0.8 + 0.4 * gn, 0, 1.0)[glow]
+    v[glow] = (0.50 + 0.23 * gn)[glow]
+    # the hottest cores -> the ramp's golden top accent, never white
+    h[hot_core] = 40.0
+    s[hot_core] = 0.94
+    v[hot_core] = 0.87
     # hide -> near-black with a warm sheen; the scale texture survives in the dark range
     bn = np.clip((v - 0.05) / 0.55, 0, 1)
     v[body] = (0.07 + 0.26 * (bn ** 0.8))[body]
     s[body] = np.clip(s[body] * 0.5, 0.1, 0.35)
-    h[body] = 45.0
-    # bone spikes -> yellowed ivory
-    h[bone & opaque] = 48.0
+    h[body] = 35.0
+    # bone spikes -> yellowed ivory, warmed to sit inside the sampled hue band
+    h[bone & opaque] = 42.0
     s[bone & opaque] = np.clip(s[bone & opaque] * 0.8 + 0.18, 0, 0.4)
     finish('atlatitan_tectonic_variant', h, s, v, alpha)
 
