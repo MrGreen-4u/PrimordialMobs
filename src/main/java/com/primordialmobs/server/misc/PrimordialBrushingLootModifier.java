@@ -25,6 +25,8 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
      * The JSON carries only the archaeology-table conditions; the two probabilities live in the config
      * ({@code brushing.egg_chance} / {@code brushing.relic_chance}) so players can tune them without a
      * datapack. The optional JSON fields remain readable for datapacks that want to override a world.
+     * The Tectonic Shard has no probability of its own: it is as rare as a dinosaur egg and shares
+     * {@code egg_chance}.
      */
     public static final Supplier<Codec<PrimordialBrushingLootModifier>> CODEC = () ->
             RecordCodecBuilder.create(inst ->
@@ -39,7 +41,8 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
 
     /**
      * Relic table: only non-craftable, non-plant, non-food curiosities — things that make sense as a
-     * fossilised find. Deliberately ABSENT:
+     * fossilised find. The Tectonic Shard is NOT in this table: it is rolled on its own with the same
+     * chance as a dinosaur egg (see {@link #doApply}). Deliberately ABSENT:
      * - the mod's plants (tree star, curly fern, fiddlehead, pewen sapling, pine nuts): since the Sniffer
      *   rework they can only be dug out of the ground by a Sniffer
      *   (see data/minecraft/loot_tables/gameplay/sniffer_digging.json), never brushed out;
@@ -50,7 +53,6 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
      */
     private static final Object[][] RELICS = {
             {"heavy_bone", 10, 1, 2},
-            {"tectonic_shard", 8, 1, 1},
             {"amber_curiosity", 8, 1, 1},
             // The four pottery sherds (from the original mod): brushed out of suspicious sand AND
             // suspicious gravel, since the conditions below cover all six vanilla archaeology tables.
@@ -95,10 +97,16 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
                 : PrimordialMobs.COMMON_CONFIG.brushingEggChance.get().floatValue();
         float effectiveRelicChance = this.relicChance >= 0.0F ? this.relicChance
                 : PrimordialMobs.COMMON_CONFIG.brushingRelicChance.get().floatValue();
+        // One roll split into consecutive bands, so every outcome keeps exactly its configured absolute
+        // probability: [0, egg) -> egg block; [egg, 2*egg) -> Tectonic Shard (as rare as an egg, by
+        // design); [2*egg, 2*egg + relic) -> one of the common relics; anything above -> vanilla loot.
+        float roll = random.nextFloat();
         ItemStack discovery = ItemStack.EMPTY;
-        if (random.nextFloat() < effectiveEggChance) {
+        if (roll < effectiveEggChance) {
             discovery = rollEgg(random);
-        } else if (random.nextFloat() < effectiveRelicChance) {
+        } else if (roll < effectiveEggChance * 2.0F) {
+            discovery = rollTectonicShard();
+        } else if (roll < effectiveEggChance * 2.0F + effectiveRelicChance) {
             discovery = rollRelic(random);
         }
         if (!discovery.isEmpty()) {
@@ -118,6 +126,15 @@ public class PrimordialBrushingLootModifier implements IGlobalLootModifier {
         String dinosaur = DINOSAURS[random.nextInt(DINOSAURS.length)];
         Item egg = ForgeRegistries.ITEMS.getValue(new ResourceLocation(PrimordialMobs.NAMESPACE, dinosaur + "_egg"));
         return egg == null ? ItemStack.EMPTY : new ItemStack(egg);
+    }
+
+    /**
+     * The Tectonic Shard unlocks the tectonic appearances, so it is deliberately as rare as a dinosaur
+     * egg rather than a common relic.
+     */
+    private static ItemStack rollTectonicShard() {
+        Item shard = ForgeRegistries.ITEMS.getValue(new ResourceLocation(PrimordialMobs.NAMESPACE, "tectonic_shard"));
+        return shard == null ? ItemStack.EMPTY : new ItemStack(shard);
     }
 
     private static ItemStack rollRelic(RandomSource random) {

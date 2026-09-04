@@ -24,7 +24,7 @@ See [PrimordialMobs.md](PrimordialMobs.md) for the player-facing description.
 
 `config/primordialmobs-general.toml`: `renames.rename_mobs`,
 `alternative-textures.{enabled,chance}` (default 15%), and
-`brushing.{relic_chance,egg_chance}` (defaults 8% / 2%).
+`brushing.{relic_chance,egg_chance}` (defaults 8% / 2%; the Tectonic Shard uses the egg chance).
 
 ## Credits and license
 

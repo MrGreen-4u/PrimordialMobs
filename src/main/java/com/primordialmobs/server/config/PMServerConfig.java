@@ -50,14 +50,16 @@ public class PMServerConfig {
         builder.push("brushing");
         brushingRelicChance = builder
                 .comment("The chance (0.0-1.0) that brushing a vanilla suspicious sand/gravel block turns up a",
-                        "Primordial Caves relic from Alex's Caves (Heavy Bone, Tectonic Shard, Amber Curiosity",
-                        "or one of the four pottery sherds). A successful vanilla Sniffer Egg roll is never",
-                        "replaced.")
+                        "common Primordial Caves relic from Alex's Caves (Heavy Bone, Amber Curiosity or one",
+                        "of the four pottery sherds). The Tectonic Shard is not part of this pool: it is as",
+                        "rare as a dinosaur egg and uses egg_chance. A successful vanilla Sniffer Egg roll is",
+                        "never replaced.")
                 .translation("primordialmobs.config.brushing_relic_chance")
                 .defineInRange("relic_chance", 0.08D, 0.0D, 1.0D);
         brushingEggChance = builder
                 .comment("The chance (0.0-1.0) that brushing a vanilla suspicious sand/gravel block turns up one",
-                        "of the five dinosaur egg blocks, from which the creature can later hatch.")
+                        "of the five dinosaur egg blocks, from which the creature can later hatch. The same",
+                        "chance applies, separately, to the Tectonic Shard.")
                 .translation("primordialmobs.config.brushing_egg_chance")
                 .defineInRange("egg_chance", 0.02D, 0.0D, 1.0D);
         builder.pop();

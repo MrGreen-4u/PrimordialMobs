@@ -1,6 +1,8 @@
 # Primordial Mobs
 
-**A modest add-on for the Primordial Caves content from [Alex's Caves](https://www.curseforge.com/minecraft/mc-mods/alexs-caves): vanilla-style mob names (adjective-like names inspired by the "Sniffer"), rare colour variants, two new mounts, a rework of the Sniffer, and the possibility of finding Primordial Cave content inside suspicious blocks.**
+**Initial Note: this add-on has been approved by the creators of its base mod, [Alex's Caves](https://www.curseforge.com/minecraft/mc-mods/alexs-caves).**
+
+A modest add-on for the Primordial Caves content from [Alex's Caves](https://www.curseforge.com/minecraft/mc-mods/alexs-caves): vanilla-style mob names (adjective-like names inspired by the "Sniffer"), rare colour variants, two new mounts, a rework of the Sniffer, and the possibility of finding Primordial Cave content inside suspicious blocks.
 
 Alex's Caves is responsible for everything you will find here: the Primordial Caves, their creatures, models, animations, sounds, items, and mechanics. Primordial Mobs simply adds a number of small changes and improvements on top of that content, and it will not run without Alex's Caves installed.
 
@@ -54,7 +56,7 @@ Everything else about these creatures remains exactly as it is in Alex's Caves.
 
 ## Brush
 
-* Any vanilla archaeology site, by using a brush on **suspicious gravel or suspicious sand**, can contain something prehistoric. There is an **8%** chance for a suspicious block to yield an item from Alex's Caves, such as a Heavy Bone, Tectonic Shard, Amber Curiosity, or one of the four pottery sherds, and a **2%** chance to yield **the egg block of one of the five mobs** (excluding the Atlatitan), which can then be hatched. Vanilla Sniffer Egg loot is not modified. Both probabilities can be configured.
+* Any vanilla archaeology site, by using a brush on **suspicious gravel or suspicious sand**, can contain something prehistoric. There is an **8%** chance for a suspicious block to yield a common item from Alex's Caves, such as a Heavy Bone, Amber Curiosity, or one of the four pottery sherds, a **2%** chance to yield a **Tectonic Shard**, and a **2%** chance to yield **the egg block of one of the five mobs** (excluding the Atlatitan), which can then be hatched. Vanilla Sniffer Egg loot is not modified. Both probabilities can be configured (the Tectonic Shard shares the egg chance).
 
 ## Trilocaris
 
@@ -63,7 +65,7 @@ Everything else about these creatures remains exactly as it is in Alex's Caves.
 
 ## Configuration
 
-One small file, `config/primordialmobs-general.toml`:
+The config file (`config/primordialmobs-general.toml`) allows you to:
 
 | Option | Default | What it does |
 |---|---|---|
@@ -71,7 +73,7 @@ One small file, `config/primordialmobs-general.toml`:
 | `alternative-textures.enabled` | `true` | Whether new animals can roll a recoloured variant |
 | `alternative-textures.chance` | `0.15` | The variant chance |
 | `brushing.relic_chance` | `0.08` | Relics from brushed suspicious sand/gravel |
-| `brushing.egg_chance` | `0.02` | Dinosaur egg blocks from brushed suspicious sand/gravel |
+| `brushing.egg_chance` | `0.02` | Dinosaur egg blocks (and, separately, the Tectonic Shard) from brushed suspicious sand/gravel |
 
 ---
 
@@ -81,4 +83,4 @@ Primordial Mobs is an add-on for, and a derivative work of, **Alex's Caves** by 
 **Noonyeyz** (GPL-3.0),  who approve of this project. At the authors' request it reuses none of their assets: the base mod is
 required, owns all of its content, and this add-on ships only its own additions - the rename
 overlay, the recoloured variant textures, the sitting poses and the glue code. Requires Citadel by
-Alexthe666.
+Alexthe668.
